@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:stockat/view/sign_in.dart';
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -14,9 +16,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 4),
+        const Duration(seconds: 4),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SignIn())));
+            context, MaterialPageRoute(builder: (context) => const SignIn())));
   }
 
   @override
@@ -28,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('logos/splash.png'),
-              Text.rich(TextSpan(children: [
+              const Text.rich(TextSpan(children: [
                 TextSpan(
                     text: 'S',
                     style: TextStyle(
@@ -69,11 +71,11 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 height: Get.height * .05,
               ),
-              Text(
+              const Text(
                 'By/ Eng Tareq',
                 style: TextStyle(color: Colors.black),
               ),
-              Text(
+              const Text(
                 'جميع الحقوق محفوظه',
                 style: TextStyle(color: Colors.black),
               ),

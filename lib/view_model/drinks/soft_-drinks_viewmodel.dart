@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:get/get.dart';
 import 'package:stockat/model/drinks/soft_drinks_model.dart';
 import 'package:stockat/service/products_service.dart';

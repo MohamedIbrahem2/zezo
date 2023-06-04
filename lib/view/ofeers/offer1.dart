@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class Offer1 extends StatelessWidget {
@@ -12,19 +10,21 @@ class Offer1 extends StatelessWidget {
     Colors.grey.shade100,
   ];
 
+  Offer1({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade50,
-        title: Text(
+        title: const Text(
           'Offer',
           style: TextStyle(
             color: Colors.black,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Center(
         child: Container(
@@ -41,7 +41,7 @@ class Offer1 extends StatelessWidget {
               SizedBox(
                 height: Get.height * .01,
               ),
-              Text(
+              const Text(
                 'Enjoy the best discount ! ',
                 style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
@@ -49,7 +49,7 @@ class Offer1 extends StatelessWidget {
                 height: Get.height * .01,
               ),
               Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 width: Get.width,
                 height: Get.height * .705,
                 child: ListView.separated(
@@ -58,7 +58,7 @@ class Offer1 extends StatelessWidget {
                         alignment: Alignment.topCenter,
                         children: [
                           (Container(
-                            padding: EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(12),
                             child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
@@ -66,11 +66,11 @@ class Offer1 extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 8),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 8),
                                         width: Get.width * .18,
                                         height: Get.height * .1,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
                                               BoxShadow(
@@ -82,7 +82,7 @@ class Offer1 extends StatelessWidget {
                                           'https://m.media-amazon.com/images/I/61ZpNfQMDOL.jpg',
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         'product1',
                                         style: TextStyle(
                                             fontSize: 15,
@@ -94,27 +94,27 @@ class Offer1 extends StatelessWidget {
                                 separatorBuilder: (context, index) {
                                   return Container(
                                       alignment: Alignment.center,
-                                      child: Text('+',
+                                      child: const Text('+',
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold)));
                                 },
                                 itemCount: 10),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
                             width: Get.width * .9,
                             height: Get.height * .22,
                             decoration: BoxDecoration(
                                 color: colors[index],
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                       blurRadius: 5,
                                       spreadRadius: 2,
                                       color: Colors.grey)
                                 ]),
                           )),
-                          Positioned(
+                          const Positioned(
                             child: Text(
                               '250 SR',
                               style: TextStyle(
@@ -127,7 +127,7 @@ class Offer1 extends StatelessWidget {
                           Positioned(
                             child: ElevatedButton(
                               onPressed: () {},
-                              child: Row(
+                              child: const Row(
                                 children: [
                                   Text(
                                     'Get',
@@ -147,11 +147,11 @@ class Offer1 extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                               ),
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.green),
+                                  backgroundColor: Colors.green),
                             ),
                             bottom: 0,
                           ),
-                          Positioned(
+                          const Positioned(
                             bottom: 10,
                             right: 15,
                             child: Column(
@@ -165,9 +165,9 @@ class Offer1 extends StatelessWidget {
                     },
                     separatorBuilder: (conext, index) {
                       return Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             'OR',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),

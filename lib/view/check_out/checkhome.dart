@@ -1,12 +1,9 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'add_address.dart';
 
 class CheckHome extends StatefulWidget {
+  const CheckHome({Key? key}) : super(key: key);
+
   @override
   State<CheckHome> createState() => _CheckHomeState();
 }
@@ -16,7 +13,7 @@ class _CheckHomeState extends State<CheckHome> {
   String finalDate = '';
 
   getCurrentDate() {
-    var date = new DateTime.now().add(Duration(days: 1)).toString();
+    var date = DateTime.now().add(const Duration(days: 1)).toString();
 
     var dateParse = DateTime.parse(date);
 
@@ -51,8 +48,8 @@ class _CheckHomeState extends State<CheckHome> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade50,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Check Out',
           style: TextStyle(fontSize: 20, color: Colors.black),
         ),
@@ -62,18 +59,18 @@ class _CheckHomeState extends State<CheckHome> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.grey,
                               spreadRadius: 2,
@@ -82,11 +79,11 @@ class _CheckHomeState extends State<CheckHome> {
                           ]),
                       child: Image.network(
                           'https://preview.redd.it/oops-bobs-bebsi-v0-u4b0g8lw5uc91.jpg?width=640&crop=smart&auto=webp&s=e2f1dedbb8dd0c574487e9b8c8e1b007e86927c3'),
-                      margin: EdgeInsets.only(right: 7),
+                      margin: const EdgeInsets.only(right: 7),
                       width: Get.width * .27,
                       height: Get.height * .12,
                     ),
-                    Column(
+                    const Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
@@ -108,8 +105,8 @@ class _CheckHomeState extends State<CheckHome> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 50),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 50),
                           child: Icon(
                             Icons.delete,
                             color: Colors.red,
@@ -123,7 +120,7 @@ class _CheckHomeState extends State<CheckHome> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               GestureDetector(
-                                child: Icon(Icons.add),
+                                child: const Icon(Icons.add),
                                 onTap: () {
                                   setState(() {
                                     count++;
@@ -137,7 +134,7 @@ class _CheckHomeState extends State<CheckHome> {
                                       count--;
                                     });
                                   },
-                                  child: Icon(Icons.remove_outlined))
+                                  child: const Icon(Icons.remove_outlined))
                             ],
                           ),
                         ),
@@ -150,7 +147,7 @@ class _CheckHomeState extends State<CheckHome> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         spreadRadius: 2,
@@ -159,9 +156,9 @@ class _CheckHomeState extends State<CheckHome> {
                     ]),
               ),
               Container(
-                margin: EdgeInsets.only(left: 15, top: 30),
+                margin: const EdgeInsets.only(left: 15, top: 30),
                 alignment: Alignment.centerLeft,
-                child: Text(
+                child: const Text(
                   'Deliver to',
                   style: TextStyle(
                       fontSize: 18.0,
@@ -172,11 +169,11 @@ class _CheckHomeState extends State<CheckHome> {
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   decoration: BoxDecoration(
                       color: Colors.greenAccent,
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.grey,
                           spreadRadius: 1,
@@ -185,7 +182,7 @@ class _CheckHomeState extends State<CheckHome> {
                       ]),
                   width: Get.width * .87,
                   height: 45,
-                  child: Text(
+                  child: const Text(
                     'Add Adress',
                     style: TextStyle(
                         fontSize: 20,
@@ -196,9 +193,9 @@ class _CheckHomeState extends State<CheckHome> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 15, top: 30),
+                margin: const EdgeInsets.only(left: 15, top: 30),
                 alignment: Alignment.centerLeft,
-                child: Text(
+                child: const Text(
                   'Select Delivery Date',
                   style: TextStyle(
                       fontSize: 18.0,
@@ -206,7 +203,7 @@ class _CheckHomeState extends State<CheckHome> {
                       color: Colors.black),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: Get.width,
                 height: Get.height * .15,
                 child: ListView.builder(
@@ -219,12 +216,12 @@ class _CheckHomeState extends State<CheckHome> {
                           children: [
                             Text(
                               days[index],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
+                            const Text(
                               '10-12-2023',
                               style: TextStyle(
                                 fontSize: 19,
@@ -234,12 +231,12 @@ class _CheckHomeState extends State<CheckHome> {
                             )
                           ],
                         ),
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         width: Get.width * .4,
                         height: Get.height * .11,
                         decoration: BoxDecoration(
                             color: Colors.grey.shade100,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                   spreadRadius: .4,
                                   blurRadius: 2,
@@ -250,9 +247,9 @@ class _CheckHomeState extends State<CheckHome> {
                     }),
               ),
               Container(
-                margin: EdgeInsets.only(left: 15, top: 20),
+                margin: const EdgeInsets.only(left: 15, top: 20),
                 alignment: Alignment.centerLeft,
-                child: Text(
+                child: const Text(
                   'View available coupon',
                   style: TextStyle(
                       fontSize: 18.0,
@@ -264,7 +261,7 @@ class _CheckHomeState extends State<CheckHome> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    margin: EdgeInsets.all(20),
+                    margin: const EdgeInsets.all(20),
                     width: Get.width * .6,
                     child: TextFormField(
                       decoration: InputDecoration(
@@ -278,13 +275,13 @@ class _CheckHomeState extends State<CheckHome> {
                     child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.greenAccent),
-                        child: Text('Apply')),
+                            backgroundColor: Colors.greenAccent),
+                        child: const Text('Apply')),
                   )
                 ],
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -296,7 +293,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '10 pieces',
                           style: TextStyle(
                               fontSize: 19,
@@ -313,7 +310,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '200 SR',
                           style: TextStyle(
                               fontSize: 19,
@@ -330,7 +327,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '30 SR',
                           style: TextStyle(
                               fontSize: 19,
@@ -347,7 +344,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '0 SR',
                           style: TextStyle(
                               fontSize: 19,
@@ -364,7 +361,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '0 SR',
                           style: TextStyle(
                               fontSize: 19,
@@ -381,7 +378,7 @@ class _CheckHomeState extends State<CheckHome> {
                           style: TextStyle(
                               fontSize: 18, color: Colors.grey.shade800),
                         ),
-                        Text(
+                        const Text(
                           '230 SR',
                           style: TextStyle(
                               fontSize: 19,
@@ -392,18 +389,18 @@ class _CheckHomeState extends State<CheckHome> {
                     ),
                   ],
                 ),
-                margin: EdgeInsets.all(15),
+                margin: const EdgeInsets.all(15),
                 width: Get.width * .9,
                 height: Get.height * .25,
                 decoration: BoxDecoration(
                     color: Colors.grey.shade50,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           spreadRadius: .4, blurRadius: 2, color: Colors.black),
                     ],
                     borderRadius: BorderRadius.circular(5)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               )
             ],
@@ -421,18 +418,18 @@ class _CheckHomeState extends State<CheckHome> {
                   children: [
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            elevation: 10, primary: Colors.greenAccent),
+                            elevation: 10, backgroundColor: Colors.greenAccent),
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           'yes',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         )),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            elevation: 10, primary: Colors.white),
+                            elevation: 10, backgroundColor: Colors.white),
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           'cancle',
                           style: TextStyle(color: Colors.black),
                         ))
@@ -444,7 +441,7 @@ class _CheckHomeState extends State<CheckHome> {
             width: Get.width,
             height: 50,
             color: Colors.greenAccent,
-            child: Text(
+            child: const Text(
               'Checkout',
               style: TextStyle(
                   fontSize: 20,

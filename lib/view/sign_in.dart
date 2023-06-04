@@ -1,15 +1,18 @@
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:stockat/view/sign_up.dart';
 import 'package:video_player/video_player.dart';
+
 import '../constants.dart';
 import '../view_model/auth_view_model.dart';
 import '../widgets/custom_text_form.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
+
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -48,7 +51,7 @@ class _SignInState extends State<SignIn> {
       body: ModalProgressHUD(
         opacity: .5,
         color: Colors.grey,
-        progressIndicator: CircularProgressIndicator(),
+        progressIndicator: const CircularProgressIndicator(),
         dismissible: true,
         inAsyncCall: isloading,
         child: GetBuilder<AuthViewModel>(
@@ -56,7 +59,7 @@ class _SignInState extends State<SignIn> {
           builder: (_) => Stack(
             children: [
               BackdropFilter(
-                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                 child: SizedBox.expand(
                   child: FittedBox(
                     fit: BoxFit.cover,
@@ -68,7 +71,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: Get.width,
                 child: SingleChildScrollView(
                   child: Column(
@@ -78,11 +81,11 @@ class _SignInState extends State<SignIn> {
                         height: Get.height * .25,
                       ),
                       Container(
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5),
-                            boxShadow: []),
+                            boxShadow: const []),
                         width: Get.width * .9,
                         height: Get.height * .55,
                         child: Form(
@@ -93,7 +96,7 @@ class _SignInState extends State<SignIn> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Welcome,',
                                     style: TextStyle(
                                         fontSize: 30,
@@ -109,12 +112,12 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: Text(
+                                child: const Text(
                                   'Sign in to continue',
                                   style: TextStyle(
                                       fontSize: 17,
@@ -127,7 +130,7 @@ class _SignInState extends State<SignIn> {
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: Text(
+                                child: const Text(
                                   'Email',
                                   style: TextStyle(
                                       fontSize: 17,
@@ -147,12 +150,12 @@ class _SignInState extends State<SignIn> {
                                 obsecure: false,
                                 hint: 'stockat@gmail.com',
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
-                                child: Text(
+                                child: const Text(
                                   'Password',
                                   style: TextStyle(
                                       fontSize: 17,
@@ -173,12 +176,12 @@ class _SignInState extends State<SignIn> {
                                 secure: true,
                                 hint: '*************',
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Container(
                                 alignment: Alignment.topRight,
-                                child: Text(
+                                child: const Text(
                                   'forget password?',
                                   style: TextStyle(
                                       fontSize: 17,
@@ -202,10 +205,10 @@ class _SignInState extends State<SignIn> {
                                     });
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      primary: mainColor,
+                                      backgroundColor: mainColor,
                                       fixedSize:
                                           Size.fromWidth(Get.width * .8)),
-                                  child: Text('SIGN IN'))
+                                  child: const Text('SIGN IN'))
                             ],
                           ),
                         ),
@@ -218,9 +221,9 @@ class _SignInState extends State<SignIn> {
                             Get.offAll(SignUp());
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            backgroundColor: Colors.black,
                           ),
-                          child: Text('New Customer'))
+                          child: const Text('New Customer'))
                     ],
                   ),
                 ),

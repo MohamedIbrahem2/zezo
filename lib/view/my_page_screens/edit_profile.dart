@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/constants.dart';
-import 'package:stockat/view/sign_in.dart';
 import 'package:stockat/widgets/custom_text_form.dart';
 
 class Editprofile extends StatelessWidget {
+  const Editprofile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: Get.width,
         child: SingleChildScrollView(
           child: Column(
@@ -19,7 +20,7 @@ class Editprofile extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Edit your profile',
                   style: TextStyle(
                       fontSize: 20,
@@ -27,12 +28,12 @@ class Editprofile extends StatelessWidget {
                       color: Colors.green),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               GestureDetector(
                 child: CircleAvatar(
-                  child: Icon(
+                  child: const Icon(
                     Icons.camera_enhance_rounded,
                     size: 35,
                   ),
@@ -40,20 +41,22 @@ class Editprofile extends StatelessWidget {
                   backgroundColor: Colors.blue.shade100,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    boxShadow: [BoxShadow(blurRadius: 2, color: Colors.grey)]),
+                    boxShadow: const [
+                      BoxShadow(blurRadius: 2, color: Colors.grey)
+                    ]),
                 width: Get.width * .9,
                 height: Get.height * .92,
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     SizedBox(
@@ -61,7 +64,7 @@ class Editprofile extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'Name',
                         style: TextStyle(
                             fontSize: 17,
@@ -73,12 +76,12 @@ class Editprofile extends StatelessWidget {
                       obsecure: false,
                       hint: 'stockat',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'phone',
                         style: TextStyle(
                             fontSize: 17,
@@ -90,12 +93,12 @@ class Editprofile extends StatelessWidget {
                       obsecure: false,
                       hint: '0540814644',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'C.R',
                         style: TextStyle(
                             fontSize: 17,
@@ -107,12 +110,12 @@ class Editprofile extends StatelessWidget {
                       obsecure: false,
                       hint: '3185400003',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'vat number',
                         style: TextStyle(
                             fontSize: 17,
@@ -124,12 +127,12 @@ class Editprofile extends StatelessWidget {
                       obsecure: false,
                       hint: '318540003',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'Email',
                         style: TextStyle(
                             fontSize: 17,
@@ -141,12 +144,12 @@ class Editprofile extends StatelessWidget {
                       obsecure: false,
                       hint: 'stockat@gmail.com',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'Password',
                         style: TextStyle(
                             fontSize: 17,
@@ -159,7 +162,7 @@ class Editprofile extends StatelessWidget {
                       secure: true,
                       hint: '*************',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     SizedBox(
@@ -168,9 +171,9 @@ class Editprofile extends StatelessWidget {
                     ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                            primary: mainColor,
+                            backgroundColor: mainColor,
                             fixedSize: Size.fromWidth(Get.width * .8)),
-                        child: Text(
+                        child: const Text(
                           'EDIT',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),

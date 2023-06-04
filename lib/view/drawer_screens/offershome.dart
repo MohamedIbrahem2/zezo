@@ -1,29 +1,27 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockat/view/categories/blastic/paper.dart';
 import 'package:stockat/view/ofeers/offer2.dart';
 import 'package:stockat/view/ofeers/offer3.dart';
 
 import '../ofeers/offer1.dart';
 
 class OffersHome extends StatelessWidget {
+  const OffersHome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Offers',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue.shade50,
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: Get.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,10 +34,10 @@ class OffersHome extends StatelessWidget {
                 width: Get.width * .4,
                 height: Get.height * .12,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 'Enjoy the best offers ! ',
                 style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
@@ -53,12 +51,12 @@ class OffersHome extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.orange.shade200,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             spreadRadius: 2, blurRadius: 5, color: Colors.grey)
                       ]),
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: const Text(
                     'First offer',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -67,22 +65,22 @@ class OffersHome extends StatelessWidget {
                   alignment: Alignment.center,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(Offer2());
+                  Get.to(const Offer2());
                 },
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.greenAccent,
                       boxShadow: [
                         BoxShadow(
                             spreadRadius: 2, blurRadius: 5, color: Colors.grey)
                       ]),
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: const Text(
                     'Second offer',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -91,22 +89,22 @@ class OffersHome extends StatelessWidget {
                   alignment: Alignment.center,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(Offer3());
+                  Get.to(const Offer3());
                 },
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.blue.shade300,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             spreadRadius: 2, blurRadius: 5, color: Colors.grey)
                       ]),
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: const Text(
                     'Third offer',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),

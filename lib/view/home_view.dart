@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/screen3.dart';
 
 import 'bottom_nav/screen1.dart';
 
 class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -17,12 +16,12 @@ class _HomeViewState extends State<HomeView> {
 
   List<Widget> screens = [
     Screen1(),
-    Screen2(),
+    const Screen2(),
     Screen3(),
   ];
 
   List<Widget> items = [
-    Container(
+    SizedBox(
       width: 300,
       height: 150,
       child: Image.network(
@@ -61,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
           });
         },
         currentIndex: index,
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart), label: 'cart'),

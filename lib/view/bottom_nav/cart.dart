@@ -1,11 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/service/cart_service.dart';
 
 import '../../constants.dart';
 import '../check_out/checkhome.dart';
 
 class Screen2 extends StatefulWidget {
+  const Screen2({Key? key}) : super(key: key);
+
   @override
   State<Screen2> createState() => _Screen2State();
 }
@@ -25,142 +28,178 @@ class _Screen2State extends State<Screen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
-        child: ListView.separated(
-          separatorBuilder: (context, index) {
-            return SizedBox(
-              height: Get.height * .03,
-            );
-          },
-          itemCount: 6,
-          itemBuilder: (context, index) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 2, blurRadius: 5, color: Colors.grey)
-                  ]),
-                  child: Image.network(
-                    images[index],
-                    width: Get.width * .3,
-                    height: Get.height * .11,
-                  ),
-                  margin: EdgeInsets.only(left: 10),
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        margin:
+            const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
+        child: StreamBuilder<List<CartItem>>(
+            stream: CartService().getCartItems(
+              FirebaseAuth.instance.currentUser!.uid,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text('Something went wrong'));
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              final cartItems = snapshot.data!;
+
+              return ListView.separated(
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    height: Get.height * .03,
+                  );
+                },
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  final cartItem = cartItems[index];
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'LabTop',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text.rich(TextSpan(children: [
-                        TextSpan(
-                            text: '25',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue)),
-                        TextSpan(
-                            text: '  SAR',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black)),
-                      ])),
-                      SizedBox(
-                        height: 10,
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  color: Colors.grey)
+                            ]),
+                        child: Image.network(
+                          cartItem.image,
+                          width: Get.width * .3,
+                          height: Get.height * .11,
+                        ),
+                        margin: const EdgeInsets.only(left: 10),
                       ),
                       Container(
-                        width: Get.width * .25,
-                        height: 30,
-                        color: Colors.grey.shade300,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              child: Icon(Icons.add),
-                              onTap: () {
-                                setState(() {
-                                  count++;
-                                });
-                              },
+                            Text(
+                              cartItem.productName,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             ),
-                            Text('$count'),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    count--;
-                                  });
-                                },
-                                child: Icon(Icons.remove_outlined))
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text.rich(TextSpan(children: [
+                              TextSpan(
+                                  text: (cartItem.price * cartItem.quantity)
+                                      .toString(),
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue)),
+                              const TextSpan(
+                                  text: '  SAR',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.black)),
+                            ])),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: Get.width * .25,
+                              height: 30,
+                              color: Colors.grey.shade300,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    child: const Icon(Icons.add),
+                                    onTap: () {
+                                      CartService().updateCartItemQuantity(
+                                          cartItem.id, cartItem.quantity + 1);
+                                    },
+                                  ),
+                                  Text('$count'),
+                                  GestureDetector(
+                                      onTap: () {
+                                        CartService().updateCartItemQuantity(
+                                            cartItem.id, cartItem.quantity - 1);
+                                      },
+                                      child: const Icon(Icons.remove_outlined))
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                     ],
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-              ],
-            );
-          },
-        ),
+                  );
+                },
+              );
+            }),
       ),
-      bottomSheet: BottomSheet(
-        elevation: 20,
-        onClosing: () {},
-        builder: (context) => Container(
-          padding: EdgeInsets.only(top: 10),
-          width: Get.width,
-          height: Get.height * .09,
-          color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'TOTAL',
-                    style: TextStyle(fontSize: 19, color: Colors.grey),
-                  ),
-                  Text.rich(TextSpan(children: [
-                    TextSpan(
-                        text: '320',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue)),
-                    TextSpan(
-                        text: '  SAR',
-                        style: TextStyle(fontSize: 18, color: Colors.black)),
-                  ])),
-                ],
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Get.to(CheckHome());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: mainColor,
-                    fixedSize: Size(150, 45),
-                  ),
-                  child: Text(
-                    'CHECKOUT',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ))
-            ],
+      bottomSheet: StreamBuilder<List<CartItem>>(
+          stream: CartService().getCartItems(
+            FirebaseAuth.instance.currentUser!.uid,
           ),
-        ),
-      ),
+          builder: (context, snapshot) {
+            final total = snapshot.data == null || snapshot.data!.isEmpty
+                ? 0.0
+                : snapshot.data!.fold(0.0, (previousValue, element) {
+                    return previousValue + (element.price * element.quantity);
+                  });
+
+            return BottomSheet(
+              elevation: 20,
+              onClosing: () {},
+              builder: (context) => Container(
+                padding: const EdgeInsets.only(top: 10),
+                width: Get.width,
+                height: Get.height * .09,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          'TOTAL',
+                          style: TextStyle(fontSize: 19, color: Colors.grey),
+                        ),
+                        Text.rich(TextSpan(children: [
+                          TextSpan(
+                              text: total.toStringAsFixed(2),
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue)),
+                          const TextSpan(
+                              text: '  SAR',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black)),
+                        ])),
+                      ],
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Get.to(const CheckHome());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: mainColor,
+                          fixedSize: const Size(150, 45),
+                        ),
+                        child: const Text(
+                          'CHECKOUT',
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ))
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }

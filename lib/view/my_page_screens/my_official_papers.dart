@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MyOfficialPapers extends StatelessWidget {
+  const MyOfficialPapers({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.blue.shade100,
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -23,8 +25,8 @@ class MyOfficialPapers extends StatelessWidget {
         ),
       ),
       body: Container(
-        margin: EdgeInsets.all(30),
-        child: Column(
+        margin: const EdgeInsets.all(30),
+        child: const Column(
           children: [
             SizedBox(
               height: 50,

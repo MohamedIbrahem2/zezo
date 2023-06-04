@@ -6,7 +6,7 @@ class SoftDrinksModel {
   SoftDrinksModel.fromjson(map) {
     name = map['name'];
     pic = map['pic'];
-    oldPrice = map['oldprice'];
-    currentPrice = map['currentprice'];
+    oldPrice = map['oldprice'].toString();
+    currentPrice = map['currentprice'].toString();
   }
 }

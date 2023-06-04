@@ -1,26 +1,25 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/view/categories/canned/canned.dart';
 import 'package:stockat/view/categories/canned/sause.dart';
 
 class CannedHome extends StatelessWidget {
+  const CannedHome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Canned & Sauce',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue.shade50,
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: Get.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,11 +33,11 @@ class CannedHome extends StatelessWidget {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade100,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.search_rounded,
                       size: 30,
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 1),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 1),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25)),
                     focusedBorder: OutlineInputBorder(
@@ -51,12 +50,12 @@ class CannedHome extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(Canned());
+                  Get.to(const Canned());
                 },
                 child: Column(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
@@ -64,7 +63,7 @@ class CannedHome extends StatelessWidget {
                                 blurRadius: 5,
                                 color: Colors.grey)
                           ]),
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       child: Image.network(
                         'https://cdn.hswstatic.com/gif/canned-food.jpg',
                         fit: BoxFit.fill,
@@ -72,7 +71,7 @@ class CannedHome extends StatelessWidget {
                       width: Get.width * .6,
                       height: Get.height * .19,
                     ),
-                    Text(
+                    const Text(
                       'Canned',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -80,17 +79,17 @@ class CannedHome extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(Sauce());
+                  Get.to(const Sauce());
                 },
                 child: Column(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
@@ -98,7 +97,7 @@ class CannedHome extends StatelessWidget {
                                 blurRadius: 5,
                                 color: Colors.grey)
                           ]),
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       child: Image.network(
                         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnnINQBuiwRVFUSiUYQUPihFbFmWv8E2oA_kO-HKOz0Mye_wBEaPW3OkPWJx82DOSHxYc&usqp=CAU',
                         fit: BoxFit.fill,
@@ -106,7 +105,7 @@ class CannedHome extends StatelessWidget {
                       width: Get.width * .6,
                       height: Get.height * .19,
                     ),
-                    Text(
+                    const Text(
                       'Sauce',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

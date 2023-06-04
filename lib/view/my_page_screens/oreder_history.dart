@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderHistory extends StatelessWidget {
+  const OrderHistory({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade100,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Order history',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
-      body: Container(
+      body: SizedBox(
           width: Get.width,
           height: Get.height,
           child: ListView.separated(
               separatorBuilder: (context, inex) {
-                return Divider(
+                return const Divider(
                   thickness: 1,
                   color: Colors.black,
                   height: 40,
@@ -30,7 +32,7 @@ class OrderHistory extends StatelessWidget {
                 return Column(
                   children: [
                     Container(
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -53,13 +55,13 @@ class OrderHistory extends StatelessWidget {
                           ),
                         ],
                       ),
-                      margin: EdgeInsets.all(3),
+                      margin: const EdgeInsets.all(3),
                       width: Get.width * .45,
                       height: Get.height * .1,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.greenAccent,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 blurRadius: 2,
                                 spreadRadius: 1,
@@ -70,7 +72,7 @@ class OrderHistory extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -93,13 +95,13 @@ class OrderHistory extends StatelessWidget {
                               ),
                             ],
                           ),
-                          margin: EdgeInsets.all(3),
+                          margin: const EdgeInsets.all(3),
                           width: Get.width * .4,
                           height: Get.height * .1,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.greenAccent.shade100,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                     blurRadius: 2,
                                     spreadRadius: 1,
@@ -107,7 +109,7 @@ class OrderHistory extends StatelessWidget {
                               ]),
                         ),
                         Container(
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -130,13 +132,13 @@ class OrderHistory extends StatelessWidget {
                               ),
                             ],
                           ),
-                          margin: EdgeInsets.all(3),
+                          margin: const EdgeInsets.all(3),
                           width: Get.width * .4,
                           height: Get.height * .1,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               color: Colors.greenAccent.shade100,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                     blurRadius: 2,
                                     spreadRadius: 1,

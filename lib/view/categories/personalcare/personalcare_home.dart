@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/view/categories/personalcare/baby.dart';
@@ -9,13 +7,15 @@ import 'package:stockat/view/categories/personalcare/women.dart';
 import 'men.dart';
 
 class PersonalCareHome extends StatelessWidget {
+  const PersonalCareHome({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'detergents & personal care',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
@@ -33,11 +33,11 @@ class PersonalCareHome extends StatelessWidget {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade100,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search_rounded,
                     size: 30,
                   ),
-                  contentPadding: EdgeInsets.symmetric(vertical: 1),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 1),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25)),
                   focusedBorder: OutlineInputBorder(
@@ -53,12 +53,12 @@ class PersonalCareHome extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(Detergent());
+                    Get.to(const Detergent());
                   },
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
@@ -66,7 +66,7 @@ class PersonalCareHome extends StatelessWidget {
                                   blurRadius: 5,
                                   color: Colors.grey)
                             ]),
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Image.network(
                           'https://www.conserve-energy-future.com/wp-content/uploads/2021/06/detergent-bottles.jpg',
                           fit: BoxFit.fill,
@@ -74,7 +74,7 @@ class PersonalCareHome extends StatelessWidget {
                         width: Get.width * .4,
                         height: Get.height * .15,
                       ),
-                      Text(
+                      const Text(
                         'detergents',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -84,12 +84,12 @@ class PersonalCareHome extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(Women());
+                    Get.to(const Women());
                   },
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
@@ -97,7 +97,7 @@ class PersonalCareHome extends StatelessWidget {
                                   blurRadius: 5,
                                   color: Colors.grey)
                             ]),
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Image.network(
                           'https://esajee.com/media/catalog/product/cache/f6c2c76ea2dfd05ab28cc96edfc1214c/4/0/4015400646860.jpg',
                           fit: BoxFit.fill,
@@ -105,7 +105,7 @@ class PersonalCareHome extends StatelessWidget {
                         width: Get.width * .4,
                         height: Get.height * .15,
                       ),
-                      Text(
+                      const Text(
                         'Women',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -115,7 +115,7 @@ class PersonalCareHome extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Row(
@@ -123,12 +123,12 @@ class PersonalCareHome extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.to(Men());
+                    Get.to(const Men());
                   },
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
@@ -136,7 +136,7 @@ class PersonalCareHome extends StatelessWidget {
                                   blurRadius: 5,
                                   color: Colors.grey)
                             ]),
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Image.network(
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt_-YVConYCIAn4EHxghgfDr-vBrv6PbdjTiRu-Sz6_RzIkjQ4rPsQEKl5TaE1ptV8-Bs&usqp=CAU',
                           fit: BoxFit.fill,
@@ -144,7 +144,7 @@ class PersonalCareHome extends StatelessWidget {
                         width: Get.width * .4,
                         height: Get.height * .15,
                       ),
-                      Text(
+                      const Text(
                         'men',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -154,12 +154,12 @@ class PersonalCareHome extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(Baby());
+                    Get.to(const Baby());
                   },
                   child: Column(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
@@ -167,7 +167,7 @@ class PersonalCareHome extends StatelessWidget {
                                   blurRadius: 5,
                                   color: Colors.grey)
                             ]),
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Image.network(
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYe1inwdWVBOf2g58cYlcXovQHb3WrUM1SLs61qrqW0ie9UbkFDQdnIgEVUAMSVz3qFXc&usqp=CAU',
                           fit: BoxFit.fill,
@@ -175,7 +175,7 @@ class PersonalCareHome extends StatelessWidget {
                         width: Get.width * .4,
                         height: Get.height * .15,
                       ),
-                      Text(
+                      const Text(
                         'babys',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
@@ -185,7 +185,7 @@ class PersonalCareHome extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
           ],

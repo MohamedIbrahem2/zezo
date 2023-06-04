@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/constants.dart';
-import 'package:stockat/view/bottom_nav/screen1.dart';
-import 'package:stockat/view/sign_in.dart';
 import 'package:stockat/widgets/custom_text_form.dart';
 
 import '../view_model/auth_view_model.dart';
@@ -14,7 +12,10 @@ class SignUp extends GetWidget<AuthViewModel> {
   TextEditingController vat = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  @override
   var controller = Get.put(AuthViewModel());
+
+  SignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class SignUp extends GetWidget<AuthViewModel> {
     return Scaffold(
       body: GetBuilder<AuthViewModel>(
         init: AuthViewModel(),
-        builder: (_) => Container(
+        builder: (_) => SizedBox(
           width: Get.width,
           child: SingleChildScrollView(
             child: Column(
@@ -38,11 +39,11 @@ class SignUp extends GetWidget<AuthViewModel> {
                   height: Get.height * .2,
                 ),
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(blurRadius: 2, color: Colors.grey)
                       ]),
                   width: Get.width * .9,
@@ -54,7 +55,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Welcome,',
                               style: TextStyle(
                                   fontSize: 30,
@@ -70,12 +71,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'Sign in to continue',
                             style: TextStyle(
                                 fontSize: 17,
@@ -88,7 +89,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'Name',
                             style: TextStyle(
                                 fontSize: 17,
@@ -108,12 +109,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           obsecure: false,
                           hint: 'stockat',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'phone',
                             style: TextStyle(
                                 fontSize: 17,
@@ -133,12 +134,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           obsecure: false,
                           hint: '0540814644',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'C.R',
                             style: TextStyle(
                                 fontSize: 17,
@@ -158,12 +159,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           obsecure: false,
                           hint: '3185400003',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'vat number',
                             style: TextStyle(
                                 fontSize: 17,
@@ -183,12 +184,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           obsecure: false,
                           hint: '318540003',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'Email',
                             style: TextStyle(
                                 fontSize: 17,
@@ -208,12 +209,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           obsecure: false,
                           hint: 'stockat@gmail.com',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Container(
                           alignment: Alignment.topLeft,
-                          child: Text(
+                          child: const Text(
                             'Password',
                             style: TextStyle(
                                 fontSize: 17,
@@ -234,12 +235,12 @@ class SignUp extends GetWidget<AuthViewModel> {
                           secure: true,
                           hint: '*************',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Container(
                           alignment: Alignment.topRight,
-                          child: Text(
+                          child: const Text(
                             'forget password?',
                             style: TextStyle(
                                 fontSize: 17,
@@ -258,9 +259,9 @@ class SignUp extends GetWidget<AuthViewModel> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                                primary: mainColor,
+                                backgroundColor: mainColor,
                                 fixedSize: Size.fromWidth(Get.width * .8)),
-                            child: Text('SIGN Up'))
+                            child: const Text('SIGN Up'))
                       ],
                     ),
                   ),
@@ -271,9 +272,9 @@ class SignUp extends GetWidget<AuthViewModel> {
                 ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
+                      backgroundColor: Colors.black,
                     ),
-                    child: Text('Already have an account?'))
+                    child: const Text('Already have an account?'))
               ],
             ),
           ),

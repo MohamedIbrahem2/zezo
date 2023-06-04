@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 class Offer2 extends StatefulWidget {
+  const Offer2({Key? key}) : super(key: key);
+
   @override
   State<Offer2> createState() => _Offer2State();
 }
@@ -26,13 +26,13 @@ class _Offer2State extends State<Offer2> {
         // leading: Icon(Icons.),
         backgroundColor: Colors.blue.shade50,
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Whole Sale',
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(
+      body: SizedBox(
         width: Get.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,7 +45,7 @@ class _Offer2State extends State<Offer2> {
               width: Get.width * .3,
               height: Get.height * .1,
             ),
-            Text(
+            const Text(
               'Enjoy discount of up to 4%',
               style: TextStyle(
                   fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold),
@@ -53,7 +53,7 @@ class _Offer2State extends State<Offer2> {
             SizedBox(
               height: Get.height * .005,
             ),
-            Container(
+            SizedBox(
               height: Get.height * .7,
               width: Get.width,
               child: ListView.builder(
@@ -77,7 +77,7 @@ class _Offer2State extends State<Offer2> {
                                     width: Get.width * .27,
                                     height: Get.height * .11,
                                   ),
-                                  Text(
+                                  const Text(
                                     'Name',
                                     style: TextStyle(
                                         fontSize: 16,
@@ -92,7 +92,7 @@ class _Offer2State extends State<Offer2> {
                                 child: CircleAvatar(
                                   child: Text(
                                       '${price.toStringAsFixed(2)} \n    SR',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.green)),
@@ -109,7 +109,7 @@ class _Offer2State extends State<Offer2> {
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     GestureDetector(
-                                      child: Icon(Icons.add),
+                                      child: const Icon(Icons.add),
                                       onTap: () {
                                         setState(() {
                                           count++;
@@ -137,13 +137,14 @@ class _Offer2State extends State<Offer2> {
                                             count--;
                                           });
                                         },
-                                        child: Icon(Icons.remove_outlined))
+                                        child:
+                                            const Icon(Icons.remove_outlined))
                                   ],
                                 ),
                               )
                             ],
                           ),
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           width: Get.width,
                           height: Get.height * .17,
                           color: colors[index],
@@ -151,7 +152,7 @@ class _Offer2State extends State<Offer2> {
                         Positioned(
                           child: ElevatedButton(
                             onPressed: () {},
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Text(
                                   'Get',
@@ -169,8 +170,8 @@ class _Offer2State extends State<Offer2> {
                               ],
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             ),
-                            style:
-                                ElevatedButton.styleFrom(primary: Colors.green),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green),
                           ),
                           bottom: 0,
                         ),

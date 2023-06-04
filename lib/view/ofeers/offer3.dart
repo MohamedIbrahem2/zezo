@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Offer3 extends StatefulWidget {
+  const Offer3({Key? key}) : super(key: key);
+
   @override
   State<Offer3> createState() => _DrinksItemsState();
 }
@@ -16,7 +17,7 @@ class _DrinksItemsState extends State<Offer3> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.search_rounded),
+            icon: const Icon(Icons.search_rounded),
             onPressed: () {
               setState(() {
                 Get.defaultDialog(
@@ -34,10 +35,10 @@ class _DrinksItemsState extends State<Offer3> {
               });
             },
           ),
-          Stack(
+          const Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 15, top: 10),
+                padding: EdgeInsets.only(right: 15, top: 10),
                 child: Icon(
                   Icons.shopping_cart,
                   size: 40,
@@ -59,8 +60,8 @@ class _DrinksItemsState extends State<Offer3> {
           ),
         ],
         backgroundColor: Colors.blue.shade50,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Fire Prices',
           style: TextStyle(color: Colors.black),
         ),
@@ -68,7 +69,7 @@ class _DrinksItemsState extends State<Offer3> {
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             width: Get.width,
             height: Get.height * .83,
             child: GridView.builder(
@@ -83,22 +84,23 @@ class _DrinksItemsState extends State<Offer3> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                              blurRadius: 5,
-                              spreadRadius: 2,
-                              color: Colors.grey),
-                        ]),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 5,
+                                  spreadRadius: 2,
+                                  color: Colors.grey),
+                            ]),
                         child: Image.network(
                             'https://media.mapp.sa/452423/conversions/202212271312_93181-preview.png'),
                         width: Get.width * .4,
                         height: Get.height * .14,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
-                      Text(
+                      const Text(
                         'pepsi family 2.25 L *6',
                         style: TextStyle(
                           fontSize: 16,
@@ -111,7 +113,7 @@ class _DrinksItemsState extends State<Offer3> {
                           Stack(
                             alignment: Alignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 '25',
                                 style: TextStyle(
                                     fontSize: 15,
@@ -125,10 +127,10 @@ class _DrinksItemsState extends State<Offer3> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 12,
                           ),
-                          Text(
+                          const Text(
                             '20 SR',
                             style: TextStyle(
                                 fontSize: 20,
@@ -137,10 +139,10 @@ class _DrinksItemsState extends State<Offer3> {
                           ),
                         ],
                       ),
-                      Container(
+                      SizedBox(
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: Row(
+                          child: const Row(
                             children: [
                               Text(
                                 'Get',
@@ -157,8 +159,8 @@ class _DrinksItemsState extends State<Offer3> {
                             ],
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.green),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green),
                         ),
                         width: Get.width * .25,
                       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Wallet extends StatefulWidget {
+  const Wallet({Key? key}) : super(key: key);
+
   @override
   State<Wallet> createState() => _WalletState();
 }
@@ -14,19 +16,19 @@ class _WalletState extends State<Wallet> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade100,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Your wallet',
           style: TextStyle(fontSize: 20, color: Colors.black),
         ),
         centerTitle: true,
       ),
-      body: Container(
+      body: SizedBox(
         width: Get.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Image.asset(
@@ -35,13 +37,13 @@ class _WalletState extends State<Wallet> {
               height: 130,
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 80,
                 child: Text(
                   '$points',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
@@ -51,30 +53,30 @@ class _WalletState extends State<Wallet> {
               height: Get.height * .2,
               color: Colors.greenAccent,
             ),
-            Text(
+            const Text(
               'Your points now',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               'Your gift is: ',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.greenAccent),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Reach to 1000 points \n      to get your gift',
                   style: TextStyle(
                       fontSize: 18,
@@ -92,7 +94,8 @@ class _WalletState extends State<Wallet> {
               height: Get.height * .05,
             ),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.greenAccent),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.greenAccent),
                 onPressed: () {
                   setState(() {
                     if (points >= 1000) {
@@ -105,7 +108,7 @@ class _WalletState extends State<Wallet> {
                                 width: Get.width * .30,
                                 height: 30,
                               ),
-                              Text(
+                              const Text(
                                 'You get your gift',
                                 style: TextStyle(
                                     fontSize: 18,
@@ -121,7 +124,7 @@ class _WalletState extends State<Wallet> {
                           content: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 'Reach to 1000 points \n      to get your gift',
                                 style: TextStyle(
                                     fontSize: 18,
@@ -139,7 +142,7 @@ class _WalletState extends State<Wallet> {
                     }
                   });
                 },
-                child: Text(
+                child: const Text(
                   'Get your gift',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ))

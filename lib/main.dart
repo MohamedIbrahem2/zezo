@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/view/bottom_nav/screen1.dart';
+import 'package:stockat/view/home_view.dart';
 import 'view/splash_view.dart';
 
 main() async {
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: user == null ? MyHomePage() : Screen1(),
+      home: user == null ? MyHomePage() : HomeView(),
     );
   }
 }

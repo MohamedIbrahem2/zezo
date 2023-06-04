@@ -1,19 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/constants.dart';
+import 'package:stockat/service/category_service.dart';
+import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/categories/drinks/drinks_home.dart';
-import 'package:stockat/view/categories/flour/flour_home.dart';
-import 'package:stockat/view/categories/oil/oil_home.dart';
-import 'package:stockat/view/categories/personalcare/personalcare_home.dart';
 import 'package:stockat/view/sign_in.dart';
-import '../categories/blastic/blastic_home.dart';
-import '../categories/canned/canned_home.dart';
-import '../categories/crispes/cridpes_home.dart';
-import '../categories/foods/foods_home.dart';
+
+import '../../service/cart_service.dart';
 import '../drawer_screens/language.dart';
 import '../drawer_screens/obout_us.dart';
 import '../drawer_screens/offershome.dart';
@@ -22,6 +18,7 @@ import '../drawer_screens/wallet.dart';
 import '../ofeers/offer1.dart';
 import '../ofeers/offer2.dart';
 import '../ofeers/offer3.dart';
+import '../search.dart';
 
 class Screen1 extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -30,7 +27,7 @@ class Screen1 extends StatelessWidget {
       onTap: () {
         Get.to(Offer1());
       },
-      child: Container(
+      child: SizedBox(
         width: 300,
         height: 150,
         child: Image.network(
@@ -41,7 +38,7 @@ class Screen1 extends StatelessWidget {
     ),
     GestureDetector(
       onTap: () {
-        Get.to(Offer2());
+        Get.to(const Offer2());
       },
       child: Container(
         width: 300,
@@ -55,7 +52,7 @@ class Screen1 extends StatelessWidget {
     ),
     GestureDetector(
       onTap: () {
-        Get.to(Offer3());
+        Get.to(const Offer3());
       },
       child: Container(
         width: 300,
@@ -69,6 +66,8 @@ class Screen1 extends StatelessWidget {
     ),
   ];
 
+  Screen1({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,40 +79,52 @@ class Screen1 extends StatelessWidget {
           //     print(result.rawContent);
           //   },
           //     child: Image.asset('logos/barcode.png',width: 30,height: 30,)),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 15, top: 10),
-                child: GestureDetector(
-                    onTap: () {
-                      Get.to(Screen2());
-                    },
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 40,
-                      color: Colors.blue,
-                    )),
-              ),
-              Positioned(
-                top: 3,
-                left: 14,
-                child: Text(
-                  '3',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: () {
+              Get.to(const Screen2());
+            },
+            child: Stack(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(right: 15, top: 10),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
                 ),
-              )
-            ],
+                StreamBuilder<List<CartItem>>(
+                    stream: CartService()
+                        .getCartItems(FirebaseAuth.instance.currentUser!.uid),
+                    builder: (context, snapshot) {
+                      final quantity =
+                          (snapshot.data == null || snapshot.data!.isEmpty)
+                              ? 0
+                              : snapshot.data
+                                  ?.map((e) => e.quantity)
+                                  .reduce((value, element) => value + element);
+                      return Positioned(
+                        top: 3,
+                        left: 14,
+                        child: Text(
+                          snapshot.data == null ? '0' : quantity.toString(),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    })
+              ],
+            ),
           ),
         ],
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: Text.rich(TextSpan(children: [
+        title: const Text.rich(TextSpan(children: [
           TextSpan(
               text: 'S',
               style: TextStyle(
@@ -159,7 +170,7 @@ class Screen1 extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-              child: Text.rich(TextSpan(children: [
+              child: const Text.rich(TextSpan(children: [
                 TextSpan(
                     text: 'S',
                     style: TextStyle(
@@ -203,45 +214,45 @@ class Screen1 extends StatelessWidget {
               color: Colors.blue.shade50,
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 '-wallet',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                Get.to(Wallet());
+                Get.to(const Wallet());
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 '-technical support',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                Get.to(TechnicalSupport());
+                Get.to(const TechnicalSupport());
               },
             ),
             GestureDetector(
               child: ListTile(
-                title: Text(
+                title: const Text(
                   '-offers',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 onTap: () {
-                  Get.to(OffersHome());
+                  Get.to(const OffersHome());
                 },
               ),
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 '-language',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                Get.to(Language());
+                Get.to(const Language());
               },
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 '-My account statement',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -249,9 +260,9 @@ class Screen1 extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(AboutUs());
+                Get.to(const AboutUs());
               },
-              child: ListTile(
+              child: const ListTile(
                 title: Text(
                   '-who are we ?',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -259,7 +270,7 @@ class Screen1 extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text(
+              title: const Text(
                 '-Our Location',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -276,27 +287,27 @@ class Screen1 extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text(
+                          child: const Text(
                             'No',
                             style: TextStyle(color: Colors.black),
                           ),
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.white, elevation: 10),
+                              backgroundColor: Colors.white, elevation: 10),
                         ),
                         ElevatedButton(
                           onPressed: () {
                             auth.signOut();
-                            Get.to(SignIn());
+                            Get.to(const SignIn());
                           },
-                          child: Text('yes',
+                          child: const Text('yes',
                               style: TextStyle(color: Colors.white)),
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.red, elevation: 10),
+                              backgroundColor: Colors.red, elevation: 10),
                         ),
                       ],
                     ));
               },
-              child: ListTile(
+              child: const ListTile(
                 title: Text(
                   '-log out',
                   style: TextStyle(
@@ -310,7 +321,7 @@ class Screen1 extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: Get.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,8 +340,9 @@ class Screen1 extends StatelessWidget {
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 2),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayInterval: const Duration(seconds: 2),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
                     scrollDirection: Axis.horizontal,
@@ -341,14 +353,18 @@ class Screen1 extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextFormField(
+                  readOnly: true,
+                  onTap: () {
+                    Get.to(const Search());
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade100,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.search_rounded,
                       size: 30,
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 1),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 1),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25)),
                     focusedBorder: OutlineInputBorder(
@@ -360,9 +376,9 @@ class Screen1 extends StatelessWidget {
                 height: Get.height * .04,
               ),
               Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(left: 10),
                   alignment: Alignment.topLeft,
-                  child: Text(
+                  child: const Text(
                     'Categories',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   )),
@@ -396,359 +412,483 @@ class Screen1 extends StatelessWidget {
               //     },
               //   ),
               // )
-              Container(
+
+              // TextButton(
+              //     onPressed: () {
+              //       CategoryService().addCategory('drinks',
+              //           'https://topbazar.nl/wp-content/uploads/2021/04/515Lwr5CyxL-1.jpg');
+
+              //       CategoryService().addCategory('food',
+              //           'https://m.media-amazon.com/images/I/61sXm9GDU4L.jpg');
+              //     },
+              //     child: const Text('add category')),
+              SizedBox(
                 height: Get.height * .2,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(DrinksHome());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 1,
-                                  blurRadius: 4)
-                            ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://topbazar.nl/wp-content/uploads/2021/04/515Lwr5CyxL-1.jpg',
-                              fit: BoxFit.fill,
+                child: StreamBuilder<List<Category>>(
+                    stream: CategoryService().getCategories(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('error'),
+                        );
+                      }
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final categories = snapshot.data;
+                      return ListView.builder(
+                        itemCount: categories!.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(DrinksHome(
+                                categoryId: category.id,
+                              ));
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey,
+                                        spreadRadius: 1,
+                                        blurRadius: 4)
+                                  ]),
+                                  margin: const EdgeInsets.all(8),
+                                  child: Image.network(
+                                    category.image,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  width: Get.width * .27,
+                                  height: Get.height * .13,
+                                ),
+                                Text(
+                                  category.name,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: mainColor),
+                                )
+                              ],
                             ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'drinks',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(FoodsHome());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 1,
-                                  blurRadius: 4)
-                            ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://m.media-amazon.com/images/I/61sXm9GDU4L.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'foods',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(Kafeef());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 1,
-                                  blurRadius: 4)
-                            ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://cdnprod.mafretailproxy.com/sys-master-root/hdb/h97/27412118011934/462090_main.jpg_480Wx480H',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'Crisps&Khafeef',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(Oil());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 1,
-                                  blurRadius: 4)
-                            ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoO85i8HxGI1QK0ApMoSGcwtt9-27XifDuiCl1iEPKihEFLfAsZ-cdxBEAnNLx3nZyqrY&usqp=CAU',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'Oil',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(Flour());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey,
-                                  spreadRadius: 1,
-                                  blurRadius: 4)
-                            ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://cdnprod.mafretailproxy.com/sys-master-root/h8f/h45/14596354998302/17530_main.jpg_480Wx480H',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'Flour',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(CannedHome());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      spreadRadius: 1,
-                                      blurRadius: 4)
-                                ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://www.ayambrand.com.my/images/AYAM-product-categories/mackerel.webp',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'canned food&sauce',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(BlasticBaber());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      spreadRadius: 1,
-                                      blurRadius: 4)
-                                ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFvGXN5oh-twIAWx3yljpFseixof3RhkdyG0YiuAX5vPg9lWVn6GNAdcMOUd7WiQKJpnk&usqp=CAU',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            ' blastic & paper',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(PersonalCareHome());
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey,
-                                      spreadRadius: 1,
-                                      blurRadius: 4)
-                                ]),
-                            margin: EdgeInsets.all(8),
-                            child: Image.network(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR05du0PJOtG8jEtblmcnrUuitA_r8DVbU55THTf2jl6EWXiEgI4V14OsvkAjIbt4qIJ_I&usqp=CAU',
-                              fit: BoxFit.fill,
-                            ),
-                            width: Get.width * .27,
-                            height: Get.height * .13,
-                          ),
-                          Text(
-                            'detergents & \npersonal care',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: mainColor),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                          );
+                        },
+
+                        // children: [
+                        //   GestureDetector(
+                        //     onTap: () {
+                        //       Get.to(const DrinksHome());
+                        //     },
+                        //     child: Column(
+                        //       children: [
+                        //         Container(
+                        //           decoration: const BoxDecoration(boxShadow: [
+                        //             BoxShadow(
+                        //                 color: Colors.grey,
+                        //                 spreadRadius: 1,
+                        //                 blurRadius: 4)
+                        //           ]),
+                        //           margin: const EdgeInsets.all(8),
+                        //           child: Image.network(
+                        //             'https://topbazar.nl/wp-content/uploads/2021/04/515Lwr5CyxL-1.jpg',
+                        //             fit: BoxFit.fill,
+                        //           ),
+                        //           width: Get.width * .27,
+                        //           height: Get.height * .13,
+                        //         ),
+                        //         Text(
+                        //           'drinks',
+                        //           style: TextStyle(
+                        //               fontSize: 14,
+                        //               fontWeight: FontWeight.bold,
+                        //               color: mainColor),
+                        //         )
+                        //       ],
+                        //     ),
+                        //   ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const DrinksHome());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(boxShadow: [
+                        //   //           BoxShadow(
+                        //   //               color: Colors.grey,
+                        //   //               spreadRadius: 1,
+                        //   //               blurRadius: 4)
+                        //   //         ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://topbazar.nl/wp-content/uploads/2021/04/515Lwr5CyxL-1.jpg',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'drinks',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 14,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const FoodsHome());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(boxShadow: [
+                        //   //           BoxShadow(
+                        //   //               color: Colors.grey,
+                        //   //               spreadRadius: 1,
+                        //   //               blurRadius: 4)
+                        //   //         ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://m.media-amazon.com/images/I/61sXm9GDU4L.jpg',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'foods',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 15,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const Kafeef());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(boxShadow: [
+                        //   //           BoxShadow(
+                        //   //               color: Colors.grey,
+                        //   //               spreadRadius: 1,
+                        //   //               blurRadius: 4)
+                        //   //         ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://cdnprod.mafretailproxy.com/sys-master-root/hdb/h97/27412118011934/462090_main.jpg_480Wx480H',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'Crisps&Khafeef',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 14,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const Oil());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(boxShadow: [
+                        //   //           BoxShadow(
+                        //   //               color: Colors.grey,
+                        //   //               spreadRadius: 1,
+                        //   //               blurRadius: 4)
+                        //   //         ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoO85i8HxGI1QK0ApMoSGcwtt9-27XifDuiCl1iEPKihEFLfAsZ-cdxBEAnNLx3nZyqrY&usqp=CAU',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'Oil',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 14,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const Flour());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(boxShadow: [
+                        //   //           BoxShadow(
+                        //   //               color: Colors.grey,
+                        //   //               spreadRadius: 1,
+                        //   //               blurRadius: 4)
+                        //   //         ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://cdnprod.mafretailproxy.com/sys-master-root/h8f/h45/14596354998302/17530_main.jpg_480Wx480H',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'Flour',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 14,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const CannedHome());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(
+                        //   //             color: Colors.white,
+                        //   //             boxShadow: [
+                        //   //               BoxShadow(
+                        //   //                   color: Colors.grey,
+                        //   //                   spreadRadius: 1,
+                        //   //                   blurRadius: 4)
+                        //   //             ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://www.ayambrand.com.my/images/AYAM-product-categories/mackerel.webp',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'canned food&sauce',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 13,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const BlasticBaber());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(
+                        //   //             color: Colors.white,
+                        //   //             boxShadow: [
+                        //   //               BoxShadow(
+                        //   //                   color: Colors.grey,
+                        //   //                   spreadRadius: 1,
+                        //   //                   blurRadius: 4)
+                        //   //             ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFvGXN5oh-twIAWx3yljpFseixof3RhkdyG0YiuAX5vPg9lWVn6GNAdcMOUd7WiQKJpnk&usqp=CAU',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         ' blastic & paper',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 13,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        //   // GestureDetector(
+                        //   //   onTap: () {
+                        //   //     Get.to(const PersonalCareHome());
+                        //   //   },
+                        //   //   child: Column(
+                        //   //     children: [
+                        //   //       Container(
+                        //   //         decoration: const BoxDecoration(
+                        //   //             color: Colors.white,
+                        //   //             boxShadow: [
+                        //   //               BoxShadow(
+                        //   //                   color: Colors.grey,
+                        //   //                   spreadRadius: 1,
+                        //   //                   blurRadius: 4)
+                        //   //             ]),
+                        //   //         margin: const EdgeInsets.all(8),
+                        //   //         child: Image.network(
+                        //   //           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR05du0PJOtG8jEtblmcnrUuitA_r8DVbU55THTf2jl6EWXiEgI4V14OsvkAjIbt4qIJ_I&usqp=CAU',
+                        //   //           fit: BoxFit.fill,
+                        //   //         ),
+                        //   //         width: Get.width * .27,
+                        //   //         height: Get.height * .13,
+                        //   //       ),
+                        //   //       Text(
+                        //   //         'detergents & \npersonal care',
+                        //   //         style: TextStyle(
+                        //   //             fontSize: 13,
+                        //   //             fontWeight: FontWeight.bold,
+                        //   //             color: mainColor),
+                        //   //       )
+                        //   //     ],
+                        //   //   ),
+                        //   // ),
+                        // ],
+                      );
+                    }),
               ),
               SizedBox(
                 height: Get.height * .015,
               ),
               Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(left: 10),
                   alignment: Alignment.topLeft,
-                  child: Text(
+                  child: const Text(
                     'Best selling',
                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                   )),
               SizedBox(
                 height: Get.height * .001,
               ),
-              Container(
-                margin: EdgeInsets.all(15),
-                width: Get.width,
-                height: Get.height * .25,
-                child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        spreadRadius: 1,
-                                        blurRadius: 4)
-                                  ]),
-                              child: Image.network(
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR05du0PJOtG8jEtblmcnrUuitA_r8DVbU55THTf2jl6EWXiEgI4V14OsvkAjIbt4qIJ_I&usqp=CAU',
-                                fit: BoxFit.fill,
-                              ),
-                              width: Get.width * .3,
-                              height: Get.height * .13,
-                            ),
-                            Text(
-                              'product name',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Text(
-                                      '25',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red),
+              StreamBuilder<List<Product>>(
+                  stream: ProductsService().getBestSellingProducts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Error'),
+                      );
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    final products = snapshot.data!;
+
+                    return Container(
+                      margin: const EdgeInsets.all(15),
+                      width: Get.width,
+                      height: Get.height * .25,
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            final product = products[index];
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.grey,
+                                              spreadRadius: 1,
+                                              blurRadius: 4)
+                                        ]),
+                                    child: Image.network(
+                                      product.image,
+                                      fit: BoxFit.fill,
                                     ),
-                                    Container(
-                                      width: 20,
-                                      height: 1.5,
-                                      color: Colors.grey.shade700,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                                Text(
-                                  '20 SR',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 20,
-                      );
-                    },
-                    itemCount: 20),
-              )
+                                    width: Get.width * .3,
+                                    height: Get.height * .13,
+                                  ),
+                                  Text(
+                                    product.name,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      if (product.discount > 0)
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Text(
+                                              product.price.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red),
+                                            ),
+                                            Container(
+                                              width: 20,
+                                              height: 1.5,
+                                              color: Colors.grey.shade700,
+                                            )
+                                          ],
+                                        ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      if (product.discount > 0)
+                                        Text(
+                                          (product.price - product.discount)
+                                              .toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                      if (product.discount == 0)
+                                        Text(
+                                          product.price.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              width: 20,
+                            );
+                          },
+                          itemCount: products.length),
+                    );
+                  })
             ],
           ),
         ),

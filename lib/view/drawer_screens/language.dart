@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Language extends StatefulWidget {
+  const Language({Key? key}) : super(key: key);
+
   @override
   State<Language> createState() => _LanguageState();
 }
@@ -15,8 +17,8 @@ class _LanguageState extends State<Language> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade50,
-        iconTheme: IconThemeData(color: Colors.black),
-        title: Text(
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
           'Language ',
           style: TextStyle(color: Colors.black),
         ),
@@ -30,14 +32,14 @@ class _LanguageState extends State<Language> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Select your favourite language',
                 style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Image.asset(
@@ -52,7 +54,7 @@ class _LanguageState extends State<Language> {
           ),
           RadioListTile(
             activeColor: Colors.greenAccent,
-            title: Text(
+            title: const Text(
               'English',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
             ),
@@ -66,7 +68,7 @@ class _LanguageState extends State<Language> {
           ),
           RadioListTile(
             activeColor: Colors.greenAccent,
-            title: Text(
+            title: const Text(
               'Arabic',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
             ),
@@ -84,9 +86,9 @@ class _LanguageState extends State<Language> {
           ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent,
+                  backgroundColor: Colors.greenAccent,
                   fixedSize: Size.fromWidth(Get.width * .8)),
-              child: Text(
+              child: const Text(
                 'Ok',
                 style: TextStyle(
                     fontSize: 18,

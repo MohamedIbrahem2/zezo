@@ -118,9 +118,14 @@ class _Screen2State extends State<Screen2> {
                                           cartItem.id, cartItem.quantity + 1);
                                     },
                                   ),
-                                  Text('$count'),
+                                  Text('${cartItem.quantity}'),
                                   GestureDetector(
                                       onTap: () {
+                                        if (cartItem.quantity == 0) {
+                                          CartService()
+                                              .removeCartItem(cartItem.id);
+                                          return;
+                                        }
                                         CartService().updateCartItemQuantity(
                                             cartItem.id, cartItem.quantity - 1);
                                       },

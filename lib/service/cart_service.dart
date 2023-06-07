@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 
 class CartItem {
   final String id;
@@ -87,6 +88,14 @@ class CartService {
       String cartItemId, int newQuantity) async {
     final collection = FirebaseFirestore.instance.collection('cart');
     await collection.doc(cartItemId).update({'quantity': newQuantity});
+    if (newQuantity == 0) {
+      await removeCartItem(cartItemId);
+    }
+    if (newQuantity > 0) {
+      Get.snackbar('Done', 'Added to cart successfully');
+    } else {
+      Get.snackbar('Done', 'Removed to cart successfully');
+    }
   }
 
   Future<void> removeCartItem(String cartItemId) async {

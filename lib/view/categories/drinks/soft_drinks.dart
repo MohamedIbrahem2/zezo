@@ -221,7 +221,18 @@ class _DrinksItemsState extends State<SoftDrinks> {
                               ),
                               SizedBox(
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    final result = await CartService()
+                                        .isProductInCart(
+                                            product.id,
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid);
+                                    if (result != null && result > 0) {
+                                      // remove snakebar
+
+                                      Get.snackbar(
+                                          'Sorry', 'Product already in cart');
+                                    }
                                     CartService().addToCart(
                                       productId: product.id,
                                       productName: product.name,

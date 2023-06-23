@@ -24,7 +24,7 @@ class Product {
     return Product(
       id: snapshot.id,
       name: data['name'],
-      price: data['price'],
+      price: (data['price'] as num).toDouble(),
       categoryId: data['categoryId'],
       subcategoryId: data['subcategoryId'],
       discount: data['discount'],

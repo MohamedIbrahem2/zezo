@@ -10,6 +10,7 @@ import 'package:stockat/view/categories/drinks/drinks_home.dart';
 import 'package:stockat/view/sign_in.dart';
 
 import '../../service/cart_service.dart';
+import '../../service/offer_service.dart';
 import '../drawer_screens/language.dart';
 import '../drawer_screens/obout_us.dart';
 import '../drawer_screens/offershome.dart';
@@ -25,7 +26,9 @@ class Screen1 extends StatelessWidget {
   List<Widget> items = [
     GestureDetector(
       onTap: () {
-        Get.to(Offer1());
+        Get.to(Offer1(
+          offerId: '',
+        ));
       },
       child: SizedBox(
         width: 300,
@@ -38,7 +41,9 @@ class Screen1 extends StatelessWidget {
     ),
     GestureDetector(
       onTap: () {
-        Get.to(const Offer2());
+        Get.to(const Offer2(
+          
+        ));
       },
       child: Container(
         width: 300,
@@ -329,24 +334,24 @@ class Screen1 extends StatelessWidget {
               SizedBox(
                 height: Get.height * .02,
               ),
-
-              CarouselSlider(
-                  items: items,
-                  options: CarouselOptions(
-                    height: Get.height * .2,
-                    aspectRatio: 2,
-                    // viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 2),
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                  )),
+              const OfferCarousel(),
+              // CarouselSlider(
+              //     items: items,
+              //     options: CarouselOptions(
+              //       height: Get.height * .2,
+              //       aspectRatio: 2,
+              //       // viewportFraction: 0.8,
+              //       initialPage: 0,
+              //       enableInfiniteScroll: true,
+              //       reverse: false,
+              //       autoPlay: true,
+              //       autoPlayInterval: const Duration(seconds: 2),
+              //       autoPlayAnimationDuration:
+              //           const Duration(milliseconds: 800),
+              //       autoPlayCurve: Curves.fastOutSlowIn,
+              //       enlargeCenterPage: true,
+              //       scrollDirection: Axis.horizontal,
+              //     )),
               SizedBox(
                 height: Get.height * .025,
               ),
@@ -811,6 +816,23 @@ class Screen1 extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // TextButton(
+                                  //     onPressed: () {
+                                  //       final offerService = OfferService();
+                                  //       offerService.createPackageOffer(
+                                  //           'Offer',
+                                  //           [
+                                  //             Package(
+                                  //               name: 'offer package',
+                                  //               price: 2340,
+                                  //               productIds: products
+                                  //                   .map((e) => e.id)
+                                  //                   .toList(),
+                                  //             )
+                                  //           ],
+                                  //           'https://3orood.net/wp-content/uploads/%D8%B9%D8%B1%D9%88%D8%B6-%D8%B3%D8%B9%D9%88%D8%AF%D9%89-%D9%85%D8%A7%D8%B1%D9%83%D8%AA-%D9%85%D9%86-23-%D9%81%D8%A8%D8%B1%D8%A7%D9%8A%D8%B1-%D8%AD%D8%AA%D9%89-7-%D9%85%D8%A7%D8%B1%D8%B3-2023-%D8%B1%D9%85%D8%B6%D8%A7%D9%86.jpg');
+                                  //     },
+                                  //     child: const Text('add packes offer')),
                                   Container(
                                     decoration: const BoxDecoration(
                                         color: Colors.white,
@@ -893,6 +915,78 @@ class Screen1 extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class OfferCarousel extends StatelessWidget {
+  const OfferCarousel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Offer>>(
+      stream: OfferService().getAllOffers(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+
+        if (!snapshot.hasData) {
+          return const CircularProgressIndicator();
+        }
+
+        final offers = snapshot.data!;
+
+        return GestureDetector(
+          child: CarouselSlider(
+            items: offers.map((offer) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (offer.type == 'package') {
+                        Get.to(() => Offer1(
+                              offerId: offer.id,
+                            ));
+                      }
+                      if(offer.type == 'discount'){
+                        Get.to(() => Offer2(
+                              offer: offer,
+                            ));
+                      }
+                    },
+                    child: Container(
+                      // Customize the layout of each offer item here
+                      width: 200,
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Column(
+                        children: [
+                          Image.network(offer.image),
+                          // Text(offer.name),
+                          // Text('Price: \$${offer.price.toStringAsFixed(2)}'),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.2,
+              aspectRatio: 2.0,
+              initialPage: 0,
+              enableInfiniteScroll: true,
+              reverse: false,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 2),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enlargeCenterPage: true,
+              scrollDirection: Axis.horizontal,
+            ),
+          ),
+        );
+      },
     );
   }
 }

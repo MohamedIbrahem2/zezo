@@ -24,7 +24,7 @@ class CartItem {
         productId = map['productId'],
         productName = map['productName'],
         price = map['price'],
-        image = map['image'],
+        image = map['image'] ?? '',
         quantity = map['quantity'];
   CartItem(
       {required this.id,

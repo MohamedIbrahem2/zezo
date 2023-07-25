@@ -6,14 +6,19 @@ import 'package:stockat/constants.dart';
 import 'package:stockat/service/category_service.dart';
 import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
+import 'package:stockat/view/bottom_nav/peoduct_details.dart';
 import 'package:stockat/view/categories/drinks/drinks_home.dart';
+import 'package:stockat/view/drawer_screens/add_subcategory_screen.dart';
 import 'package:stockat/view/sign_in.dart';
 
 import '../../service/cart_service.dart';
 import '../../service/offer_service.dart';
+import '../drawer_screens/add_category_screen.dart';
+import '../drawer_screens/add_products_screen.dart';
 import '../drawer_screens/language.dart';
 import '../drawer_screens/obout_us.dart';
 import '../drawer_screens/offershome.dart';
+import '../drawer_screens/prfile_screen.dart';
 import '../drawer_screens/technical_support.dart';
 import '../drawer_screens/wallet.dart';
 import '../ofeers/offer1.dart';
@@ -26,7 +31,7 @@ class Screen1 extends StatelessWidget {
   List<Widget> items = [
     GestureDetector(
       onTap: () {
-        Get.to(Offer1(
+        Get.to(const Offer1(
           offerId: '',
         ));
       },
@@ -41,9 +46,7 @@ class Screen1 extends StatelessWidget {
     ),
     GestureDetector(
       onTap: () {
-        Get.to(const Offer2(
-          
-        ));
+        Get.to(const Offer2());
       },
       child: Container(
         width: 300,
@@ -247,6 +250,17 @@ class Screen1 extends StatelessWidget {
                 },
               ),
             ),
+            GestureDetector(
+              child: ListTile(
+                title: const Text(
+                  'profile',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const PrfileScreen());
+                },
+              ),
+            ),
             ListTile(
               title: const Text(
                 '-language',
@@ -280,6 +294,33 @@ class Screen1 extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {},
+            ),
+            ListTile(
+              title: const Text(
+                'Add Category',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Get.to(const AddCategoryScreen());
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Add SubCategory',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Get.to(const AddSubCategoryScreen());
+              },
+            ),
+            ListTile(
+              title: const Text(
+                'Add Product',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Get.to(const AddProductScreen());
+              },
             ),
             GestureDetector(
               onTap: () {
@@ -805,101 +846,108 @@ class Screen1 extends StatelessWidget {
 
                     return Container(
                       margin: const EdgeInsets.all(15),
-                      width: Get.width,
-                      height: Get.height * .25,
+                      width: Get.width * .95,
+                      height: Get.height * .30,
                       child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             final product = products[index];
-                            return GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // TextButton(
-                                  //     onPressed: () {
-                                  //       final offerService = OfferService();
-                                  //       offerService.createPackageOffer(
-                                  //           'Offer',
-                                  //           [
-                                  //             Package(
-                                  //               name: 'offer package',
-                                  //               price: 2340,
-                                  //               productIds: products
-                                  //                   .map((e) => e.id)
-                                  //                   .toList(),
-                                  //             )
-                                  //           ],
-                                  //           'https://3orood.net/wp-content/uploads/%D8%B9%D8%B1%D9%88%D8%B6-%D8%B3%D8%B9%D9%88%D8%AF%D9%89-%D9%85%D8%A7%D8%B1%D9%83%D8%AA-%D9%85%D9%86-23-%D9%81%D8%A8%D8%B1%D8%A7%D9%8A%D8%B1-%D8%AD%D8%AA%D9%89-7-%D9%85%D8%A7%D8%B1%D8%B3-2023-%D8%B1%D9%85%D8%B6%D8%A7%D9%86.jpg');
-                                  //     },
-                                  //     child: const Text('add packes offer')),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey,
-                                              spreadRadius: 1,
-                                              blurRadius: 4)
-                                        ]),
-                                    child: Image.network(
-                                      product.image,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    width: Get.width * .3,
-                                    height: Get.height * .13,
-                                  ),
-                                  Text(
-                                    product.name,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      if (product.discount > 0)
-                                        Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Text(
-                                              product.price.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red),
-                                            ),
-                                            Container(
-                                              width: 20,
-                                              height: 1.5,
-                                              color: Colors.grey.shade700,
-                                            )
-                                          ],
-                                        ),
-                                      const SizedBox(
-                                        width: 12,
+                            return SizedBox(
+                              width: Get.width * .3,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(ProductDetails(product: product));
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // TextButton(
+                                    //     onPressed: () {
+                                    //       final offerService = OfferService();
+                                    //       offerService.createPackageOffer(
+                                    //           'Offer',
+                                    //           [
+                                    //             Package(
+                                    //               name: 'offer package',
+                                    //               price: 2340,
+                                    //               productIds: products
+                                    //                   .map((e) => e.id)
+                                    //                   .toList(),
+                                    //             )
+                                    //           ],
+                                    //           'https://3orood.net/wp-content/uploads/%D8%B9%D8%B1%D9%88%D8%B6-%D8%B3%D8%B9%D9%88%D8%AF%D9%89-%D9%85%D8%A7%D8%B1%D9%83%D8%AA-%D9%85%D9%86-23-%D9%81%D8%A8%D8%B1%D8%A7%D9%8A%D8%B1-%D8%AD%D8%AA%D9%89-7-%D9%85%D8%A7%D8%B1%D8%B3-2023-%D8%B1%D9%85%D8%B6%D8%A7%D9%86.jpg');
+                                    //     },
+                                    //     child: const Text('add packes offer')),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                spreadRadius: 1,
+                                                blurRadius: 4)
+                                          ]),
+                                      child: Image.network(
+                                        product.image,
+                                        fit: BoxFit.fill,
                                       ),
-                                      if (product.discount > 0)
-                                        Text(
-                                          (product.price - product.discount)
-                                              .toString(),
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green),
+                                      width: Get.width * .3,
+                                      height: Get.height * .13,
+                                    ),
+                                    Text(
+                                      product.name,
+                                      maxLines: 10,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        if (product.discount > 0)
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Text(
+                                                product.price.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red),
+                                              ),
+                                              Container(
+                                                width: 20,
+                                                height: 1.5,
+                                                color: Colors.grey.shade700,
+                                              )
+                                            ],
+                                          ),
+                                        const SizedBox(
+                                          width: 12,
                                         ),
-                                      if (product.discount == 0)
-                                        Text(
-                                          product.price.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green),
-                                        ),
-                                    ],
-                                  )
-                                ],
+                                        if (product.discount > 0)
+                                          Text(
+                                            (product.price - product.discount)
+                                                .toString(),
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green),
+                                          ),
+                                        if (product.discount == 0)
+                                          Text(
+                                            product.price.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green),
+                                          ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -949,30 +997,47 @@ class OfferCarousel extends StatelessWidget {
                               offerId: offer.id,
                             ));
                       }
-                      if(offer.type == 'discount'){
+                      if (offer.type == 'discount') {
                         Get.to(() => Offer2(
                               offer: offer,
                             ));
                       }
                     },
                     child: Container(
+                      // width: 200, height: 200,
                       // Customize the layout of each offer item here
-                      width: 200,
+                      // width: 200,
+
                       margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Column(
-                        children: [
-                          Image.network(offer.image),
-                          // Text(offer.name),
-                          // Text('Price: \$${offer.price.toStringAsFixed(2)}'),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                          )
                         ],
+                        image: DecorationImage(
+                          image: NetworkImage(offer.image),
+                          fit: BoxFit.fill,
+                        ),
                       ),
+                      // child: Column(
+                      //   children: [
+                      //     Image.network(offer.image, fit: BoxFit.fill),
+                      //     // Text(offer.name),
+                      //     // Text('Price: \$${offer.price.toStringAsFixed(2)}'),
+                      //   ],
+                      // ),
                     ),
                   );
                 },
               );
             }).toList(),
             options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: 200,
               aspectRatio: 2.0,
               initialPage: 0,
               enableInfiniteScroll: true,

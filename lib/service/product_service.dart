@@ -32,16 +32,49 @@ class Product {
       salesCount: data['salesCount'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'price': price,
+      'categoryId': categoryId,
+      'subcategoryId': subcategoryId,
+      'discount': discount,
+      'image': image,
+      'salesCount': salesCount,
+    };
+  }
+
+  Product copyWith({
+    String? name,
+    double? price,
+    String? categoryId,
+    String? subcategoryId,
+    double? discount,
+    String? image,
+    int? salesCount,
+  }) {
+    return Product(
+      id: id,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      categoryId: categoryId ?? this.categoryId,
+      subcategoryId: subcategoryId ?? this.subcategoryId,
+      discount: discount ?? this.discount,
+      image: image ?? this.image,
+      salesCount: salesCount ?? this.salesCount,
+    );
+  }
 }
 
 class ProductsService {
   Future<void> addProduct(
-      String productName,
-      double productPrice,
-      double discount,
-      String image,
-      String categoryId,
-      String subcategoryId) async {
+      {required String productName,
+      required double productPrice,
+      required double discount,
+      required String image,
+      required String categoryId,
+      required String subcategoryId}) async {
     final collection = FirebaseFirestore.instance.collection('products');
     await collection.add({
       'name': productName,
@@ -103,5 +136,24 @@ class ProductsService {
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
     });
+  }
+
+// update product
+  Future<void> updateProduct(
+    Product product,
+  ) async {
+    final collection = FirebaseFirestore.instance
+        .collection('products')
+        .doc(product.id)
+        .update(product.toMap());
+
+    await collection;
+
+
+  }
+  Future<Product> getProductById(String productId) async {
+    final collection = FirebaseFirestore.instance.collection('products');
+    final doc = await collection.doc(productId).get();
+    return Product.fromSnapshot(doc);
   }
 }

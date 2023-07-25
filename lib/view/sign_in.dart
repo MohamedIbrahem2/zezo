@@ -140,7 +140,7 @@ class _SignInState extends State<SignIn> {
                               ),
                               CustomTextForm(
                                 onSave: (val) {
-                                  controller.email = val;
+                                  controller.email = val!;
                                 },
                                 validate: (val) {
                                   if (val == null) {
@@ -165,7 +165,7 @@ class _SignInState extends State<SignIn> {
                               ),
                               CustomTextForm(
                                 onSave: (val) {
-                                  controller.password = val;
+                                  controller.password = val!;
                                 },
                                 validate: (val) {
                                   if (val == null) {

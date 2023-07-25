@@ -21,6 +21,22 @@ class Subcategory {
       image: data['image'],
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Subcategory &&
+        other.id == id &&
+        other.name == name &&
+        other.categoryId == categoryId &&
+        other.image == image;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^ name.hashCode ^ categoryId.hashCode ^ image.hashCode;
+  }
 }
 
 class SubCategoryService {
@@ -37,6 +53,14 @@ class SubCategoryService {
         .where('categoryId', isEqualTo: categoryId)
         .snapshots()
         .map((snapshot) {
+      return snapshot.docs.map((doc) => Subcategory.fromSnapshot(doc)).toList();
+    });
+  }
+
+  // get all subcategories
+  Stream<List<Subcategory>> getSubcategories() {
+    final collection = FirebaseFirestore.instance.collection('subcategories');
+    return collection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => Subcategory.fromSnapshot(doc)).toList();
     });
   }
@@ -63,5 +87,14 @@ class SubCategoryService {
         .map((snapshot) {
       return snapshot.docs.map((doc) => Subcategory.fromSnapshot(doc)).toList();
     });
+  }
+
+  // get subcategory by id
+  Future<Subcategory> getSubcategoryById(String id) {
+    final collection = FirebaseFirestore.instance.collection('subcategories');
+    return collection
+        .doc(id)
+        .get()
+        .then((doc) => Subcategory.fromSnapshot(doc));
   }
 }

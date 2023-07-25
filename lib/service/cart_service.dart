@@ -116,6 +116,34 @@ class CartService {
     });
   }
 
+  // get the total number of items in the cart
+  Future<int> getTotalItems(String userId) async {
+    final collection = FirebaseFirestore.instance.collection('cart');
+    final snapshot = await collection.where('userId', isEqualTo: userId).get();
+    int totalItems = 0;
+    for (var doc in snapshot.docs) {
+      totalItems += int.parse(doc.data()['quantity'].toString());
+    }
+    return totalItems;
+  }
+  // get items by product id
+
+  Stream<List<CartItem>> getCartItemsByProductId(
+      String userId, String productId) {
+    final collection = FirebaseFirestore.instance.collection('cart');
+    return collection
+        .where(
+          'userId',
+          isEqualTo: userId,
+        )
+        .where('productId', isEqualTo: productId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => CartItem.fromSnapshot(doc)).toList();
+    });
+  }
+
+
 // get the total price of the cart
   Future<double> getTotalPrice(String userId) async {
     final collection = FirebaseFirestore.instance.collection('cart');

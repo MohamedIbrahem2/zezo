@@ -6,9 +6,9 @@ class CustomTextForm extends StatefulWidget {
   bool? secure = false;
   String? hint;
   bool obsecure = false;
-  var controller;
-  Function? onSave;
-  Function? validate;
+  TextEditingController? controller;
+  void Function(String?)? onSave;
+  String? Function(String?)? validate;
 
   CustomTextForm(
       {this.hint,
@@ -27,15 +27,11 @@ class _CustomTextFormState extends State<CustomTextForm> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      onSaved: (val) {
-        widget.onSave!(val);
-      },
-      validator: (val) {
-        widget.validate!(val);
-      },
+      onSaved: widget.onSave,
+      validator: widget.validate,
       obscureText: widget.obsecure,
       decoration: InputDecoration(
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
             fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
         hintText: '${widget.hint}',
         suffixIcon: widget.secure == true
@@ -45,7 +41,7 @@ class _CustomTextFormState extends State<CustomTextForm> {
                     widget.obsecure = !widget.obsecure;
                   });
                 },
-                child: Icon(Icons.remove_red_eye))
+                child: const Icon(Icons.remove_red_eye))
             : null,
       ),
     );

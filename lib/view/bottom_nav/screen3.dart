@@ -1,15 +1,51 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/constants.dart';
+import 'package:stockat/main.dart';
 import 'package:stockat/view/my_page_screens/edit_profile.dart';
 import 'package:stockat/view/sign_in.dart';
 
+import '../addresses_pge.dart';
 import '../my_page_screens/my_official_papers.dart';
 import '../my_page_screens/oreder_history.dart';
 
-class Screen3 extends StatelessWidget {
+class Settings extends StatefulWidget {
+  const Settings({super.key});
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
   var name, email, pic;
+
+  bool isLoading = false;
+
+  UserProfile? userProfile;
+  final _authService = AuthService();
+  getUserProfile() async {
+    try {
+      isLoading = true;
+      setState(() {});
+
+      userProfile = await _authService
+          .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
+      isLoading = false;
+      setState(() {});
+    } catch (e) {
+      print(e);
+      isLoading = false;
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    // getUserProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,36 +55,51 @@ class Screen3 extends StatelessWidget {
           if (snapShot2.hasData) {
             dynamic document = snapShot2.data;
             name = document['name'];
-            email = document['email'];
-            pic = document['pic'];
+            // email = document['email'];
+            // pic = document['pic'];
           }
+          if (snapShot2.hasError) {
+            return const Center(
+              child: Text('Error'),
+            );
+          }
+          if (snapShot2.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final data = snapShot2.data!.data() as Map<String, dynamic>;
           return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 30, top: 70),
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://scontent.fcai20-5.fna.fbcdn.net/v/t39.30808-1/241663445_3031284463806334_9084738319430362880_n.jpg?stp=dst-jpg_p160x160&_nc_cat=110&ccb=1-7&_nc_sid=7206a8&_nc_ohc=vSFT4btO-wAAX-n-1Lw&_nc_ht=scontent.fcai20-5.fna&oh=00_AfB2bIzNIkX6o522FKDAChtL7-dkYnUh55MQ_rJy0KMY6Q&oe=643319A6'),
-                        radius: 45,
-                        backgroundColor: Colors.blue,
-                      ),
+                    CircleAvatar(
+                      backgroundImage: data['photo'] != null
+                          ? NetworkImage(snapShot2.data!['photo'])
+                          : null,
+                      radius: 45,
+                      child: data['photo'] == null
+                          ? const Icon(
+                              Icons.person,
+                              size: 45,
+                            )
+                          : null,
+                      backgroundColor: Colors.blue,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 30,
                     ),
                     Column(
                       children: [
                         Text(
-                          'Khaled Sallam',
-                          style: TextStyle(
+                          name,
+                          style: const TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'khaled@gmal.com',
+                          FirebaseAuth.instance.currentUser!.email!,
                           style: TextStyle(fontSize: 17, color: mainColor),
                         ),
                       ],
@@ -61,12 +112,18 @@ class Screen3 extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(Editprofile());
+                  Get.to(const Form(child: Editprofile()));
                 },
                 child: CustomListTile(icon: Icons.edit, title: 'Edit Profile'),
               ),
-              CustomListTile(
-                  icon: Icons.location_on_outlined, title: 'Shipping address'),
+              GestureDetector(
+                onTap: () {
+                  Get.to(const AddressesPage());
+                },
+                child: CustomListTile(
+                    icon: Icons.location_on_outlined,
+                    title: 'Shipping address'),
+              ),
               GestureDetector(
                 onTap: () {
                   Get.to(OrderHistory());
@@ -76,7 +133,7 @@ class Screen3 extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(MyOfficialPapers());
+                  Get.to(const MyOfficialPapers());
                 },
                 child: CustomListTile(
                     icon: Icons.card_giftcard, title: 'My official papers'),
@@ -95,21 +152,21 @@ class Screen3 extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               'No',
                               style: TextStyle(color: Colors.black),
                             ),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.white, elevation: 10),
+                                backgroundColor: Colors.white, elevation: 10),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Get.to(SignIn());
+                              Get.to(const SignIn());
                             },
-                            child: Text('yes',
+                            child: const Text('yes',
                                 style: TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.red, elevation: 10),
+                                backgroundColor: Colors.red, elevation: 10),
                           ),
                         ],
                       ));
@@ -119,7 +176,10 @@ class Screen3 extends StatelessWidget {
             ],
           );
         },
-        stream: null,
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .snapshots(),
       ),
     );
   }
@@ -128,9 +188,9 @@ class Screen3 extends StatelessWidget {
     return ListTile(
       title: Text(
         '$title',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      trailing: Icon(
+      trailing: const Icon(
         Icons.arrow_forward_ios_outlined,
         color: Colors.black,
       ),

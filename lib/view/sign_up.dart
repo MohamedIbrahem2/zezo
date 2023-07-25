@@ -105,6 +105,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                             if (val == null) {
                               return 'email is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           hint: 'stockat',
@@ -130,6 +131,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                             if (val == null) {
                               return 'email is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           hint: '0540814644',
@@ -155,6 +157,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                             if (val == null) {
                               return 'email is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           hint: '3185400003',
@@ -180,6 +183,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                             if (val == null) {
                               return 'email is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           hint: '318540003',
@@ -199,12 +203,13 @@ class SignUp extends GetWidget<AuthViewModel> {
                         ),
                         CustomTextForm(
                           onSave: (val) {
-                            controller.email = val;
+                            controller.email = val!;
                           },
                           validate: (val) {
                             if (val == null) {
                               return 'email is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           hint: 'stockat@gmail.com',
@@ -224,12 +229,13 @@ class SignUp extends GetWidget<AuthViewModel> {
                         ),
                         CustomTextForm(
                           onSave: (val) {
-                            controller.password = val;
+                            controller.password = val!;
                           },
                           validate: (val) {
                             if (val == null) {
                               return 'password is empty';
                             }
+                            return null;
                           },
                           obsecure: false,
                           secure: true,

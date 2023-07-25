@@ -6,6 +6,7 @@ import 'package:stockat/view_model/drinks/soft_-drinks_viewmodel.dart';
 
 import '../../../service/cart_service.dart';
 import '../../bottom_nav/cart.dart';
+import '../../bottom_nav/peoduct_details.dart';
 
 class SoftDrinks extends StatefulWidget {
   const SoftDrinks(
@@ -121,7 +122,7 @@ class _DrinksItemsState extends State<SoftDrinks> {
             Container(
               margin: const EdgeInsets.all(10),
               width: Get.width,
-              height: Get.height * .83,
+              height: Get.height * .8,
               child: StreamBuilder<List<Product>>(
                   stream: ProductsService()
                       .getProductsBySubcategory(widget.subCategoryId),
@@ -144,130 +145,137 @@ class _DrinksItemsState extends State<SoftDrinks> {
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 300,
-                                childAspectRatio: .8,
+                                childAspectRatio: .7,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
                         itemCount: products!.length,
                         itemBuilder: (context, index) {
                           final product = products[index];
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 5,
-                                          spreadRadius: 2,
-                                          color: Colors.grey),
-                                    ]),
-                                child: Image.network(product.image),
-                                width: Get.width * .4,
-                                height: Get.height * .14,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                product.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                          return InkWell(
+                            onTap: () {
+                              Get.to(() => ProductDetails(
+                                    product: product,
+                                  ));
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            spreadRadius: 2,
+                                            color: Colors.grey),
+                                      ]),
+                                  child: Image.network(product.image),
+                                  width: Get.width * .4,
+                                  height: Get.height * .14,
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (product.discount > 0)
-                                    Stack(
-                                      alignment: Alignment.center,
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  product.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (product.discount > 0)
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Text(
+                                            product.price.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red),
+                                          ),
+                                          Container(
+                                            width: 20,
+                                            height: 1.5,
+                                            color: Colors.grey.shade700,
+                                          )
+                                        ],
+                                      ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    if (product.discount > 0)
+                                      Text(
+                                        (product.price - product.discount)
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green),
+                                      ),
+                                    if (product.discount == 0)
+                                      Text(
+                                        (product.price).toString(),
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      final result = await CartService()
+                                          .isProductInCart(
+                                              product.id,
+                                              FirebaseAuth
+                                                  .instance.currentUser!.uid);
+                                      if (result != null && result > 0) {
+                                        // remove snakebar
+
+                                        Get.snackbar(
+                                            'Sorry', 'Product already in cart');
+                                      }
+                                      CartService().addToCart(
+                                        productId: product.id,
+                                        productName: product.name,
+                                        price: product.price - product.discount,
+                                        quantity: count,
+                                        image: product.image,
+                                        userId: FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                      );
+                                    },
+                                    child: const Row(
                                       children: [
                                         Text(
-                                          product.price.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.red),
+                                          'Get',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        Container(
-                                          width: 20,
-                                          height: 1.5,
-                                          color: Colors.grey.shade700,
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Icon(
+                                          Icons.add_shopping_cart,
+                                          color: Colors.white,
                                         )
                                       ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                     ),
-                                  const SizedBox(
-                                    width: 12,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green),
                                   ),
-                                  if (product.discount > 0)
-                                    Text(
-                                      (product.price - product.discount)
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.green),
-                                    ),
-                                  if (product.discount == 0)
-                                    Text(
-                                      (product.price).toString(),
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.green),
-                                    ),
-                                ],
-                              ),
-                              SizedBox(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final result = await CartService()
-                                        .isProductInCart(
-                                            product.id,
-                                            FirebaseAuth
-                                                .instance.currentUser!.uid);
-                                    if (result != null && result > 0) {
-                                      // remove snakebar
-
-                                      Get.snackbar(
-                                          'Sorry', 'Product already in cart');
-                                    }
-                                    CartService().addToCart(
-                                      productId: product.id,
-                                      productName: product.name,
-                                      price: product.price - product.discount,
-                                      quantity: count,
-                                      image: product.image,
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                    );
-                                  },
-                                  child: const Row(
-                                    children: [
-                                      Text(
-                                        'Get',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Icon(
-                                        Icons.add_shopping_cart,
-                                        color: Colors.white,
-                                      )
-                                    ],
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green),
+                                  width: Get.width * .25,
                                 ),
-                                width: Get.width * .25,
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         });
                   }),

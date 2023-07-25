@@ -1,0 +1,7 @@
+1- registers 
+2- profile
+3- update profile
+4- add address
+5- update address
+6- edit profile
+7- edit address

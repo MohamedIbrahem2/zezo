@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/screen3.dart';
+import 'package:stockat/view_model/auth_view_model.dart';
 
 import 'bottom_nav/screen1.dart';
 
@@ -12,12 +14,20 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final AuthViewModel yourController =
+      Get.put(AuthViewModel()..getUserProfile());
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   int index = 0;
 
   List<Widget> screens = [
     Screen1(),
     const Screen2(),
-    Screen3(),
+    Settings(),
   ];
 
   List<Widget> items = [

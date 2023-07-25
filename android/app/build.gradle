@@ -41,9 +41,9 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.stockat"
-        minSdkVersion 19
+        minSdkVersion 21
         multiDexEnabled true
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 19
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

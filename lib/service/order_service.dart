@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:stockat/service/address_service.dart';
 import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/my_page_screens/oreder_history.dart';
 
@@ -11,7 +12,7 @@ class Order {
   final List<CartItem> items;
   final double totalAmount;
   final DateTime orderDate;
-  final String address; // New field for address
+  final Address? address; // New field for address
   final DateTime deliveryDate; // New field for delivery date
 
   Order({
@@ -20,7 +21,7 @@ class Order {
     required this.items,
     required this.totalAmount,
     required this.orderDate,
-    required this.address,
+    this.address,
     required this.deliveryDate,
   });
 
@@ -35,7 +36,12 @@ class Order {
         items: cartItems,
         totalAmount: data['totalAmount'],
         orderDate: (data['orderDate'] as Timestamp).toDate(),
-        address: data['address'], // Assign address value from snapshot data
+        address: data['address'] == null
+            ? null
+            : data['address'] is String
+                ? null
+                : Address.fromMap(
+                    data['address']), // Assign address value from snapshot data
         deliveryDate: (data['deliveryDate'] as Timestamp)
             .toDate(), // Assign delivery date value from snapshot data
       );
@@ -52,7 +58,8 @@ class Order {
       items: cartItems,
       totalAmount: data['totalAmount'],
       orderDate: (data['orderDate'] as Timestamp).toDate(),
-      address: data['address'], // Assign address value from snapshot data
+      address: Address.fromMap(
+          data['address']), // Assign address value from snapshot data
       deliveryDate: (data['deliveryDate'] as Timestamp)
           .toDate(), // Assign delivery date value from snapshot data
     );

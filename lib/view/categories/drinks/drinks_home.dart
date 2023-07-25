@@ -76,7 +76,7 @@ class _DrinksHomeState extends State<DrinksHome> {
                   }
                   final subcategories = snapshot.data;
                   return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
+                      // physics: const NeverScrollableScrollPhysics(),
                       itemCount: subcategories!.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -88,11 +88,10 @@ class _DrinksHomeState extends State<DrinksHome> {
                         final subcategory = subcategories[index];
                         return GestureDetector(
                           onTap: () {
-                            Get.to( SoftDrinks(
+                            Get.to(SoftDrinks(
                                 subCategoryId: subcategory.id,
                                 categoryId: widget.categoryId,
-                                subCategoryName: subcategory.name
-                            ));
+                                subCategoryName: subcategory.name));
                           },
                           child: Column(
                             children: [

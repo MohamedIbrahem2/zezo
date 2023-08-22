@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -169,7 +170,8 @@ class _DrinksItemsState extends State<SoftDrinks> {
                                             spreadRadius: 2,
                                             color: Colors.grey),
                                       ]),
-                                  child: Image.network(product.image),
+                                  child: CachedNetworkImage(
+                                      imageUrl: product.image),
                                   width: Get.width * .4,
                                   height: Get.height * .14,
                                 ),

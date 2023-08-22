@@ -5,7 +5,14 @@ import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/my_page_screens/oreder_history.dart';
 
 import 'cart_service.dart';
-
+class OrderStatusKeys{
+  static const String pending = 'pending';
+  static const String processing = 'processing';
+  static const String shipped = 'shipped';
+  static const String delivered = 'delivered';
+  static const String cancelled = 'cancelled';
+  
+}
 class Order {
   final String id;
   final String userId;
@@ -14,6 +21,7 @@ class Order {
   final DateTime orderDate;
   final Address? address; // New field for address
   final DateTime deliveryDate; // New field for delivery date
+
 
   Order({
     required this.id,

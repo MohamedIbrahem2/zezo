@@ -94,7 +94,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Price: \$${product.price.toStringAsFixed(2)}',
+                        'Price: SR ${product.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
@@ -135,7 +135,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       const SizedBox(height: 8),
                       // total price
                       Text(
-                        'Total Price: \$${(product.price - (product.price * product.discount / 100)).toStringAsFixed(2)}',
+                        'Total Price: SR ${(product.price - (product.price * product.discount / 100)).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,

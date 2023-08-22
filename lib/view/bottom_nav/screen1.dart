@@ -81,12 +81,16 @@ class Screen1 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          // GestureDetector(
-          //   onTap: ()async{
-          //     ScanResult result = await BarcodeScanner.scan();
-          //     print(result.rawContent);
-          //   },
-          //     child: Image.asset('logos/barcode.png',width: 30,height: 30,)),
+          GestureDetector(
+              onTap: () async {
+                // ScanResult result = await BarcodeScanner.scan();
+                // print(result.rawContent);
+              },
+              child: Image.asset(
+                'logos/barcode.png',
+                width: 30,
+                height: 30,
+              )),
           const SizedBox(
             width: 8,
           ),

@@ -30,44 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('logos/splash.png'),
-              const Text.rich(TextSpan(children: [
-                TextSpan(
-                    text: 'S',
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple)),
-                TextSpan(
-                    text: 't',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue)),
-                TextSpan(
-                    text: 'o',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue)),
-                TextSpan(
-                    text: 'ck',
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue)),
-                TextSpan(
-                    text: 'A',
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple)),
-                TextSpan(
-                    text: 'T',
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple)),
-              ])),
+              Image.asset('images/logo2.png'),
               SizedBox(
                 height: Get.height * .05,
               ),

@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/bottom_navbar_provider.dart';
 import 'package:stockat/service/cart_service.dart';
+import 'package:stockat/view/home_view.dart';
 
 import '../../constants.dart';
 import '../check_out/checkhome.dart';
@@ -45,6 +48,13 @@ class _Screen2State extends State<Screen2> {
 
               final cartItems = snapshot.data!;
 
+              if (cartItems.isEmpty) {
+                // no item yet go to home page to shop
+                return const Center(
+                  child: Text('No items yet, go to home page to shop'),
+                );
+              }
+
               return ListView.separated(
                 separatorBuilder: (context, index) {
                   return SizedBox(
@@ -54,92 +64,71 @@ class _Screen2State extends State<Screen2> {
                 itemCount: cartItems.length,
                 itemBuilder: (context, index) {
                   final cartItem = cartItems[index];
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  final btn = Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  color: Colors.grey)
-                            ]),
-                        child: Image.network(
-                          cartItem.image,
-                          width: Get.width * .3,
-                          height: Get.height * .11,
-                        ),
-                        margin: const EdgeInsets.only(left: 10),
+                      GestureDetector(
+                        child: const Icon(Icons.add),
+                        onTap: () {
+                          CartService().updateCartItemQuantity(
+                              cartItem.id, cartItem.quantity + 1);
+                        },
                       ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cartItem.productName,
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text.rich(TextSpan(children: [
-                              TextSpan(
-                                  text: (cartItem.price * cartItem.quantity)
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue)),
-                              const TextSpan(
-                                  text: '  SAR',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.black)),
-                            ])),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: Get.width * .25,
-                              height: 30,
-                              color: Colors.grey.shade300,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  GestureDetector(
-                                    child: const Icon(Icons.add),
-                                    onTap: () {
-                                      CartService().updateCartItemQuantity(
-                                          cartItem.id, cartItem.quantity + 1);
-                                    },
-                                  ),
-                                  Text('${cartItem.quantity}'),
-                                  GestureDetector(
-                                      onTap: () {
-                                        if (cartItem.quantity == 0) {
-                                          CartService()
-                                              .removeCartItem(cartItem.id);
-                                          return;
-                                        }
-                                        CartService().updateCartItemQuantity(
-                                            cartItem.id, cartItem.quantity - 1);
-                                      },
-                                      child: const Icon(Icons.remove_outlined))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                      Text(
+                        '${cartItem.quantity}',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
+                      GestureDetector(
+                          onTap: () {
+                            if (cartItem.quantity == 0) {
+                              CartService().removeCartItem(cartItem.id);
+                              return;
+                            }
+                            CartService().updateCartItemQuantity(
+                                cartItem.id, cartItem.quantity - 1);
+                          },
+                          child: const Icon(Icons.remove_outlined))
                     ],
+                  );
+                  return SizedBox(
+                    height: 200,
+                    child: ListTile(
+                      visualDensity:
+                          const VisualDensity(vertical: 4, horizontal: 4),
+                      leading: CachedNetworkImage(
+                        imageUrl: cartItem.image,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                      title: Text(cartItem.productName),
+                      subtitle: Text('${cartItem.price} SAR'),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            child: const Icon(Icons.add),
+                            onTap: () {
+                              CartService().updateCartItemQuantity(
+                                  cartItem.id, cartItem.quantity + 1);
+                            },
+                          ),
+                          Text('${cartItem.quantity}'),
+                          InkWell(
+                              onTap: () {
+                                if (cartItem.quantity == 0) {
+                                  CartService().removeCartItem(cartItem.id);
+                                  return;
+                                }
+                                CartService().updateCartItemQuantity(
+                                    cartItem.id, cartItem.quantity - 1);
+                              },
+                              child: const Icon(Icons.remove_outlined))
+                        ],
+                      ),
+                    ),
                   );
                 },
               );
@@ -155,6 +144,37 @@ class _Screen2State extends State<Screen2> {
                 : snapshot.data!.fold(0.0, (previousValue, element) {
                     return previousValue + (element.price * element.quantity);
                   });
+
+            if (total == 0) {
+              return BottomSheet(
+                elevation: 20,
+                onClosing: () {},
+                builder: (context) => InkWell(
+                  onTap: () {
+                    BottomNavbarProvider.instance(context, listen: false)
+                        .changeIndex(0);
+
+                    Get.offAll(const HomeView());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    width: Get.width,
+                    height: Get.height * .07,
+                    color: Colors.green,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_shopping_cart),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('Go To Home To SHop Now')
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
 
             return BottomSheet(
               elevation: 20,

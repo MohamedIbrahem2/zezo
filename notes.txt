@@ -1,10 +1,14 @@
-1- forgte paasord 
-2- alert dilaouge whet he add new item to cart
-3- cart design 
-4- checkout design 
-5- checkout wrong info
-6= recreate order history
-7- status order
-8- cash imges
-9- notificatoin
-10 - localizaion
+// new notes
+1- snackbar bar message not shown in products screen [done]
+2- logo and [done]
+3- convert to bar code 
+4- admin orders 
+5- show delivery address in order details 
+6- phone number in order creation
+7- search by letter
+8- codition fro order not be less than 500 sr
+9- admin buttons in orders
+10 - print 
+
+
+

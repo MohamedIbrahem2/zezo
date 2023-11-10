@@ -1,31 +1,118 @@
 // @dart=2.16
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stockat/fcm_provider.dart';
 import 'package:stockat/view/home_view.dart';
+import 'package:stockat/view/my_page_screens/oreders_provider.dart';
+import 'package:stockat/view_model/auth_view_model.dart';
 
+import 'bottom_navbar_provider.dart';
+import 'languages.dart';
 import 'view/splash_view.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // initialize awesome notifications
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Colors.teal,
+        ledColor: Colors.white,
+      ),
+    ],
+  );
+
   await Firebase.initializeApp();
-  runApp(App());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => BottomNavbarProvider()),
+    ChangeNotifierProvider(create: (_) => OrdersHistoryProvider()),
+    ChangeNotifierProvider(create: (_) => LocalizationProvider()..getLocale()),
+  ], child: const App()));
 }
 
-class App extends StatelessWidget {
-  var user = FirebaseAuth.instance.currentUser;
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
-  App({Key? key}) : super(key: key);
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  var user = FirebaseAuth.instance.currentUser;
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      FcmProvider().initialize();
+      AuthViewModel().checkIfAdmin();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: user == null ? const MyHomePage() : const HomeView(),
+    return OverlaySupport.global(
+      child: GetMaterialApp(
+        translations: Languages(),
+        locale: Provider.of<LocalizationProvider>(context).locale,
+        fallbackLocale: const Locale('en'),
+        title: 'Stockat',
+        debugShowCheckedModeBanner: false,
+        home: Builder(builder: (context) {
+          return Directionality(
+              textDirection:
+                  Provider.of<LocalizationProvider>(context).textDirection,
+              child: user == null ? const MyHomePage() : const HomeView());
+        }),
+      ),
     );
   }
+}
+
+class LocalizationProvider extends ChangeNotifier {
+  Locale _locale = const Locale('en');
+  Locale get locale => _locale;
+
+  // get locale from shared preferences
+  void getLocale() async {
+    final prefrenc = SharedPreferences.getInstance();
+    prefrenc.then((value) {
+      final lang = value.getString('language');
+      if (lang != null) {
+        _locale = Locale(lang);
+        Get.updateLocale(_locale);
+        notifyListeners();
+      }
+    });
+  }
+  //  save language to shared preferences
+
+  void setLocale(Locale locale) {
+    // if (!Languages().keys.containsKey(locale)) {
+    //   return;
+    // }
+
+    _locale = locale;
+    Get.updateLocale(locale);
+    notifyListeners();
+    final prefrenc = SharedPreferences.getInstance();
+    prefrenc.then((value) => value.setString('language', locale.languageCode));
+  }
+
+  // get text direction
+  TextDirection get textDirection =>
+      _locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr;
 }
 
 class AuthService {
@@ -90,6 +177,17 @@ class AuthService {
     return UserProfile.fromSnapshot(userData);
   }
 
+// get stream of  List of UserProfile by ids
+  Stream<List<UserProfile>> getUserProfiles(List<String> userIds) {
+    return _firestore
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: userIds)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => UserProfile.fromSnapshot(doc)).toList();
+    });
+  }
+
   Future<void> addPhoto(photo, userId) async {
     try {
       await _firestore.collection('users').doc(userId).update({'photo': photo});
@@ -139,14 +237,24 @@ class AuthService {
       print('Error updating email: $e');
     }
   }
+  // get admins profiles
+
+  Future<List<UserProfile>> getAdminsProfiles() async {
+    //  get user email
+    var userData = await _firestore
+        .collection('users')
+        .where('isAdmin', isEqualTo: true)
+        .get();
+    return userData.docs.map((doc) => UserProfile.fromSnapshot(doc)).toList();
+  }
 }
 
-class Address {
+class Address2 {
   final String address;
   final double lat;
   final double lng;
 
-  Address({
+  Address2({
     required this.address,
     required this.lat,
     required this.lng,
@@ -154,47 +262,61 @@ class Address {
 }
 
 class UserProfile {
+  final String? id;
   final String name;
   final String phone;
   final String cr;
+  final String? role;
   final String vat;
   final String? photo;
+  final bool isAdmin;
+  final String? email;
 // addressess
-  final List<Address> addresses;
+  final List<Address2> addresses;
 
   UserProfile(
       {required this.name,
       required this.phone,
       required this.cr,
       this.photo,
+      this.id,
+      this.role,
       required this.vat,
-      required this.addresses});
+      required this.addresses,
+      this.email,
+      this.isAdmin = false});
 
-  factory UserProfile.fromMap(Map<String, dynamic> map) {
-    print(map);
+  factory UserProfile.fromMap(Map<String, dynamic> map, {String? id}) {
+    final isAdmin = (map['isAdmin'] ?? false) || map['role'] == 'admin';
     return UserProfile(
+      id: 'id',
       name: map['name'],
       phone: map['phone'],
-      cr: map['cr'],
-      vat: map['vat'],
+      role: map['role'],
+      email: map['email'],
+      cr: map['cr'] ?? '',
+      vat: map['vat'] ?? "",
       photo: map['photo'] ?? '',
       addresses: map['addresses'] == null
           ? []
-          : List<Address>.from(
+          : List<Address2>.from(
               map['addresses'].map(
-                (address) => Address(
+                (address) => Address2(
                   address: address['address'],
                   lat: address['lat'],
                   lng: address['lng'],
                 ),
               ),
             ),
+      isAdmin: isAdmin,
     );
   }
   // from fromSnapshot
   factory UserProfile.fromSnapshot(DocumentSnapshot snapshot) {
-    return UserProfile.fromMap(snapshot.data() as Map<String, dynamic>);
+    return UserProfile.fromMap(snapshot.data() as Map<String, dynamic>,
+        id: snapshot.id);
   }
 }
 
+bool isAdmin = false;
 const apiKey = 'AIzaSyC8_AQ4MtlbeQEHmHIHUWS8XbGemthwqgQ';

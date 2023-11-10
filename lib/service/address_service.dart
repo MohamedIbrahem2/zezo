@@ -99,4 +99,17 @@ class Address {
       if (id != null) 'id': id,
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Address &&
+        other.id == id &&
+        other.street == street &&
+        other.city == city &&
+        other.description == description &&
+        other.state == state &&
+        other.postalCode == postalCode &&
+        other.latitude == latitude &&
+        other.longitude == longitude;
+  }
 }

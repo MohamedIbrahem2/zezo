@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
-import 'package:stockat/view/bottom_nav/screen3.dart';
+import 'package:stockat/view/bottom_nav/profile.dart';
 import 'package:stockat/view_model/auth_view_model.dart';
 
-import 'bottom_nav/screen1.dart';
+import '../bottom_navbar_provider.dart';
+import 'bottom_nav/home.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -25,9 +26,9 @@ class _HomeViewState extends State<HomeView> {
   int index = 0;
 
   List<Widget> screens = [
-    Screen1(),
+    HomePage(),
     const Screen2(),
-    Settings(),
+    const Settings(),
   ];
 
   List<Widget> items = [
@@ -61,20 +62,21 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomNavProvider = BottomNavbarProvider.instance(context);
     return Scaffold(
-      body: screens[index],
+      body: screens[bottomNavProvider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (val) {
-          setState(() {
-            index = val;
-          });
+          bottomNavProvider.changeIndex(val);
         },
-        currentIndex: index,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        currentIndex: bottomNavProvider.currentIndex,
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'cart'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'my page'),
+              icon: const Icon(Icons.home), label: 'home'.tr),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.shopping_cart), label: 'cart'.tr),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.person), label: 'my_page'.tr),
         ],
       ),
     );

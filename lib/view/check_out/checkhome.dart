@@ -1,9 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/service/order_service.dart';
 
+import '../../service/address_service.dart';
 import '../../service/cart_service.dart';
+import '../addresses_pge.dart';
 
 class CheckHome extends StatefulWidget {
   const CheckHome({Key? key}) : super(key: key);
@@ -46,14 +49,20 @@ class _CheckHomeState extends State<CheckHome> {
     DateTime.now(),
     DateTime.now(),
   ];
+// 
+
 
   double count = 1.0;
   Future<void> _selectDate(BuildContext context) async {
+    // all dayes except friday
+
+
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: date[0],
+      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime(2025),
+      
     );
     if (picked != null) {
       setState(() {
@@ -64,6 +73,10 @@ class _CheckHomeState extends State<CheckHome> {
     }
   }
 
+  final AddressService _addressService = AddressService(
+    FirebaseAuth.instance.currentUser!.uid,
+  );
+  Address? selectedAddress;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<CartItem>>(
@@ -102,7 +115,7 @@ class _CheckHomeState extends State<CheckHome> {
                       ),
                       // cart items
                       SizedBox(
-                        height: 200,
+                        height: 120,
                         child: StreamBuilder<List<CartItem>>(
                             stream: CartService().getCartItems(
                                 FirebaseAuth.instance.currentUser!.uid),
@@ -143,8 +156,8 @@ class _CheckHomeState extends State<CheckHome> {
                                   itemBuilder: (context, index) {
                                     final item = snapshot.data![index];
                                     return Container(
-                                      margin: const EdgeInsets.all(10),
                                       padding: const EdgeInsets.all(10),
+                                      margin: const EdgeInsets.only(left: 10),
                                       child: Row(
                                         children: [
                                           Container(
@@ -159,8 +172,7 @@ class _CheckHomeState extends State<CheckHome> {
                                                     blurRadius: 5,
                                                   )
                                                 ]),
-                                            child: Image.network(
-                                                item.image.toString()),
+                                            child: Image.network(item.image),
                                             margin:
                                                 const EdgeInsets.only(right: 7),
                                             width: Get.width * .27,
@@ -169,17 +181,24 @@ class _CheckHomeState extends State<CheckHome> {
                                           Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                item.productName,
-                                                style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
+                                              SizedBox(
+                                                width: 120,
+                                                child: AutoSizeText(
+                                                  item.productName,
+                                                  maxLines: 1,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black),
+                                                ),
                                               ),
                                               Text(
-                                                (item.price * item.quantity)
-                                                    .toString(),
+                                                (item.quantity * item.price)
+                                                        .toString() +
+                                                    ' SR',
                                                 style: const TextStyle(
                                                     fontSize: 20.0,
                                                     fontWeight: FontWeight.bold,
@@ -190,6 +209,8 @@ class _CheckHomeState extends State<CheckHome> {
                                           Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -226,9 +247,17 @@ class _CheckHomeState extends State<CheckHome> {
                                                                     1);
                                                       },
                                                     ),
-                                                    Text('$count'),
+                                                    Text(item.quantity
+                                                        .toString()),
                                                     GestureDetector(
                                                         onTap: () {
+                                                          if (item.quantity ==
+                                                              0) {
+                                                            CartService()
+                                                                .removeCartItem(
+                                                                    item.id);
+                                                            return;
+                                                          }
                                                           CartService()
                                                               .updateCartItemQuantity(
                                                                   item.id,
@@ -279,13 +308,75 @@ class _CheckHomeState extends State<CheckHome> {
                           Container(
                             margin: const EdgeInsets.all(20),
                             width: Get.width * .6,
-                            child: TextFormField(
-                              controller: addressController,
-                              decoration: InputDecoration(
-                                  hintText: 'Enter Address',
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                            ),
+                            child: StreamBuilder<List<Address>>(
+                                stream: _addressService.stream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data != null &&
+                                      snapshot.data!.isEmpty) {
+                                    return Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border:
+                                                Border.all(color: Colors.grey)),
+                                        child: Row(
+                                          children: [
+                                            const Text(
+                                              'No Address Add New One',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Get.to(const AddressesPage());
+                                              },
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          ],
+                                        ));
+                                  }
+                                  return DropdownButtonFormField<Address?>(
+                                    validator: (value) {
+                                      if (selectedAddress == null ||
+                                          addressController.text.isEmpty) {
+                                        return 'Select Address';
+                                      }
+                                      return null;
+                                    },
+                                    value: selectedAddress,
+                                    items: snapshot.data == null
+                                        ? []
+                                        : [
+                                            ...snapshot.data!
+                                                .map((e) =>
+                                                    DropdownMenuItem<Address?>(
+                                                      value: e,
+                                                      child: Text(e.city),
+                                                    ))
+                                                .toList()
+                                          ],
+                                    onChanged: (value) {
+                                      selectedAddress = value;
+                                      addressController.text =
+                                          selectedAddress!.id ?? '';
+                                    },
+                                    // controller: addressController,
+                                    decoration: InputDecoration(
+                                        hintText: 'Enter Address',
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                  );
+                                }),
                           ),
                         ],
                       ),
@@ -391,40 +482,40 @@ class _CheckHomeState extends State<CheckHome> {
                       //         );
                       //       }),
                       // ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15, top: 20),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'View available coupon',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(20),
-                            width: Get.width * .6,
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: 'Enter Coupon code',
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.greenAccent),
-                                child: const Text('Apply')),
-                          )
-                        ],
-                      ),
+                      // Container(
+                      //   margin: const EdgeInsets.only(left: 15, top: 20),
+                      //   alignment: Alignment.centerLeft,
+                      //   child: const Text(
+                      //     'View available coupon',
+                      //     style: TextStyle(
+                      //         fontSize: 18.0,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: Colors.black),
+                      //   ),
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     Container(
+                      //       margin: const EdgeInsets.all(20),
+                      //       width: Get.width * .6,
+                      //       child: TextFormField(
+                      //         decoration: InputDecoration(
+                      //             hintText: 'Enter Coupon code',
+                      //             enabledBorder: OutlineInputBorder(
+                      //                 borderRadius: BorderRadius.circular(10))),
+                      //       ),
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.only(right: 20),
+                      //       child: ElevatedButton(
+                      //           onPressed: () {},
+                      //           style: ElevatedButton.styleFrom(
+                      //               backgroundColor: Colors.greenAccent),
+                      //           child: const Text('Apply')),
+                      //     )
+                      //   ],
+                      // ),
                       StreamBuilder<List<CartItem>>(
                         stream: CartService().getCartItems(FirebaseAuth
                             .instance.currentUser!.uid
@@ -515,9 +606,9 @@ class _CheckHomeState extends State<CheckHome> {
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
-                                      const Text(
-                                        '30 SR',
-                                        style: TextStyle(
+                                      Text(
+                                        '${(totalPrice * .15).toStringAsFixed(1)} SR',
+                                        style: const TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -578,9 +669,11 @@ class _CheckHomeState extends State<CheckHome> {
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
-                                      const Text(
-                                        '230 SR',
-                                        style: TextStyle(
+                                      Text(
+                                        (totalPrice + (totalPrice * .15))
+                                                .toString() +
+                                            ' SR',
+                                        style: const TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -739,12 +832,13 @@ class _CheckHomeState extends State<CheckHome> {
                                 style: ElevatedButton.styleFrom(
                                     elevation: 10,
                                     backgroundColor: Colors.greenAccent),
-                                onPressed: () async{
-                              await    OrderService().placeOrder(
+                                onPressed: () async {
+                                  await OrderService().placeOrder(
                                       FirebaseAuth.instance.currentUser!.uid,
                                       cartItems,
                                       totalPrice,
-                                      addressController.text,
+                                      // addressController.text,
+                                      selectedAddress!,
                                       finalDate);
                                 },
                                 child: const Text(
@@ -757,7 +851,9 @@ class _CheckHomeState extends State<CheckHome> {
                                 style: ElevatedButton.styleFrom(
                                     elevation: 10,
                                     backgroundColor: Colors.white),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
                                 child: const Text(
                                   'cancle',
                                   style: TextStyle(color: Colors.black),

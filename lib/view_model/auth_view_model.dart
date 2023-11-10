@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/view/home_view.dart';
 
-import '../view/bottom_nav/screen1.dart';
-
 class AuthViewModel extends GetxController {
   bool isLoading = false;
   bool isPhotoLoading = false;
@@ -18,7 +16,21 @@ class AuthViewModel extends GetxController {
   Future<void> getUserProfile() async {
     userProfile = await _authService
         .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
+    if (userProfile!.isAdmin == true) {
+      isAdmin = true;
+    }
     update();
+  }
+
+// check if user is admin
+  Future<bool> checkIfAdmin() async {
+    userProfile = await _authService
+        .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
+    if (userProfile!.isAdmin == true) {
+      isAdmin = true;
+    }
+    update();
+    return isAdmin;
   }
 
   Future<void> uploadUserPhoto(String _imageFile) async {
@@ -55,14 +67,16 @@ class AuthViewModel extends GetxController {
       var data = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       _authService.createUserProfile(
-          userId: data.user!.uid,
+        userId: data.user!.uid,
           name: name!,
           phone: phone!,
           cr: cr!,
           vat: vat!);
 
       userProfile = await _authService.getUserProfile(data.user!.uid);
-
+      if (userProfile!.isAdmin == true) {
+        isAdmin = true;
+      }
       Get.to(const HomeView());
     } catch (e) {
       print(e);
@@ -81,8 +95,7 @@ class AuthViewModel extends GetxController {
     String? vat,
   }) async {
     try {
-      print('updating');
-      print(name);
+      
       Get.snackbar(
         'Loading',
         'please wait',
@@ -121,9 +134,11 @@ class AuthViewModel extends GetxController {
       var data = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       userProfile = await _authService.getUserProfile(data.user!.uid);
-
+      if (userProfile!.isAdmin == true) {
+        isAdmin = true;
+      }
       isLoading = false;
-      Get.to(Screen1());
+      Get.to(const HomeView());
       print(data);
     } catch (e) {
       isLoading = true;

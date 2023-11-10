@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class CartItem {
   final String id;
@@ -16,6 +18,7 @@ class CartItem {
       'productName': productName,
       'price': price,
       'quantity': quantity,
+      'image': image,
     };
   }
 
@@ -68,6 +71,17 @@ class CartService {
         'userId': userId,
         'image': image,
       });
+      showSimpleNotification(Text("done_cart_message".tr),
+          leading: Builder(builder: (
+        context,
+      ) {
+        return IconButton(
+            onPressed: () {
+              //cancel
+              OverlaySupportEntry.of(context)!.dismiss();
+            },
+            icon: const Icon(Icons.cancel));
+      }), background: Colors.green);
     } else {
       // update the quantity
       await updateCartItemQuantity(productId, quantity! + 1);
@@ -92,9 +106,34 @@ class CartService {
       await removeCartItem(cartItemId);
     }
     if (newQuantity > 0) {
-      Get.snackbar('Done', 'Added to cart successfully');
+      showSimpleNotification(Text("done_cart_message".tr),
+          leading: Builder(builder: (
+        context,
+      ) {
+        return IconButton(
+            onPressed: () {
+              //cancel
+              OverlaySupportEntry.of(context)!.dismiss();
+            },
+            icon: const Icon(Icons.cancel));
+      }), background: Colors.green);
+      // Get.closeAllSnackbars();
+      // Get.snackbar('Done', 'Added to cart successfully');
     } else {
-      Get.snackbar('Done', 'Removed to cart successfully');
+      showSimpleNotification(Text("done_cart_message".tr),
+          leading: Builder(builder: (
+        context,
+      ) {
+        return IconButton(
+            onPressed: () {
+              //cancel
+              OverlaySupportEntry.of(context)!.dismiss();
+            },
+            icon: const Icon(Icons.cancel));
+      }), background: Colors.green);
+      // Get.closeAllSnackbars();
+
+      // Get.snackbar('Done', 'Removed to cart successfully');
     }
   }
 
@@ -142,7 +181,6 @@ class CartService {
       return snapshot.docs.map((doc) => CartItem.fromSnapshot(doc)).toList();
     });
   }
-
 
 // get the total price of the cart
   Future<double> getTotalPrice(String userId) async {

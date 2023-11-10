@@ -20,7 +20,6 @@ class FirebaseStorageService {
       // Return the download URL
       return downloadUrl;
     } catch (e) {
-      print('Error uploading image: $e');
       return '';
     }
   }

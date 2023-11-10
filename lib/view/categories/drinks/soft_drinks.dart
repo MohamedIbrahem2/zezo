@@ -3,14 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/service/product_service.dart';
+import 'package:stockat/view/search.dart';
 import 'package:stockat/view_model/drinks/soft_-drinks_viewmodel.dart';
 
 import '../../../service/cart_service.dart';
 import '../../bottom_nav/cart.dart';
 import '../../bottom_nav/peoduct_details.dart';
 
-class SoftDrinks extends StatefulWidget {
-  const SoftDrinks(
+class SubCategoriesProducts extends StatefulWidget {
+  const SubCategoriesProducts(
       {Key? key,
       required this.subCategoryId,
       required this.categoryId,
@@ -20,10 +21,10 @@ class SoftDrinks extends StatefulWidget {
   final String categoryId;
   final String subCategoryName;
   @override
-  State<SoftDrinks> createState() => _DrinksItemsState();
+  State<SubCategoriesProducts> createState() => _DrinksItemsState();
 }
 
-class _DrinksItemsState extends State<SoftDrinks> {
+class _DrinksItemsState extends State<SubCategoriesProducts> {
   int count = 1;
   var controller = Get.put(SoftDrinksViewModel());
 
@@ -35,20 +36,21 @@ class _DrinksItemsState extends State<SoftDrinks> {
           IconButton(
             icon: const Icon(Icons.search_rounded),
             onPressed: () {
-              setState(() {
-                Get.defaultDialog(
-                    title: 'search',
-                    barrierDismissible: false,
-                    middleText: 'Search',
-                    content: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20))),
-                      ),
-                    ));
-              });
+              Get.to(const Search());
+              // setState(() {
+              //   Get.defaultDialog(
+              //       title: 'search',
+              //       barrierDismissible: false,
+              //       middleText: 'Search',
+              //       content: Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 20),
+              //         child: TextFormField(
+              //           decoration: InputDecoration(
+              //               enabledBorder: OutlineInputBorder(
+              //                   borderRadius: BorderRadius.circular(20))),
+              //         ),
+              //       ));
+              // });
             },
           ),
           GestureDetector(
@@ -236,12 +238,12 @@ class _DrinksItemsState extends State<SoftDrinks> {
                                               product.id,
                                               FirebaseAuth
                                                   .instance.currentUser!.uid);
-                                      if (result != null && result > 0) {
-                                        // remove snakebar
+                                      // if (result != null && result > 0) {
+                                      //   // remove snakebar
 
-                                        Get.snackbar(
-                                            'Sorry', 'Product already in cart');
-                                      }
+                                      //   Get.snackbar(
+                                      //       'Sorry', 'Product already in cart');
+                                      // }
                                       CartService().addToCart(
                                         productId: product.id,
                                         productName: product.name,

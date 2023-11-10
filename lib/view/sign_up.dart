@@ -34,7 +34,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                   height: Get.height * .07,
                 ),
                 Image.asset(
-                  'logos/logo.jpg',
+                  'images/logo2.png',
                   width: Get.width * .7,
                   height: Get.height * .2,
                 ),
@@ -56,7 +56,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Welcome,',
+                              'Welcome',
                               style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.w500,

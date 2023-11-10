@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/service/category_service.dart';
 import 'package:stockat/view/categories/drinks/soft_drinks.dart';
 
 import '../../../service/subcategory_service.dart';
 
-class DrinksHome extends StatefulWidget {
-  const DrinksHome({Key? key, required this.categoryId}) : super(key: key);
+class SubCategoriesScreen extends StatefulWidget {
+  const SubCategoriesScreen({Key? key, required this.categoryId})
+      : super(key: key);
   final String categoryId;
 
   @override
-  State<DrinksHome> createState() => _DrinksHomeState();
+  State<SubCategoriesScreen> createState() => _SubCategoriesScreenState();
 }
 
-class _DrinksHomeState extends State<DrinksHome> {
+class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   String? searchValue;
+  late Future<Category> getCategoryFuture;
+  @override
+  void initState() {
+    getCategoryFuture = CategoryService().getCategory(widget.categoryId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +29,24 @@ class _DrinksHomeState extends State<DrinksHome> {
       appBar: AppBar(
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Drinks',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: FutureBuilder<Category>(
+          future: getCategoryFuture,
+          builder: (context, state) {
+            if (state.hasData) {
+              final category = state.data;
+              final name = category == null ? '' : category.name;
+              return Text(
+                name,
+                style: const TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              );
+            }
+            return const Text(
+              '...',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            );
+          },
         ),
         backgroundColor: Colors.blue.shade50,
       ),
@@ -88,7 +111,7 @@ class _DrinksHomeState extends State<DrinksHome> {
                         final subcategory = subcategories[index];
                         return GestureDetector(
                           onTap: () {
-                            Get.to(SoftDrinks(
+                            Get.to(SubCategoriesProducts(
                                 subCategoryId: subcategory.id,
                                 categoryId: widget.categoryId,
                                 subCategoryName: subcategory.name));

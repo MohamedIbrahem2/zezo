@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import '../../main.dart';
 
 class Language extends StatefulWidget {
   const Language({Key? key}) : super(key: key);
@@ -18,9 +21,9 @@ class _LanguageState extends State<Language> {
         centerTitle: true,
         backgroundColor: Colors.blue.shade50,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Language ',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          'language'.tr,
+          style: const TextStyle(color: Colors.black),
         ),
       ),
       body: Column(
@@ -32,9 +35,9 @@ class _LanguageState extends State<Language> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Select your favourite language',
-                style: TextStyle(
+              Text(
+                'select_your_favourite_language'.tr,
+                style: const TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: Colors.greenAccent),
@@ -58,26 +61,32 @@ class _LanguageState extends State<Language> {
               'English',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
             ),
-            value: true,
+            value: context.watch<LocalizationProvider>().locale ==
+                    const Locale('en')
+                ? true
+                : false,
             groupValue: value,
             onChanged: (dynamic val) {
-              setState(() {
-                value = val;
-              });
+              context
+                  .read<LocalizationProvider>()
+                  .setLocale(const Locale('en'));
             },
           ),
           RadioListTile(
             activeColor: Colors.greenAccent,
             title: const Text(
-              'Arabic',
+              'عربي',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
             ),
-            value: false,
+            value: context.watch<LocalizationProvider>().locale ==
+                    const Locale('ar')
+                ? true
+                : false,
             groupValue: value,
             onChanged: (dynamic val) {
-              setState(() {
-                value = val;
-              });
+              context
+                  .read<LocalizationProvider>()
+                  .setLocale(const Locale('ar'));
             },
           ),
           SizedBox(
@@ -88,9 +97,9 @@ class _LanguageState extends State<Language> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.greenAccent,
                   fixedSize: Size.fromWidth(Get.width * .8)),
-              child: const Text(
-                'Ok',
-                style: TextStyle(
+              child: Text(
+                'Ok'.tr,
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),

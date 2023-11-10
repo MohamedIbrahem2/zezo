@@ -5,6 +5,7 @@ import 'package:stockat/view/bottom_nav/edit_product.dart';
 
 import '../../service/cart_service.dart';
 import '../../service/product_service.dart';
+import '../my_page_screens/qr_product_view.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product product;
@@ -75,6 +76,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                             icon: const Icon(Icons.edit),
                           ),
                           const SizedBox(width: 8),
+
+                          // qr code button
+
+                          IconButton(
+                              onPressed: () {
+                                Get.to(ProductQrImageView(
+                                    id: product.id, productName: product.name));
+                              },
+                              icon: const Icon(Icons.qr_code_scanner_outlined))
+
                           // IconButton(
                           //   onPressed: () {
                           //     // ProductService().deleteProduct(product.id);

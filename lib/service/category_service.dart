@@ -56,6 +56,12 @@ class CategoryService {
   final CollectionReference _categoryCollectionRef =
       FirebaseFirestore.instance.collection('categories');
 
+// get Category
+  Future<Category> getCategory(String id) async {
+    final doc = await _categoryCollectionRef.doc(id).get();
+    return Category.fromSnapshot(doc);
+  }
+
   Stream<List<Category>> getCategories() {
     final collection = FirebaseFirestore.instance.collection('categories');
     return collection.snapshots().map((snapshot) {

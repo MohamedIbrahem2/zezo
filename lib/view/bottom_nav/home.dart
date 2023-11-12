@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/category_service.dart';
@@ -11,6 +14,7 @@ import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/peoduct_details.dart';
 import 'package:stockat/view/categories/drinks/drinks_home.dart';
 import 'package:stockat/view/drawer_screens/add_subcategory_screen.dart';
+import 'package:stockat/view/my_page_screens/orders_management.dart';
 import 'package:stockat/view/my_page_screens/our_location_page.dart';
 import 'package:stockat/view/sign_in.dart';
 
@@ -20,7 +24,6 @@ import '../drawer_screens/add_category_screen.dart';
 import '../drawer_screens/add_products_screen.dart';
 import '../drawer_screens/language.dart';
 import '../drawer_screens/obout_us.dart';
-import '../drawer_screens/offershome.dart';
 import '../drawer_screens/prfile_screen.dart';
 import '../drawer_screens/technical_support.dart';
 import '../drawer_screens/wallet.dart';
@@ -30,8 +33,20 @@ import '../ofeers/offer2.dart';
 import '../ofeers/offer3.dart';
 import '../search.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   List<Widget> items = [
     GestureDetector(
       onTap: () {
@@ -77,8 +92,6 @@ class HomePage extends StatelessWidget {
       ),
     ),
   ];
-
-  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,45 +155,6 @@ class HomePage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         title: Image.asset('images/logo2.png', width: 100, height: 100),
-
-        // const Text.rich(TextSpan(children: [
-        //   TextSpan(
-        //       text: 'S',
-        //       style: TextStyle(
-        //           fontSize: 40,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.deepPurple)),
-        //   TextSpan(
-        //       text: 't',
-        //       style: TextStyle(
-        //           fontSize: 25,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.blue)),
-        //   TextSpan(
-        //       text: 'o',
-        //       style: TextStyle(
-        //           fontSize: 25,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.blue)),
-        //   TextSpan(
-        //       text: 'ck',
-        //       style: TextStyle(
-        //           fontSize: 25,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.blue)),
-        //   TextSpan(
-        //       text: 'A',
-        //       style: TextStyle(
-        //           fontSize: 40,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.deepPurple)),
-        //   TextSpan(
-        //       text: 'T',
-        //       style: TextStyle(
-        //           fontSize: 40,
-        //           fontWeight: FontWeight.bold,
-        //           color: Colors.deepPurple)),
-        // ])),
         centerTitle: true,
         elevation: 0,
       ),
@@ -196,7 +170,6 @@ class HomePage extends StatelessWidget {
               alignment: Alignment.center,
               color: Colors.blue.shade50,
             ),
-
             ListTile(
               title: Text(
                 'wallet'.tr,
@@ -217,18 +190,18 @@ class HomePage extends StatelessWidget {
                 Get.to(const TechnicalSupport());
               },
             ),
-            GestureDetector(
-              child: ListTile(
-                title: Text(
-                  'offers'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const OffersHome());
-                },
-              ),
-            ),
+            // GestureDetector(
+            //   child: ListTile(
+            //     title: Text(
+            //       'offers'.tr,
+            //       style: const TextStyle(
+            //           fontSize: 18, fontWeight: FontWeight.bold),
+            //     ),
+            //     onTap: () {
+            //       Get.to(const OffersHome());
+            //     },
+            //   ),
+            // ),
             GestureDetector(
               child: ListTile(
                 title: Text(
@@ -251,13 +224,6 @@ class HomePage extends StatelessWidget {
                 Get.to(const Language());
               },
             ),
-            // ListTile(
-            //   title: const Text(
-            //     '-My account statement',
-            //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            //   ),
-            //   onTap: () {},
-            // ),
             GestureDetector(
               onTap: () {
                 Get.to(const AboutUs());
@@ -280,7 +246,18 @@ class HomePage extends StatelessWidget {
                 Get.to(const OurLocationPage());
               },
             ),
-            if (isAdmin)
+            if (context.watch<AdminProvider>().isAdmin)
+              ListTile(
+                title: Text(
+                  'orders Management'.tr,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const OrdersManagement());
+                },
+              ),
+            if (context.watch<AdminProvider>().isAdmin)
               ListTile(
                 title: Text(
                   'admins'.tr,
@@ -291,7 +268,7 @@ class HomePage extends StatelessWidget {
                   Get.to(const AdminsPage());
                 },
               ),
-            if (isAdmin)
+            if (context.watch<AdminProvider>().isAdmin)
               ListTile(
                 title: Text(
                   'add category'.tr,
@@ -302,7 +279,7 @@ class HomePage extends StatelessWidget {
                   Get.to(const AddCategoryScreen());
                 },
               ),
-            if (isAdmin)
+            if (context.watch<AdminProvider>().isAdmin)
               ListTile(
                 title: Text(
                   'add subcategory'.tr,
@@ -313,7 +290,7 @@ class HomePage extends StatelessWidget {
                   Get.to(const AddSubCategoryScreen());
                 },
               ),
-            if (isAdmin)
+            if (context.watch<AdminProvider>().isAdmin)
               ListTile(
                 title: Text(
                   'add product'.tr,
@@ -324,6 +301,34 @@ class HomePage extends StatelessWidget {
                   Get.to(const AddProductScreen());
                 },
               ),
+            ListTile(
+              title: Row(
+                children: [
+                  Text(
+                    'share app'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Icon(
+                    Icons.share,
+                    color: Colors.black,
+                  )
+                ],
+              ),
+              onTap: () async {
+                // Set the app link and the message to be shared
+                const String appLink =
+                    'https://play.google.com/store/apps/details?id=com.example.myapp';
+                const String message = 'Share our app with others: $appLink';
+
+                // Share the app link and message using the share dialog
+                await FlutterShare.share(
+                    title: 'Share App', text: message, linkUrl: appLink);
+              },
+            ),
             GestureDetector(
               onTap: () {
                 Get.defaultDialog(
@@ -456,8 +461,8 @@ class HomePage extends StatelessWidget {
                                         blurRadius: 4)
                                   ]),
                                   margin: const EdgeInsets.all(8),
-                                  child: Image.network(
-                                    category.image,
+                                  child: CachedNetworkImage(
+                                    imageUrl: category.image,
                                     fit: BoxFit.fill,
                                   ),
                                   width: Get.width * .27,
@@ -536,8 +541,8 @@ class HomePage extends StatelessWidget {
                                                 spreadRadius: 1,
                                                 blurRadius: 4)
                                           ]),
-                                      child: Image.network(
-                                        product.image,
+                                      child: CachedNetworkImage(
+                                        imageUrl: product.image,
                                         fit: BoxFit.fill,
                                       ),
                                       width: Get.width * .3,
@@ -636,21 +641,24 @@ class OfferCarousel extends StatelessWidget {
 
         return GestureDetector(
           child: CarouselSlider(
-            items: offers.map((offer) {
+            items: [
+              {"image": "images/offer_image2.jpeg"},
+              {"image": "images/offer_image1.jpeg"},
+            ].map((offer) {
               return Builder(
                 builder: (BuildContext context) {
                   return GestureDetector(
                     onTap: () {
-                      if (offer.type == 'package') {
-                        Get.to(() => Offer1(
-                              offerId: offer.id,
-                            ));
-                      }
-                      if (offer.type == 'discount') {
-                        Get.to(() => Offer2(
-                              offer: offer,
-                            ));
-                      }
+                      // if (offer.type == 'package') {
+                      //   Get.to(() => Offer1(
+                      //         offerId: offer.id,
+                      //       ));
+                      // }
+                      // if (offer.type == 'discount') {
+                      //   Get.to(() => Offer2(
+                      //         offer: offer,
+                      //       ));
+                      // }
                     },
                     child: Container(
                       // width: 200, height: 200,
@@ -669,7 +677,7 @@ class OfferCarousel extends StatelessWidget {
                           )
                         ],
                         image: DecorationImage(
-                          image: NetworkImage(offer.image),
+                          image: AssetImage(offer['image'] as String),
                           fit: BoxFit.fill,
                         ),
                       ),

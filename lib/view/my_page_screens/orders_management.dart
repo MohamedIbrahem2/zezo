@@ -1,29 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/order_service.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:stockat/view/my_page_screens/orders_management_provider.dart';
 
 import '../../service/address_service.dart';
-import 'oreders_provider.dart';
 
 String formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';
 
-class OrderHistory extends StatefulWidget {
-  const OrderHistory({super.key});
-  static _OrderHistoryState of(BuildContext context) =>
-      context.findAncestorStateOfType<_OrderHistoryState>()!;
+class OrdersManagement extends StatefulWidget {
+  const OrdersManagement({super.key});
+  static _OrdersManagementState of(BuildContext context) =>
+      context.findAncestorStateOfType<_OrdersManagementState>()!;
   @override
-  State<OrderHistory> createState() => _OrderHistoryState();
+  State<OrdersManagement> createState() => _OrdersManagementState();
 }
 
-class _OrderHistoryState extends State<OrderHistory> {
+class _OrdersManagementState extends State<OrdersManagement> {
   @override
   void initState() {
-    context.read<OrdersHistoryProvider>().fetchOrders();
+    context.read<OrdersManagementProvider>().fetchOrders();
     super.initState();
   }
 
@@ -36,9 +34,9 @@ class _OrderHistoryState extends State<OrderHistory> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade100,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          'Order history',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          'orders Management'.tr,
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
@@ -57,61 +55,8 @@ class AddressItem extends StatelessWidget {
     return ListTile(
       title: Text(address.street),
       subtitle: Text('${address.city}, ${address.state} ${address.postalCode}'),
-      trailing: IconButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => OrderMap(
-                        address: address,
-                      )));
-        },
-        icon: const Icon(Icons.map),
-      ),
       // You can customize the rest of the UI for the address item as needed
       // For example, you might want to show the description or location on a map.
-    );
-  }
-}
-
-class OrderMap extends StatelessWidget {
-  const OrderMap({Key? key, required this.address}) : super(key: key);
-  final Address address;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(address.street),
-      ),
-      body: Stack(
-        children: [
-          GoogleMap(
-            markers: {
-              Marker(
-                  markerId: MarkerId(address.id!),
-                  position: LatLng(address.latitude, address.longitude))
-            },
-            initialCameraPosition: CameraPosition(
-                target: LatLng(address.latitude, address.longitude), zoom: 15),
-          ),
-
-          // button to open google map app
-          Positioned(
-            bottom: 20,
-            left: 10,
-            right: 10,
-            child: ElevatedButton(
-              onPressed: () {
-                final url =
-                    'https://www.google.com/maps/dir/?api=1&destination=${address.latitude},${address.longitude}';
-                launchUrl(Uri.parse(url));
-              },
-              child: const Text('follow the delivery on google map'),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
@@ -171,7 +116,7 @@ class _StatusTapsState extends State<StatusTaps> {
 
   @override
   Widget build(BuildContext context) {
-    final orderHistory = context.watch<OrdersHistoryProvider>();
+    final OrdersManagement = context.watch<OrdersManagementProvider>();
     return Column(
       children: [
         SizedBox(
@@ -181,21 +126,22 @@ class _StatusTapsState extends State<StatusTaps> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  for (var status in orderHistory.statuses)
+                  for (var status in OrdersManagement.statuses)
                     InkWell(
                       onTap: () {
-                        orderHistory.status = (status);
+                        OrdersManagement.status = (status);
                       },
                       child: Container(
                         margin: const EdgeInsets.only(right: 10),
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color:
-                                context.watch<OrdersHistoryProvider>().status ==
-                                        status
-                                    ? Colors.blue.shade100
-                                    : Colors.greenAccent.shade100,
+                            color: context
+                                        .watch<OrdersManagementProvider>()
+                                        .status ==
+                                    status
+                                ? Colors.blue.shade100
+                                : Colors.greenAccent.shade100,
                             boxShadow: const [
                               BoxShadow(
                                   blurRadius: 2,
@@ -209,11 +155,11 @@ class _StatusTapsState extends State<StatusTaps> {
               ),
             )),
         Expanded(
-          child: orderHistory.isLoading
+          child: OrdersManagement.isLoading
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : orderHistory.orders
+              : OrdersManagement.orders
                       .where((element) => element.address != null)
                       .isEmpty
                   ? Center(
@@ -226,11 +172,11 @@ class _StatusTapsState extends State<StatusTaps> {
                           color: Colors.grey.shade300,
                         );
                       },
-                      itemCount: orderHistory.orders
+                      itemCount: OrdersManagement.orders
                           .where((element) => element.address != null)
                           .length,
                       itemBuilder: (context, index) {
-                        final order = orderHistory.orders
+                        final order = OrdersManagement.orders
                             .where((element) => element.address != null)
                             .toList()[index];
                         // UserProfile? userProfile;
@@ -307,8 +253,6 @@ class _OrderItemState extends State<OrderItem> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
-          // user info
-
           AddressItem(
             address: widget.order.address!,
           ),
@@ -357,136 +301,7 @@ class _OrderItemState extends State<OrderItem> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('User Info',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-              IconButton(
-                  onPressed: () {
-                    final auth = AuthService();
-                    showDialog(
-                        context: context,
-                        builder: (c) => Dialog(
-                              child: SizedBox(
-                                height: 200,
-                                child: FutureBuilder<UserProfile>(
-                                    future: auth.getUserProfile(order.userId),
-                                    builder: (context, snapHot) {
-                                      if (snapHot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                      final userProfile = snapHot.data;
-                                      return Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            // ListTile(
-                                            //   title: const Text('User Name'),
-                                            //   trailing: Text(userProfile!.name),
-                                            // ),
 
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  userProfile!.name,
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  'User Phone',
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      userProfile.phone,
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          launchUrl(Uri.parse(
-                                                              'tel:${userProfile.phone}'));
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.phone,
-                                                          color: Colors.blue,
-                                                        )),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  'User Email',
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      userProfile.email ?? '',
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          launchUrl(Uri.parse(
-                                                              'mailto:${userProfile.email}'));
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.email,
-                                                          color: Colors.blue,
-                                                        )),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            // ListTile(
-                                            //   title: const Text('User Email'),
-                                            //   trailing:
-                                            //       Text(userProfile.email ?? ''),
-                                            // ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ));
-                  },
-                  icon: const Icon(
-                    Icons.info,
-                    color: Colors.blue,
-                  ))
-            ],
-          ),
           // user photo
           // Row(
           //   children: [
@@ -533,6 +348,44 @@ class _OrderItemState extends State<OrderItem> {
               title: const Text('Invoice Number'),
               trailing: Text(widget.order.invoiceNumber!),
             ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (context.watch<OrdersManagementProvider>().status !=
+                  'delivered')
+                ElevatedButton(
+                    onPressed: () async {
+                      context
+                          .read<OrdersManagementProvider>()
+                          .updateOrderStatusAction(order.id, order.userId);
+                    },
+                    child: Text(context
+                        .watch<OrdersManagementProvider>()
+                        .getActionText(order.status!))),
+              if (!context.watch<AdminProvider>().isAdmin && order.status == 'pending')
+                ElevatedButton(
+                    onPressed: () async {
+                      context
+                          .read<OrdersManagementProvider>()
+                          .updateOrderStatusAction(order.id, order.userId);
+                    },
+                    child: Text(context
+                        .watch<OrdersManagementProvider>()
+                        .getActionText(order.status!))),
+              if (order.status == 'pending' || order.status == 'processing')
+                const SizedBox(
+                  width: 10,
+                ),
+              if (order.status == 'pending' || order.status == 'processing')
+                ElevatedButton(
+                    onPressed: () async {
+                      context
+                          .read<OrdersManagementProvider>()
+                          .cancelOrder(order.id);
+                    },
+                    child: const Text('Cancel Order'))
+            ],
+          ),
         ],
       ),
     );

@@ -109,9 +109,10 @@ class FcmProvider {
 
     if (_token != null) {
       token = _token;
+
       saveTokenToFirestore(FirebaseAuth.instance.currentUser!.uid);
     }
-    print(token);
+  
     FirebaseMessaging.instance.onTokenRefresh.listen((event) async {
       token = event;
       await saveTokenToFirestore(FirebaseAuth.instance.currentUser!.uid);

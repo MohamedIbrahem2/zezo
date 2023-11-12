@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockat/service/category_service.dart';
@@ -128,8 +129,8 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                                           color: Colors.grey)
                                     ]),
                                 margin: const EdgeInsets.only(bottom: 10),
-                                child: Image.network(
-                                  subcategory.image,
+                                child: CachedNetworkImage(
+                                  imageUrl: subcategory.image,
                                   fit: BoxFit.fill,
                                 ),
                                 width: Get.width * .4,

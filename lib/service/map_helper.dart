@@ -6,12 +6,33 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapHelper extends ChangeNotifier {
   late GoogleMapController controller;
   final CameraPosition initialPosition = const CameraPosition(
-    target: LatLng(30.22555111681319, 31.465171657209957),
+    target:
+        // ksa location
+        LatLng(24.7135517, 46.6752957),
+    // LatLng(30.22555111681319, 31.465171657209957),
     zoom: 15,
   );
   void init(GoogleMapController ctr) {
     controller = ctr;
     addMarker(initialPosition.target);
+  }
+
+  // set current location
+  void setCurrentLocation() async {
+    final position = await determinePosition();
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(
+            position.latitude,
+            position.longitude,
+          ),
+          zoom: 15,
+        ),
+      ),
+    );
+    addMarker(LatLng(position.latitude, position.longitude));
+    notifyListeners();
   }
 
   Future<Placemark> getAdressFromCurrent() async {

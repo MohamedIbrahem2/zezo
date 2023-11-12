@@ -11,4 +11,12 @@
 10 - print 
 
 
+## Last notes inshallah
+
+1- products details screen open only from admin
+2- address screen
+3- translate to arabic profile screen
+4- cancel in pending and proccing
+5- buttons be ligh green
+6- admin golbaly error
 

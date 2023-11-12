@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/main.dart';
 import 'package:stockat/service/order_service.dart';
 
 import '../../service/address_service.dart';
@@ -20,6 +21,21 @@ class _CheckHomeState extends State<CheckHome> {
   DateTime finalDate = DateTime.now();
   final addressController = TextEditingController();
   final dateController = TextEditingController();
+  List<TextEditingController> phoneNumbersController = [
+    TextEditingController()
+  ];
+  UserProfile? userProfile;
+  @override
+  void initState() {
+    AuthService()
+        .getUserProfile(FirebaseAuth.instance.currentUser!.uid)
+        .then((value) {
+      userProfile = value;
+      phoneNumbersController[0].text = userProfile!.phone ?? '';
+      setState(() {});
+    });
+    super.initState();
+  }
 
   getCurrentDate() {
     var date = DateTime.now().add(const Duration(days: 1)).toString();
@@ -49,20 +65,17 @@ class _CheckHomeState extends State<CheckHome> {
     DateTime.now(),
     DateTime.now(),
   ];
-// 
-
+//
 
   double count = 1.0;
   Future<void> _selectDate(BuildContext context) async {
     // all dayes except friday
-
 
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now().add(const Duration(days: 1)),
       firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime(2025),
-      
     );
     if (picked != null) {
       setState(() {
@@ -290,6 +303,32 @@ class _CheckHomeState extends State<CheckHome> {
                                   });
                             }),
                       ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left: 15, top: 30),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Name :',
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              userProfile!.name ?? '',
+                              style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
                       Container(
                         margin: const EdgeInsets.only(left: 15, top: 30),
                         alignment: Alignment.centerLeft,
@@ -370,11 +409,13 @@ class _CheckHomeState extends State<CheckHome> {
                                           selectedAddress!.id ?? '';
                                     },
                                     // controller: addressController,
-                                    decoration: InputDecoration(
-                                        hintText: 'Enter Address',
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
+                                    decoration: const InputDecoration(
+                                      labelText: 'Enter Address',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                    ),
                                   );
                                 }),
                           ),
@@ -420,23 +461,70 @@ class _CheckHomeState extends State<CheckHome> {
                         ),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             margin: const EdgeInsets.all(20),
                             width: Get.width * .6,
                             child: TextFormField(
-                              readOnly: true,
-                              controller: dateController,
-                              onTap: () {
-                                _selectDate(context);
-                              },
-                              decoration: InputDecoration(
-                                  hintText: 'Select Date',
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                            ),
+                                readOnly: true,
+                                controller: dateController,
+                                onTap: () {
+                                  _selectDate(context);
+                                },
+                                decoration: const InputDecoration(
+                                  labelText: 'Select Date',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                )),
                           ),
+                        ],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 15, top: 30),
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Phone Numbers',
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      for (var i in phoneNumbersController)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              width: Get.width * .6,
+                              child: TextFormField(
+                                  controller: i,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Phone Number',
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                phoneNumbersController
+                                    .add(TextEditingController());
+                                setState(() {});
+                              },
+                              icon: const Icon(
+                                Icons.add,
+                                color: Colors.purple,
+                              )),
                         ],
                       ),
                       // SizedBox(
@@ -637,6 +725,7 @@ class _CheckHomeState extends State<CheckHome> {
                                       ),
                                     ],
                                   ),
+
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -823,6 +912,31 @@ class _CheckHomeState extends State<CheckHome> {
                 onClosing: () {},
                 builder: (context) => GestureDetector(
                   onTap: () {
+                    if (totalPrice < 500) {
+                      Get.snackbar(
+                        '',
+                        'Minimum order is 500 SR',
+                        duration: const Duration(seconds: 2),
+                        snackPosition: SnackPosition.TOP,
+                        titleText: const Text(
+                          'Can\'t place order',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        messageText: const Text(
+                          'Minimum order is 500 SR',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: Colors.green,
+                      );
+                      return;
+                    }
+
                     Get.defaultDialog(
                         title: 'Are you sure to place order?',
                         content: Row(
@@ -839,7 +953,12 @@ class _CheckHomeState extends State<CheckHome> {
                                       totalPrice,
                                       // addressController.text,
                                       selectedAddress!,
-                                      finalDate);
+                                      finalDate,
+                                      phoneNumbersController
+                                          .map((e) => e.text)
+                                          .where(
+                                              (element) => element.isNotEmpty)
+                                          .toList());
                                 },
                                 child: const Text(
                                   'yes',

@@ -5,7 +5,6 @@ import 'package:stockat/view/sign_up.dart';
 
 import '../constants.dart';
 import '../view_model/auth_view_model.dart';
-import '../widgets/custom_text_form.dart';
 import 'forget_password_page.dart';
 
 class SignIn extends StatefulWidget {
@@ -85,7 +84,7 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.circular(5),
                             boxShadow: const []),
                         width: Get.width * .9,
-                        height: Get.height * .55,
+                        // height: Get.height * .55,
                         child: Form(
                           key: formKey,
                           child: Column(
@@ -126,55 +125,60 @@ class _SignInState extends State<SignIn> {
                               SizedBox(
                                 height: Get.height * .05,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
-                              CustomTextForm(
-                                onSave: (val) {
-                                  controller.email = val!;
+                              TextFormField(
+                                onChanged: (value) {
+                                  controller.email = value;
                                 },
-                                validate: (val) {
-                                  if (val == null) {
-                                    return 'email is empty';
+                                decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter email';
+                                  }
+
+                                  // regx
+                                  const pattern =
+                                      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+                                  final regExp = RegExp(pattern);
+                                  if (!regExp.hasMatch(value)) {
+                                    return 'Please enter valid email';
                                   }
                                   return null;
                                 },
-                                obsecure: false,
-                                hint: 'stockat@gmail.com',
                               ),
                               const SizedBox(
                                 height: 15,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'Password',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
-                              CustomTextForm(
-                                onSave: (val) {
-                                  controller.password = val!;
+                              TextFormField(
+                                onChanged: (value) {
+                                  controller.password = value;
                                 },
-                                validate: (val) {
-                                  if (val == null) {
-                                    return 'password is empty';
+                                decoration: const InputDecoration(
+                                  labelText: 'Password',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter password';
+                                  }
+                                  // if have white space
+                                  if (value.contains(' ')) {
+                                    return 'password must not contain white space';
+                                  }
+                                  // have to be more than 8 char
+                                  if (value.length < 8) {
+                                    return 'Password must be more than 8 char';
                                   }
                                   return null;
                                 },
-                                obsecure: false,
-                                secure: true,
-                                hint: '*************',
                               ),
                               const SizedBox(
                                 height: 10,
@@ -223,12 +227,15 @@ class _SignInState extends State<SignIn> {
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            Get.offAll(SignUp());
+                            Get.to(SignUp());
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                           ),
-                          child: const Text('New Customer'))
+                          child: const Text(
+                            'New Customer',
+                            style: TextStyle(color: Colors.white),
+                          ))
                     ],
                   ),
                 ),

@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockat/fcm_provider.dart';
 import 'package:stockat/view/home_view.dart';
+import 'package:stockat/view/my_page_screens/orders_management_provider.dart';
 import 'package:stockat/view/my_page_screens/oreders_provider.dart';
-import 'package:stockat/view_model/auth_view_model.dart';
 
 import 'bottom_navbar_provider.dart';
 import 'languages.dart';
@@ -39,6 +39,8 @@ main() async {
     ChangeNotifierProvider(create: (_) => BottomNavbarProvider()),
     ChangeNotifierProvider(create: (_) => OrdersHistoryProvider()),
     ChangeNotifierProvider(create: (_) => LocalizationProvider()..getLocale()),
+    ChangeNotifierProvider(create: (_) => OrdersManagementProvider()),
+    ChangeNotifierProvider(create: (_) => AdminProvider()),
   ], child: const App()));
 }
 
@@ -56,7 +58,7 @@ class _AppState extends State<App> {
     super.initState();
     if (user != null) {
       FcmProvider().initialize();
-      AuthViewModel().checkIfAdmin();
+      // AuthViewModel().checkIfAdmin();
     }
   }
 
@@ -123,15 +125,11 @@ class AuthService {
     required String userId,
     required String name,
     required String phone,
-    required String cr,
-    required String vat,
   }) async {
     try {
       await _firestore.collection('users').doc(userId).set({
         'name': name,
         'phone': phone,
-        'cr': cr,
-        'vat': vat,
       });
     } catch (e) {
       // Handle the error
@@ -174,6 +172,13 @@ class AuthService {
   Future<UserProfile> getUserProfile(String userId) async {
     //  get user email
     var userData = await _firestore.collection('users').doc(userId).get();
+    // check if have email
+    if (userData.data()!['email'] == null) {
+      await _firestore.collection('users').doc(userId).update({
+        'email': _auth.currentUser!.email,
+      });
+      userData = await _firestore.collection('users').doc(userId).get();
+    }
     return UserProfile.fromSnapshot(userData);
   }
 
@@ -253,6 +258,13 @@ class Address2 {
   final String address;
   final double lat;
   final double lng;
+  toMap() {
+    return {
+      'address': address,
+      'lat': lat,
+      'lng': lng,
+    };
+  }
 
   Address2({
     required this.address,
@@ -262,6 +274,11 @@ class Address2 {
 }
 
 class UserProfile {
+  @override
+  String toString() {
+    return 'UserProfile(name: $name, phone: $phone, cr: $cr, role: $role, vat: $vat, addresses: $addresses, isAdmin: $isAdmin, email: $email)';
+  }
+
   final String? id;
   final String name;
   final String phone;
@@ -271,6 +288,21 @@ class UserProfile {
   final String? photo;
   final bool isAdmin;
   final String? email;
+  // to map
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'phone': phone,
+      'cr': cr,
+      'role': role,
+      'vat': vat,
+      'photo': photo,
+      'isAdmin': isAdmin,
+      'email': email,
+      'addresses': addresses.map((x) => x.toMap()).toList(),
+    };
+  }
+
 // addressess
   final List<Address2> addresses;
 
@@ -318,5 +350,48 @@ class UserProfile {
   }
 }
 
-bool isAdmin = false;
+// bool isAdmin = false;
 const apiKey = 'AIzaSyC8_AQ4MtlbeQEHmHIHUWS8XbGemthwqgQ';
+// hello pople we will go around g
+
+class AdminProvider extends ChangeNotifier {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<UserProfile> _admins = [];
+  List<UserProfile> get admins => _admins;
+
+// singelton
+  static final AdminProvider _instance = AdminProvider._internal();
+  factory AdminProvider() => _instance;
+  AdminProvider._internal() {
+    // getAdmins();
+  }
+  bool isAdmin = false;
+
+  void checkIfAdmin() async {
+    isAdmin = false;
+    notifyListeners();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final userProfile = await AuthService().getUserProfile(user.uid);
+      if (userProfile.isAdmin == true || userProfile.role == 'admin') {
+        isAdmin = true;
+      }
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> getAdmins() async {
+    try {
+      final adminsData = await _firestore
+          .collection('users')
+          .where('isAdmin', isEqualTo: true)
+          .get();
+      _admins =
+          adminsData.docs.map((doc) => UserProfile.fromSnapshot(doc)).toList();
+      notifyListeners();
+    } catch (e) {
+      print('Error getting admins: $e');
+    }
+  }
+}

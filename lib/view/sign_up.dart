@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stockat/constants.dart';
-import 'package:stockat/widgets/custom_text_form.dart';
 
 import '../view_model/auth_view_model.dart';
 
@@ -47,7 +47,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                         BoxShadow(blurRadius: 2, color: Colors.grey)
                       ]),
                   width: Get.width * .9,
-                  height: Get.height * .99,
+                  // height: Get.height * .99,
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -87,159 +87,131 @@ class SignUp extends GetWidget<AuthViewModel> {
                         SizedBox(
                           height: Get.height * .02,
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'Name',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
-                          ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.name = val;
+                        TextFormField(
+                          controller: name,
+                          onChanged: (value) {
+                            controller.name = value;
                           },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'email is empty';
+                          decoration: const InputDecoration(
+                            labelText: 'Name',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter name';
                             }
                             return null;
                           },
-                          obsecure: false,
-                          hint: 'stockat',
                         ),
-                        const SizedBox(
-                          height: 15,
+                        SizedBox(
+                          height: Get.height * .02,
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'phone',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
+
+                        IntlPhoneField(
+                          controller: phone,
+                          decoration: const InputDecoration(
+                            labelText: 'Phone Number',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
                           ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.phone = val;
+                          initialCountryCode: 'SA',
+                          onChanged: (value) {
+                            controller.phone = value.completeNumber;
                           },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'email is empty';
+                          validator: (value) {
+                            if (value!.number.isEmpty) {
+                              return 'Please enter phone';
+                            }
+                            // regx
+                            const pattern =
+                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+                            final regExp = RegExp(pattern);
+                            if (!regExp.hasMatch(value.number)) {
+                              return 'Please enter valid phone';
                             }
                             return null;
                           },
-                          obsecure: false,
-                          hint: '0540814644',
                         ),
-                        const SizedBox(
-                          height: 15,
+                        // TextFormField(
+                        //   controller: phone,
+                        //   decoration: const InputDecoration(
+                        //     labelText: 'Phone',
+                        //     border: OutlineInputBorder(
+                        //       borderRadius:
+                        //           BorderRadius.all(Radius.circular(10)),
+                        //     ),
+                        //   ),
+                        //   validator: (value) {
+                        //     if (value!.isEmpty) {
+                        //       return 'Please enter phone';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: Get.height * .02,
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'C.R',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
-                          ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.cr = val;
+                        TextFormField(
+                          controller: email,
+                          onChanged: (value) {
+                            controller.email = value;
                           },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'email is empty';
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter email';
+                            }
+
+                            // regx
+                            const pattern =
+                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+                            final regExp = RegExp(pattern);
+                            if (!regExp.hasMatch(value)) {
+                              return 'Please enter valid email';
                             }
                             return null;
                           },
-                          obsecure: false,
-                          hint: '3185400003',
                         ),
-                        const SizedBox(
-                          height: 15,
+                        SizedBox(
+                          height: Get.height * .02,
                         ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'vat number',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
-                          ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.vat = val;
+                        TextFormField(
+                          controller: password,
+                          onChanged: (value) {
+                            controller.password = value;
                           },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'email is empty';
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter password';
+                            }
+                            // if have white space
+                            if (value.contains(' ')) {
+                              return 'password must not contain white space';
+                            }
+                            // have to be more than 8 char
+                            if (value.length < 8) {
+                              return 'Password must be more than 8 char';
                             }
                             return null;
                           },
-                          obsecure: false,
-                          hint: '318540003',
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'Email',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
-                          ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.email = val!;
-                          },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'email is empty';
-                            }
-                            return null;
-                          },
-                          obsecure: false,
-                          hint: 'stockat@gmail.com',
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            'Password',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.grey),
-                          ),
-                        ),
-                        CustomTextForm(
-                          onSave: (val) {
-                            controller.password = val!;
-                          },
-                          validate: (val) {
-                            if (val == null) {
-                              return 'password is empty';
-                            }
-                            return null;
-                          },
-                          obsecure: false,
-                          secure: true,
-                          hint: '*************',
                         ),
                         const SizedBox(
                           height: 10,
@@ -276,7 +248,9 @@ class SignUp extends GetWidget<AuthViewModel> {
                   height: Get.height * .05,
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/main.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/profile.dart';
 import 'package:stockat/view_model/auth_view_model.dart';
@@ -20,6 +21,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
+    AdminProvider().checkIfAdmin();
     super.initState();
   }
 

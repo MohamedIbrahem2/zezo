@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:stockat/main.dart';
 import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/search.dart';
 import 'package:stockat/view_model/drinks/soft_-drinks_viewmodel.dart';
@@ -156,9 +158,11 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                           final product = products[index];
                           return InkWell(
                             onTap: () {
-                              Get.to(() => ProductDetails(
-                                    product: product,
-                                  ));
+                              if (context.watch<AdminProvider>().isAdmin) {
+                                Get.to(() => ProductDetails(
+                                      product: product,
+                                    ));
+                              }
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,

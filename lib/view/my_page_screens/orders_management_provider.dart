@@ -6,7 +6,7 @@ import 'package:stockat/service/order_service.dart';
 
 import '../../main.dart';
 
-class OrdersHistoryProvider extends ChangeNotifier {
+class OrdersManagementProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   set isLoading(bool value) {
@@ -14,7 +14,7 @@ class OrdersHistoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  OrdersHistoryProvider() {
+  OrdersManagementProvider() {
     if (AdminProvider().isAdmin) {
       statuses.add(OrderStatusKeys.cancelled);
     }
@@ -51,7 +51,7 @@ class OrdersHistoryProvider extends ChangeNotifier {
   Future<void> fetchOrders() async {
     isLoading = true;
     orders = await _orderService.fetchOrders(
-      userId: FirebaseAuth.instance.currentUser!.uid,
+      userId: AdminProvider().isAdmin ? null : FirebaseAuth.instance.currentUser!.uid,
       status: status,
     );
     isLoading = false;
@@ -91,6 +91,9 @@ class OrdersHistoryProvider extends ChangeNotifier {
         return '';
     }
   }
+
+  bool get showCancel =>
+      status == OrderStatusKeys.pending || status == OrderStatusKeys.processing;
 
   String getBodyText(newStatus) {
     switch (newStatus) {

@@ -21,14 +21,10 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
     mapHelper.addListener(() {
       setState(() {});
     });
+    mapHelper.setCurrentLocation();
     super.initState();
   }
 
-// String city = '';
-//   String street = '';
-//   String state = '';
-//   String country = '';
-//   String postalCode = '';
   TextEditingController cityController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController stateController = TextEditingController();
@@ -67,43 +63,6 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
           const SizedBox(
             height: 30,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(
-          //     left: 20,
-          //     right: 20,
-          //   ),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: TextFormField(
-          //           controller: mapHelper.searchController,
-          //           decoration: InputDecoration(
-          //             // prefixIcon: widget(child: const Icon(Icons.search)),
-          //             labelText: 'Search Location',
-          //             suffixIcon: IconButton(
-          //               icon: const Icon(Icons.search),
-          //               onPressed: mapHelper.getLocationFromAdreees,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       // IconButton(
-          //       //   icon: const Icon(Icons.location_searching),
-          //       //   onPressed: () async {
-          //       //     final position = await determinePosition();
-          //       //     mapHelper.addMarker(
-          //       //       LatLng(position.altitude, position.longitude),
-          //       //     );
-          //       //     await mapHelper.controller.animateCamera(
-          //       //       CameraUpdate.newLatLng(
-          //       //         LatLng(position.altitude, position.longitude),
-          //       //       ),
-          //       //     );
-          //       //   },
-          //       // )
-          //     ],
-          //   ),
-          // ),
           const SizedBox(
             height: 10,
           ),
@@ -116,6 +75,78 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
                   child: ElevatedButton(
                     child: const Text('Current location'),
                     onPressed: () async {
+                      bool serviceEnabled;
+                      LocationPermission permission;
+
+                      serviceEnabled =
+                          await Geolocator.isLocationServiceEnabled();
+                      if (!serviceEnabled) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Text(
+                                            '''Location services are disabled Please enable location services   ''',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 20)),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              width: 100,
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.blue),
+                                              child: const Text(
+                                                'Ok',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ));
+                        return;
+                      }
+
+                      permission = await Geolocator.checkPermission();
+
+                      if (permission == LocationPermission.denied) {
+                        permission = await Geolocator.requestPermission();
+                        if (permission == LocationPermission.denied) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text(
+                                        'Location permissions are denied'),
+                                    content: const Text(
+                                        'Please enable location permissions'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  ));
+                          return;
+                        }
+                      }
+
                       final position = await determinePosition();
                       mapHelper.addMarker(
                         LatLng(position.latitude, position.longitude),
@@ -131,26 +162,8 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
                 const SizedBox(
                   width: 10,
                 ),
-                Expanded(
-                  child: ElevatedButton(
-                    child: const Text('Work Area'),
-                    onPressed: () async {
-                      mapHelper.addMarker(
-                        const LatLng(30.22555111681319, 31.465171657209957),
-                      );
-                      await mapHelper.controller.animateCamera(
-                        CameraUpdate.newLatLng(
-                          const LatLng(30.22555111681319, 31.465171657209957),
-                        ),
-                      );
-                    },
-                  ),
-                )
               ],
             ),
-          ),
-          const Text(
-            'Please Note The Area Of Our Work Is Obour Area',
           ),
           const SizedBox(
             height: 20,
@@ -175,21 +188,6 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
           ElevatedButton(
             child: const Text('add address'),
             onPressed: () async {
-              // 30.285390, 31.476819
-              // const l1 = 30.285390;
-              // const l2 = 30.172212;
-              // const t1 = 31.505681;
-              // const t2 = 31.437411;
-              // if ((mapHelper.markers.last.position.latitude < l2 ||
-              //         mapHelper.markers.last.position.latitude > l1) ||
-              //     (mapHelper.markers.last.position.longitude > t1 ||
-              //         mapHelper.markers.last.position.longitude < t2)) {
-              //   await Fluttertoast.showToast(
-              //     msg: 'this area out of our work',
-              //   );
-              //   return;
-              // }
-
               final placeMark = await mapHelper.getAdressFromCurrent();
               if (!mounted) return;
               final name = placeMark.name ?? '';
@@ -215,32 +213,6 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
                   );
                 },
               );
-              // context.read<AuthenticationBloc>().add(
-              //       UpdateAddresses(
-              //         Address(
-              //           id: '',
-              //           address: address,
-              //           description: ,
-              //           coordinates: [
-              //             mapHelper.markers.last.position.latitude,
-              //             mapHelper.markers.last.position.longitude,
-
-              //           ],
-              //         ),
-              //       ),
-              //     );
-
-              // Navigator.pop<Address>(
-              //   context,
-              //   Address(
-              //       description: '',
-              //       city: cityController.text,
-              //       state: stateController.text,
-              //       street: streetController.text,
-              //       postalCode: postalCodeController.text,
-              //       latitude: mapHelper.markers.last.position.latitude,
-              //       longitude: mapHelper.markers.last.position.longitude),
-              // );
             },
           ),
           const SizedBox(
@@ -287,7 +259,6 @@ class _AddressDescState extends State<AddressDesc> {
             borderRadius: BorderRadius.circular(6),
           ),
           child: SizedBox(
-            // height: 550,
             width: 320,
             child: Padding(
               padding: const EdgeInsets.all(12),
@@ -314,7 +285,6 @@ class _AddressDescState extends State<AddressDesc> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // const SizedBox(height: 20),
                   TextFormField(
                     controller: widget.cityController,
                     validator: (value) =>
@@ -401,20 +371,6 @@ class _AddressDescState extends State<AddressDesc> {
                       AddressService(
                         FirebaseAuth.instance.currentUser!.uid,
                       ).addAddress(addess);
-                      // context.read<AuthenticationBloc>().add(
-                      //       UpdateAddresses(
-                      //         Address(
-                      //           id: '',
-                      //           address: widget.address,
-                      //           description: textController.text,
-                      //           coordinates: [
-                      //             widget.mapHelper.markers.last.position.latitude,
-                      //             widget
-                      //                 .mapHelper.markers.last.position.longitude,
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     );
 
                       Navigator.pop<String>(
                         context,
@@ -440,12 +396,8 @@ Future<Position> determinePosition() async {
   bool serviceEnabled;
   LocationPermission permission;
 
-  // Test if location services are enabled.
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    // Location services are not enabled don't continue
-    // accessing the position and request users of the
-    // App to enable the location services.
     return Future.error('Location services are disabled.');
   }
 
@@ -453,23 +405,15 @@ Future<Position> determinePosition() async {
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      // Permissions are denied, next time you could try
-      // requesting permissions again (this is also where
-      // Android's shouldShowRequestPermissionRationale
-      // returned true. According to Android guidelines
-      // your App should show an explanatory UI now.
       return Future.error('Location permissions are denied');
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
-    // Permissions are denied forever, handle appropriately.
     return Future.error(
       'Location permissions are permanently denied, we cannot request permissions.',
     );
   }
 
-  // When we reach here, permissions are granted and we can
-  // continue accessing the position of the device.
   return Geolocator.getCurrentPosition();
 }

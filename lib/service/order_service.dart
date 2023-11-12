@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:stockat/main.dart';
 import 'package:stockat/service/address_service.dart';
 import 'package:stockat/service/product_service.dart';
 import 'package:stockat/view/my_page_screens/oreder_history.dart';
@@ -25,6 +26,7 @@ class Order {
   final DateTime deliveryDate; // New field for delivery date
   final String? status;
   final String? invoiceNumber;
+  final UserProfile? userProfile;
 
   Order(
       {required this.id,
@@ -35,6 +37,7 @@ class Order {
       this.address,
       this.invoiceNumber,
       required this.deliveryDate,
+      this.userProfile,
       this.status});
 
   factory Order.fromSnapshot(DocumentSnapshot snapshot) {
@@ -46,6 +49,9 @@ class Order {
         id: snapshot.id,
         userId: data['userId'],
         invoiceNumber: data['invoiceNumber'],
+        userProfile: data['userProfile'] == null
+            ? null
+            : UserProfile.fromMap(data['userProfile']),
         items: cartItems,
         totalAmount: data['totalAmount'],
         orderDate: (data['orderDate'] as Timestamp).toDate(),
@@ -72,6 +78,9 @@ class Order {
       invoiceNumber: data['invoiceNumber'],
       status: data['status'],
       items: cartItems,
+      userProfile: data['userProfile'] == null
+          ? null
+          : UserProfile.fromMap(data['userProfile']),
       totalAmount: data['totalAmount'],
       orderDate: (data['orderDate'] as Timestamp).toDate(),
       address: Address.fromMap(
@@ -83,10 +92,16 @@ class Order {
 }
 
 class OrderService {
-  Future<void> placeOrder(String userId, List<CartItem> items,
-      double totalAmount, Address address, DateTime deliveryDate) async {
+  Future<void> placeOrder(
+      String userId,
+      List<CartItem> items,
+      double totalAmount,
+      Address address,
+      DateTime deliveryDate,
+      List<String> phones) async {
     final collection = FirebaseFirestore.instance.collection('orders');
     final orderDate = DateTime.now();
+    final userPrfile = await AuthService().getUserProfile(userId);
     await collection.add({
       'userId': userId,
       'items': items.map((item) => item.toMap()).toList(),
@@ -96,6 +111,8 @@ class OrderService {
       'address': address.toMap(), // Add address value to the order
       'deliveryDate': deliveryDate, // Add delivery date value to the order
       'invoiceNumber': generateInvoiceNumber(),
+      'userProfile': userPrfile.toMap(),
+      'phones': phones,
     });
 // clear cart
     final cartCollection = FirebaseFirestore.instance.collection('cart');

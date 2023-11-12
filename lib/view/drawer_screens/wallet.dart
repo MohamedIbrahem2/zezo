@@ -9,7 +9,7 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
-  int points = 500;
+  int points = 0;
 
   @override
   Widget build(BuildContext context) {

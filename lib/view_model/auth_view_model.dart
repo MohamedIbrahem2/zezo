@@ -11,27 +11,22 @@ class AuthViewModel extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   final AuthService _authService = AuthService();
   late String email, password;
-  String? name, phone, cr, vat;
+  String? name, phone;
   UserProfile? userProfile;
   Future<void> getUserProfile() async {
     userProfile = await _authService
         .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
-    if (userProfile!.isAdmin == true) {
-      isAdmin = true;
-    }
+    if (userProfile!.isAdmin == true) {}
     update();
   }
 
 // check if user is admin
-  Future<bool> checkIfAdmin() async {
-    userProfile = await _authService
-        .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
-    if (userProfile!.isAdmin == true) {
-      isAdmin = true;
-    }
-    update();
-    return isAdmin;
-  }
+  // Future<bool> checkIfAdmin() async {
+  //   userProfile = await _authService
+  //       .getUserProfile(FirebaseAuth.instance.currentUser!.uid);
+  //   if (userProfile!.isAdmin == true) {}
+  //   update();
+  // }
 
   Future<void> uploadUserPhoto(String _imageFile) async {
     try {
@@ -64,18 +59,18 @@ class AuthViewModel extends GetxController {
         backgroundColor: Colors.green,
         snackPosition: SnackPosition.BOTTOM,
       );
+
       var data = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       _authService.createUserProfile(
         userId: data.user!.uid,
-          name: name!,
-          phone: phone!,
-          cr: cr!,
-          vat: vat!);
+        name: name!,
+        phone: phone!,
+      );
 
       userProfile = await _authService.getUserProfile(data.user!.uid);
       if (userProfile!.isAdmin == true) {
-        isAdmin = true;
+        // isAdmin = true;
       }
       Get.to(const HomeView());
     } catch (e) {
@@ -95,7 +90,6 @@ class AuthViewModel extends GetxController {
     String? vat,
   }) async {
     try {
-      
       Get.snackbar(
         'Loading',
         'please wait',
@@ -134,11 +128,12 @@ class AuthViewModel extends GetxController {
       var data = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       userProfile = await _authService.getUserProfile(data.user!.uid);
-      if (userProfile!.isAdmin == true) {
-        isAdmin = true;
+      if (userProfile!.isAdmin == true || userProfile!.role == 'admin') {
+        // isAdmin = true;
       }
+      AdminProvider().checkIfAdmin();
       isLoading = false;
-      Get.to(const HomeView());
+      Get.offAll(const HomeView());
       print(data);
     } catch (e) {
       isLoading = true;

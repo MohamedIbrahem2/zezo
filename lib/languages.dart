@@ -104,6 +104,9 @@ class Languages extends Translations {
           "edit admin email": "Edit Admin Email",
           "edit admin phone": "Edit Admin Phone",
           "edit admin password": "Edit Admin Password",
+          "orders Management": "Orders Management",
+          "No Orders Yet": "No Orders Yet",
+          "share app": "Share App",
         },
         'ar': {
           "categories": "الأقسام",
@@ -204,7 +207,10 @@ class Languages extends Translations {
           "edit admin email": "تعديل بريد المشرف",
           "edit admin phone": "تعديل رقم جوال المشرف",
           "edit admin password": "تعديل كلمة مرور المشرف",
-          "admins": "المشرفين"
+          "admins": "المشرفينp",
+          "orders Management": "إدارة الطلبات",
+          "No Orders Yet": "لا يوجد طلبات بعد",
+          "share app": "مشاركة التطبيق",
         }
       };
 }

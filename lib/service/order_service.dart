@@ -27,6 +27,7 @@ class Order {
   final String? status;
   final String? invoiceNumber;
   final UserProfile? userProfile;
+  final List<String>? phones;
 
   Order(
       {required this.id,
@@ -38,6 +39,7 @@ class Order {
       this.invoiceNumber,
       required this.deliveryDate,
       this.userProfile,
+      this.phones,
       this.status});
 
   factory Order.fromSnapshot(DocumentSnapshot snapshot) {
@@ -47,6 +49,7 @@ class Order {
       final cartItems = itemList.map((item) => CartItem.fromMap(item)).toList();
       return Order(
         id: snapshot.id,
+
         userId: data['userId'],
         invoiceNumber: data['invoiceNumber'],
         userProfile: data['userProfile'] == null
@@ -56,6 +59,11 @@ class Order {
         totalAmount: data['totalAmount'],
         orderDate: (data['orderDate'] as Timestamp).toDate(),
         status: data['status'],
+        phones: data['phones'] == null
+            ? null
+            : data['phones'] is String
+                ? null
+                : List<String>.from(data['phones']),
         address: data['address'] == null
             ? null
             : data['address'] is String
@@ -83,6 +91,8 @@ class Order {
           : UserProfile.fromMap(data['userProfile']),
       totalAmount: data['totalAmount'],
       orderDate: (data['orderDate'] as Timestamp).toDate(),
+      phones: data['phones'] == null ? null : List<String>.from(data['phones']),
+
       address: Address.fromMap(
           data['address']), // Assign address value from snapshot data
       deliveryDate: (data['deliveryDate'] as Timestamp)

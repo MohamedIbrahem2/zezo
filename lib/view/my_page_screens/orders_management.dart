@@ -6,7 +6,7 @@ import 'package:stockat/main.dart';
 import 'package:stockat/service/order_service.dart';
 import 'package:stockat/view/my_page_screens/orders_management_provider.dart';
 
-import '../../service/address_service.dart';
+import 'oreder_history.dart';
 
 String formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';
 
@@ -41,22 +41,6 @@ class _OrdersManagementState extends State<OrdersManagement> {
         centerTitle: true,
       ),
       body: const StatusTaps(),
-    );
-  }
-}
-
-class AddressItem extends StatelessWidget {
-  const AddressItem({Key? key, required this.address}) : super(key: key);
-
-  final Address address;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(address.street),
-      subtitle: Text('${address.city}, ${address.state} ${address.postalCode}'),
-      // You can customize the rest of the UI for the address item as needed
-      // For example, you might want to show the description or location on a map.
     );
   }
 }
@@ -243,6 +227,86 @@ class _OrderItemState extends State<OrderItem> {
                     trailing: CircleAvatar(
                         radius: 15, child: Text(cartItem.quantity.toString())),
                   )),
+          if (order.userProfile != null)
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.greenAccent.shade100,
+                  boxShadow: const [
+                    BoxShadow(
+                        blurRadius: 2, spreadRadius: 1, color: Colors.black)
+                  ]),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Customer Name: ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      Text(order.userProfile!.name,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Customer Email: ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      Text(order.userProfile!.email ?? '',
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        'Customer Phone: ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      Text(order.userProfile!.phone ?? '',
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Other Phones: ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      order.phones != null
+                          ? order.phones!.isEmpty
+                              ? const Text('Not Provided')
+                              : Column(
+                                  children: order.phones!
+                                      .map((e) => Text(e))
+                                      .toList(),
+                                )
+                          : const Text('Not Provided'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
 
           const SizedBox(
             height: 20,
@@ -253,6 +317,7 @@ class _OrderItemState extends State<OrderItem> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
+
           AddressItem(
             address: widget.order.address!,
           ),
@@ -362,7 +427,8 @@ class _OrderItemState extends State<OrderItem> {
                     child: Text(context
                         .watch<OrdersManagementProvider>()
                         .getActionText(order.status!))),
-              if (!context.watch<AdminProvider>().isAdmin && order.status == 'pending')
+              if (!context.watch<AdminProvider>().isAdmin &&
+                  order.status == 'pending')
                 ElevatedButton(
                     onPressed: () async {
                       context

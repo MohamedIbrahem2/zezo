@@ -154,9 +154,9 @@ class _EditprofileState extends State<Editprofile> {
                         ),
                         Container(
                           alignment: Alignment.center,
-                          child: const Text(
-                            'Edit your profile',
-                            style: TextStyle(
+                          child: Text(
+                            'Edit Profile'.tr,
+                            style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.green),
@@ -208,43 +208,56 @@ class _EditprofileState extends State<Editprofile> {
                               SizedBox(
                                 height: Get.height * .02,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'Name',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
+                              // Container(
+                              //   alignment: Alignment.topLeft,
+                              //   child: const Text(
+                              //     'Name',
+                              //     style: TextStyle(
+                              //         fontSize: 17,
+                              //         fontWeight: FontWeight.w300,
+                              //         color: Colors.grey),
+                              //   ),
+                              // ),
                               CustomTextForm(
-                                controller: nameController,
-                                obsecure: false,
-                                hint: 'stockat',
-                              ),
+                                  controller: nameController,
+                                  obsecure: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Name'.tr,
+                                    border: const OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                  )
+                                  // hint: 'stockat',
+                                  ),
                               const SizedBox(
                                 height: 15,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'phone',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
+                              // Container(
+                              //   alignment: Alignment.topLeft,
+                              //   child: const Text(
+                              //     'phone',
+                              //     style: TextStyle(
+                              //         fontSize: 17,
+                              //         fontWeight: FontWeight.w300,
+                              //         color: Colors.grey),
+                              //   ),
+                              // ),
                               CustomTextForm(
                                 controller: phoneController,
                                 obsecure: false,
-                                hint: '0540814644',
+                                decoration: InputDecoration(
+                                  labelText: 'Phone Number'.tr,
+                                  border: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                ),
                                 validate: (p0) {
                                   if (p0!.isEmpty) {
-                                    return 'phone is required';
+                                    return 'phone is required'.tr;
                                   } else if (p0.length < 10) {
-                                    return 'phone must be valid';
+                                    return 'phone must be valid'.tr;
                                   }
 
                                   return null;
@@ -253,79 +266,36 @@ class _EditprofileState extends State<Editprofile> {
                               const SizedBox(
                                 height: 15,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'C.R',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
-                              CustomTextForm(
-                                controller: crController,
-                                obsecure: false,
-                                hint: '3185400003',
-                                validate: (p0) {
-                                  if (p0!.isEmpty) {
-                                    return 'C.R is required';
-                                  } else if (p0.length < 10) {
-                                    return 'C.R must be valid';
-                                  }
 
-                                  return null;
-                                },
-                              ),
                               const SizedBox(
                                 height: 15,
                               ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'vat number',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
-                              CustomTextForm(
-                                controller: vatController,
-                                obsecure: false,
-                                hint: '318540003',
-                                validate: (p0) {
-                                  if (p0!.isEmpty) {
-                                    return 'vat number is required';
-                                  } else if (p0.length < 10) {
-                                    return 'vat number must be valid';
-                                  }
+                              // Container(
+                              //   alignment: Alignment.topLeft,
 
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                child: const Text(
-                                  'Email',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey),
-                                ),
-                              ),
+                              //   child: const Text(
+                              //     'Email',
+                              //     style: TextStyle(
+                              //         fontSize: 17,
+                              //         fontWeight: FontWeight.w300,
+                              //         color: Colors.grey),
+                              //   ),
+                              // ),
                               CustomTextForm(
                                 controller: emailController,
                                 obsecure: false,
-                                hint: 'stockat@gmail.com',
+                                decoration: InputDecoration(
+                                  labelText: 'Email'.tr,
+                                  border: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                ),
                                 validate: (p0) {
                                   if (p0!.isEmpty) {
-                                    return 'email is required';
+                                    return 'email is required'.tr;
                                   } else if (!p0.contains('@')) {
-                                    return 'email must be valid';
+                                    return 'email must be valid'.tr;
                                   }
 
                                   return null;
@@ -372,8 +342,8 @@ class _EditprofileState extends State<Editprofile> {
                                             .instance.currentUser!.uid,
                                         name: nameController.text,
                                         phone: phoneController.text,
-                                        cr: crController.text,
-                                        vat: vatController.text,
+                                        // cr: crController.text,
+                                        // vat: vatController.text,
                                       );
                                       // if (emailController.text.isNotEmpty) {
                                       //   authService

@@ -24,7 +24,6 @@ import '../drawer_screens/add_category_screen.dart';
 import '../drawer_screens/add_products_screen.dart';
 import '../drawer_screens/language.dart';
 import '../drawer_screens/obout_us.dart';
-import '../drawer_screens/prfile_screen.dart';
 import '../drawer_screens/technical_support.dart';
 import '../drawer_screens/wallet.dart';
 import '../my_page_screens/qr_scanner.dart';
@@ -202,18 +201,18 @@ class _HomePageState extends State<HomePage> {
             //     },
             //   ),
             // ),
-            GestureDetector(
-              child: ListTile(
-                title: Text(
-                  'profile'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const PrfileScreen());
-                },
-              ),
-            ),
+            // GestureDetector(
+            //   child: ListTile(
+            //     title: Text(
+            //       'profile'.tr,
+            //       style: const TextStyle(
+            //           fontSize: 18, fontWeight: FontWeight.bold),
+            //     ),
+            //     onTap: () {
+            //       Get.to(const PrfileScreen());
+            //     },
+            //   ),
+            // ),
             ListTile(
               title: Text(
                 'language'.tr,

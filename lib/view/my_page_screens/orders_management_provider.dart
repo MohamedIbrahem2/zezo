@@ -98,15 +98,15 @@ class OrdersManagementProvider extends ChangeNotifier {
   String getBodyText(newStatus) {
     switch (newStatus) {
       case OrderStatusKeys.pending:
-        return 'Yor order is pending';
+        return 'Your order is pending';
       case OrderStatusKeys.processing:
-        return 'Yor order is processing';
+        return 'Your order is processing';
       case OrderStatusKeys.shipped:
-        return 'Yor order is shipped';
+        return 'Your order is shipped';
       case OrderStatusKeys.delivered:
-        return 'Yor order is delivered';
+        return 'Your order is delivered';
       case OrderStatusKeys.cancelled:
-        return 'Yor order is cancelled';
+        return 'Your order is cancelled';
       default:
         return '';
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/admin_service.dart';
 
@@ -68,6 +69,18 @@ class AdminProfileCard extends StatelessWidget {
         ),
         title: Text(userProfile.name),
         subtitle: Text(userProfile.email ?? 'no email'),
+        // trailing: IconButton(
+        //     onPressed: () async {
+        //       try {
+        //         await AdminService().deleteAdmin(userProfile.id!);
+        //       } catch (e) {
+        //         Get.snackbar('Error', e.toString(),
+        //             duration: const Duration(seconds: 5),
+        //             snackPosition: SnackPosition.BOTTOM,
+        //             backgroundColor: Colors.red);
+        //       }
+        //     },
+        //     icon: const Icon(Icons.delete)),
       ),
     );
   }
@@ -85,6 +98,7 @@ class AddAdminDialouge extends StatelessWidget {
   final _addressController = TextEditingController();
 
   final adminService = AdminService();
+  String phone = '';
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +155,13 @@ class AddAdminDialouge extends StatelessWidget {
                       if (value!.isEmpty) {
                         return 'Please enter email';
                       }
+                      // regx
+                      const pattern =
+                          r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+                      final regExp = RegExp(pattern);
+                      if (!regExp.hasMatch(value)) {
+                        return 'Please enter valid email';
+                      }
                       return null;
                     },
                   ),
@@ -168,45 +189,73 @@ class AddAdminDialouge extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    scrollPadding: EdgeInsets.only(
-                        bottom:
-                            MediaQuery.of(context).viewInsets.bottom + 20 * 4),
+                  IntlPhoneField(
                     controller: _phoneController,
                     decoration: const InputDecoration(
-                      labelText: 'Phone',
+                      labelText: 'Phone Number',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
+                    initialCountryCode: 'SA',
+                    onChanged: (value) {
+                      phone = value.completeNumber;
+                      // controller.phone = value.completeNumber;
+                    },
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.number.isEmpty) {
                         return 'Please enter phone';
+                      }
+                      // regx
+                      const pattern =
+                          r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
+                      final regExp = RegExp(pattern);
+                      if (!regExp.hasMatch(value.number)) {
+                        return 'Please enter valid phone';
                       }
                       return null;
                     },
-                  ),
+                  )
+                  // TextFormField(
+                  //   scrollPadding: EdgeInsets.only(
+                  //       bottom:
+                  //           MediaQuery.of(context).viewInsets.bottom + 20 * 4),
+                  //   controller: _phoneController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Phone',
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                  //     ),
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value!.isEmpty) {
+                  //       return 'Please enter phone';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
+                  ,
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    scrollPadding: EdgeInsets.only(
-                        bottom:
-                            MediaQuery.of(context).viewInsets.bottom + 20 * 4),
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      labelText: 'Address',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter address';
-                      }
-                      return null;
-                    },
-                  ),
+                  // TextFormField(
+                  //   scrollPadding: EdgeInsets.only(
+                  //       bottom:
+                  //           MediaQuery.of(context).viewInsets.bottom + 20 * 4),
+                  //   controller: _addressController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Address',
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                  //     ),
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value!.isEmpty) {
+                  //       return 'Please enter address';
+                  //     }
+                  //     return null;
+                  //   },
+                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -223,7 +272,7 @@ class AddAdminDialouge extends StatelessWidget {
                                 _nameController.text,
                                 _emailController.text,
                                 _passwordController.text,
-                                _phoneController.text,
+                                phone,
                                 _addressController.text);
                             Get.back();
                           }

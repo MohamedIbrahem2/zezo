@@ -141,7 +141,8 @@ class _SettingsState extends State<Settings> {
                 onTap: () {
                   Get.to(const Form(child: Editprofile()));
                 },
-                child: customListTile(icon: Icons.edit, title: 'Edit Profile'),
+                child:
+                    customListTile(icon: Icons.edit, title: 'Edit Profile'.tr),
               ),
 
               // reset password
@@ -150,7 +151,7 @@ class _SettingsState extends State<Settings> {
                   Get.to(ResetPasswordView());
                 },
                 child: customListTile(
-                    icon: Icons.lock_outline, title: 'Reset Password'),
+                    icon: Icons.lock_outline, title: 'Reset Password'.tr),
               ),
               GestureDetector(
                 onTap: () {
@@ -158,15 +159,15 @@ class _SettingsState extends State<Settings> {
                 },
                 child: customListTile(
                     icon: Icons.location_on_outlined,
-                    title: 'Shipping address'),
+                    title: 'shipping_address'.tr),
               ),
 
               GestureDetector(
                 onTap: () {
                   Get.to(const OrderHistory());
                 },
-                child:
-                    customListTile(icon: Icons.history, title: 'Order History'),
+                child: customListTile(
+                    icon: Icons.history, title: 'Order History'.tr),
               ),
               // GestureDetector(
               //   onTap: () {
@@ -182,12 +183,12 @@ class _SettingsState extends State<Settings> {
                 },
                 child: customListTile(
                     icon: Icons.notification_important_outlined,
-                    title: 'Notification'),
+                    title: 'notifications'.tr),
               ),
               GestureDetector(
                 onTap: () {
                   Get.defaultDialog(
-                      title: 'Are you sure?',
+                      title: 'Are you sure?'.tr,
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -195,9 +196,9 @@ class _SettingsState extends State<Settings> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text(
-                              'No',
-                              style: TextStyle(color: Colors.black),
+                            child: Text(
+                              'No'.tr,
+                              style: const TextStyle(color: Colors.black),
                             ),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white, elevation: 10),
@@ -206,15 +207,15 @@ class _SettingsState extends State<Settings> {
                             onPressed: () {
                               Get.to(const SignIn());
                             },
-                            child: const Text('yes',
-                                style: TextStyle(color: Colors.white)),
+                            child: Text('yes'.tr,
+                                style: const TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red, elevation: 10),
                           ),
                         ],
                       ));
                 },
-                child: customListTile(icon: Icons.logout, title: 'LogOut'),
+                child: customListTile(icon: Icons.logout, title: 'logout'.tr),
               ),
             ],
           );

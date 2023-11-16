@@ -141,8 +141,8 @@ class AuthService {
     required String userId,
     required String name,
     required String phone,
-    required String cr,
-    required String vat,
+    // required String cr,
+    // required String vat,
   }) async {
     try {
       // show loading
@@ -156,8 +156,8 @@ class AuthService {
       await _firestore.collection('users').doc(userId).update({
         'name': name,
         'phone': phone,
-        'cr': cr,
-        'vat': vat,
+        // 'cr': cr,
+        // 'vat': vat,
         "addresses": []
       });
     } catch (e) {

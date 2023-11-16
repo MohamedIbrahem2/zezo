@@ -319,13 +319,14 @@ class _CheckHomeState extends State<CheckHome> {
                             const SizedBox(
                               width: 20,
                             ),
-                            Text(
-                              userProfile!.name ?? '',
-                              style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                            ),
+                            if (userProfile != null)
+                              Text(
+                                userProfile!.name ?? '',
+                                style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black),
+                              ),
                           ],
                         ),
                       ),

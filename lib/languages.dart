@@ -107,6 +107,16 @@ class Languages extends Translations {
           "orders Management": "Orders Management",
           "No Orders Yet": "No Orders Yet",
           "share app": "Share App",
+          "Reset Password": "Reset Password",
+          "Edit Profile": "Edit Profile",
+          "Order History": "Order History",
+          "Name": "Name",
+          "Email": "Email",
+          "Phone Number": "Phone Number",
+          "phone is required": "Phone is required",
+          "phone must be valid": "Phone must be valid",
+          "email is required": "Email is required",
+          "email must be valid": "Email must be valid",
         },
         'ar': {
           "categories": "الأقسام",
@@ -211,6 +221,16 @@ class Languages extends Translations {
           "orders Management": "إدارة الطلبات",
           "No Orders Yet": "لا يوجد طلبات بعد",
           "share app": "مشاركة التطبيق",
+          "Reset Password": "إعادة تعيين كلمة المرور",
+          "Edit Profile": "تعديل الملف الشخصي",
+          "Order History": "سجل الطلبات",
+          "Name": "الاسم",
+          "Email": "البريد الإلكتروني",
+          "Phone Number": "رقم الجوال",
+          "phone is required": "رقم الجوال مطلوب",
+          "phone must be valid": "رقم الجوال يجب أن يكون صحيح",
+          "email is required": "البريد الإلكتروني مطلوب",
+          "email must be valid": "البريد الإلكتروني يجب أن يكون صحيح",
         }
       };
 }

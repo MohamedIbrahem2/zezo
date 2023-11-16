@@ -98,11 +98,10 @@ class AuthViewModel extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
       await _authService.updateUserProfile(
-          userId: FirebaseAuth.instance.currentUser!.uid,
-          name: name!,
-          phone: phone!,
-          cr: cr!,
-          vat: vat!);
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        name: name!,
+        phone: phone!,
+      );
 
       userProfile = await _authService
           .getUserProfile(FirebaseAuth.instance.currentUser!.uid);

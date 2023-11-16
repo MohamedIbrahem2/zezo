@@ -9,13 +9,14 @@ class CustomTextForm extends StatefulWidget {
   TextEditingController? controller;
   void Function(String?)? onSave;
   String? Function(String?)? validate;
-
+  final InputDecoration? decoration;
   CustomTextForm(
       {this.hint,
       this.secure,
       this.validate,
       this.onSave,
       this.controller,
+      this.decoration,
       required this.obsecure});
 
   @override
@@ -30,20 +31,21 @@ class _CustomTextFormState extends State<CustomTextForm> {
       onSaved: widget.onSave,
       validator: widget.validate,
       obscureText: widget.obsecure,
-      decoration: InputDecoration(
-        hintStyle: const TextStyle(
-            fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
-        hintText: '${widget.hint}',
-        suffixIcon: widget.secure == true
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.obsecure = !widget.obsecure;
-                  });
-                },
-                child: const Icon(Icons.remove_red_eye))
-            : null,
-      ),
+      decoration: widget.decoration ??
+          InputDecoration(
+            hintStyle: const TextStyle(
+                fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
+            hintText: '${widget.hint}',
+            suffixIcon: widget.secure == true
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        widget.obsecure = !widget.obsecure;
+                      });
+                    },
+                    child: const Icon(Icons.remove_red_eye))
+                : null,
+          ),
     );
   }
 }

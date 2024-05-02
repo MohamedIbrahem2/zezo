@@ -25,7 +25,7 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-apply plugin: 'com.google.gms.google-services'
+
 android {
     namespace "com.stockat"
     compileSdkVersion flutter.compileSdkVersion
@@ -55,7 +55,8 @@ android {
         versionName flutterVersionName
     }
 
-  signingConfigs {
+
+    signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
@@ -63,16 +64,25 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-
     buildTypes {
         release {
             signingConfig signingConfigs.release
         }
     }
+
 }
 
 flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+
+}

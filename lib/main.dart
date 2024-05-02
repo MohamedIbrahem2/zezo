@@ -12,13 +12,13 @@ import 'package:stockat/fcm_provider.dart';
 import 'package:stockat/view/home_view.dart';
 import 'package:stockat/view/my_page_screens/orders_management_provider.dart';
 import 'package:stockat/view/my_page_screens/oreders_provider.dart';
-
 import 'bottom_navbar_provider.dart';
 import 'languages.dart';
 import 'view/splash_view.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   // initialize awesome notifications
   AwesomeNotifications().initialize(
@@ -27,14 +27,14 @@ main() async {
       NotificationChannel(
         channelKey: 'basic_channel',
         channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
+        channelDescription: 'Notifica '
+            'tion channel for basic tests',
         defaultColor: Colors.teal,
         ledColor: Colors.white,
       ),
     ],
   );
 
-  await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => BottomNavbarProvider()),
     ChangeNotifierProvider(create: (_) => OrdersHistoryProvider()),

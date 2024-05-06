@@ -37,7 +37,7 @@ dependencies:
   carousel_slider:
   url_launcher:
   video_player:
-  firebase_core:
+  firebase_core: ^2.30.1
   firebase_auth:
   firebase_messaging:
   modal_progress_hud_nsn:

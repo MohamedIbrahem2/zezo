@@ -266,9 +266,7 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
+
                                         Icon(
                                           Icons.add_shopping_cart,
                                           color: Colors.white,

@@ -67,19 +67,39 @@ class _HomeViewState extends State<HomeView> {
     final bottomNavProvider = BottomNavbarProvider.instance(context);
     return Scaffold(
       body: screens[bottomNavProvider.currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (val) {
-          bottomNavProvider.changeIndex(val);
-        },
-        currentIndex: bottomNavProvider.currentIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.home), label: 'home'.tr),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.shopping_cart), label: 'cart'.tr),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.person), label: 'my_page'.tr),
-        ],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(40), topLeft: Radius.circular(40)
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,spreadRadius: 0,blurRadius: 5
+            )
+          ]
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30), topLeft: Radius.circular(30)
+          ),
+          child: BottomNavigationBar(
+            unselectedItemColor: Colors.black,
+            selectedItemColor: Colors.white,
+            backgroundColor: Colors.green.shade300,
+            onTap: (val) {
+              bottomNavProvider.changeIndex(val);
+            },
+            currentIndex: bottomNavProvider.currentIndex,
+            items: [
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.home), label: 'home'.tr),
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.shopping_cart), label: 'cart'.tr),
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.person), label: 'my_page'.tr),
+            ],
+          ),
+        ),
       ),
     );
   }

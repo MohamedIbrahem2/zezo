@@ -95,337 +95,372 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          GestureDetector(
-              onTap: () async {
-                Get.to(const QrView());
-                // ScanResult result = await BarcodeScanner.scan();
-                // print(result.rawContent);
-              },
-              child: Image.asset(
-                'logos/barcode.png',
-                width: 30,
-                height: 30,
-              )),
-          const SizedBox(
-            width: 8,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: AppBar(
+          elevation: 5,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30)
+            )
           ),
-          GestureDetector(
-            onTap: () {
-              Get.to(const Screen2());
-            },
-            child: Stack(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 15, top: 10),
-                  child: Icon(
-                    Icons.shopping_cart,
-                    size: 40,
-                    color: Colors.blue,
+          actions: [
+            GestureDetector(
+                onTap: () async {
+                  Get.to(const QrView());
+                  // ScanResult result = await BarcodeScanner.scan();
+                  // print(result.rawContent);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Image.asset(
+                    'logos/barcode.png',
+                    width: 30,
+                    height: 30,
                   ),
-                ),
-                StreamBuilder<List<CartItem>>(
-                    stream: CartService()
-                        .getCartItems(FirebaseAuth.instance.currentUser!.uid),
-                    builder: (context, snapshot) {
-                      final quantity =
-                          (snapshot.data == null || snapshot.data!.isEmpty)
-                              ? 0
-                              : snapshot.data
-                                  ?.map((e) => e.quantity)
-                                  .reduce((value, element) => value + element);
-                      return Positioned(
-                        top: 3,
-                        left: 14,
-                        child: Text(
-                          snapshot.data == null ? '0' : quantity.toString(),
-                          style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      );
-                    })
-              ],
-            ),
-          ),
-        ],
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        title: Image.asset('images/logo2.png', width: 100, height: 100),
-        centerTitle: true,
-        elevation: 0,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(30),
-              child: Image.asset('images/logo2.png'),
-              width: Get.width,
-              height: Get.height * .2,
-              alignment: Alignment.center,
-              color: Colors.blue.shade50,
-            ),
-            ListTile(
-              title: Text(
-                'wallet'.tr,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Get.to(const Wallet());
-              },
-            ),
-            ListTile(
-              title: Text(
-                'technical_support'.tr,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Get.to(const TechnicalSupport());
-              },
-            ),
-            // GestureDetector(
-            //   child: ListTile(
-            //     title: Text(
-            //       'offers'.tr,
-            //       style: const TextStyle(
-            //           fontSize: 18, fontWeight: FontWeight.bold),
-            //     ),
-            //     onTap: () {
-            //       Get.to(const OffersHome());
-            //     },
-            //   ),
-            // ),
-            // GestureDetector(
-            //   child: ListTile(
-            //     title: Text(
-            //       'profile'.tr,
-            //       style: const TextStyle(
-            //           fontSize: 18, fontWeight: FontWeight.bold),
-            //     ),
-            //     onTap: () {
-            //       Get.to(const PrfileScreen());
-            //     },
-            //   ),
-            // ),
-            ListTile(
-              title: Text(
-                'language'.tr,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Get.to(const Language());
-              },
+                )),
+            const SizedBox(
+              width: 8,
             ),
             GestureDetector(
               onTap: () {
-                Get.to(const AboutUs());
+                Get.to(const Screen2());
               },
-              child: ListTile(
-                title: Text(
-                  'who_we_are'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                'our_location'.tr,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onTap: () {
-                Get.to(const OurLocationPage());
-              },
-            ),
-            if (context.watch<AdminProvider>().isAdmin)
-              ListTile(
-                title: Text(
-                  'orders Management'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const OrdersManagement());
-                },
-              ),
-            if (context.watch<AdminProvider>().isAdmin)
-              ListTile(
-                title: Text(
-                  'admins'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const AdminsPage());
-                },
-              ),
-            if (context.watch<AdminProvider>().isAdmin)
-              ListTile(
-                title: Text(
-                  'add category'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const AddCategoryScreen());
-                },
-              ),
-            if (context.watch<AdminProvider>().isAdmin)
-              ListTile(
-                title: Text(
-                  'add subcategory'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const AddSubCategoryScreen());
-                },
-              ),
-            if (context.watch<AdminProvider>().isAdmin)
-              ListTile(
-                title: Text(
-                  'add product'.tr,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const AddProductScreen());
-                },
-              ),
-            ListTile(
-              title: Row(
+              child: Stack(
                 children: [
-                  Text(
-                    'share app'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 15, top: 10),
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 40,
+                      color: Colors.black,
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Icon(
-                    Icons.share,
-                    color: Colors.black,
-                  )
-                ],
-              ),
-              onTap: () async {
-                // Set the app link and the message to be shared
-                const String appLink =
-                    'https://play.google.com/store/apps/details?id=com.example.myapp';
-                const String message = 'Share our app with others: $appLink';
-
-                // Share the app link and message using the share dialog
-                await FlutterShare.share(
-                    title: 'Share App', text: message, linkUrl: appLink);
-              },
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.defaultDialog(
-                    title: 'Are you sure?'.tr,
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'no'.tr,
-                            style: const TextStyle(color: Colors.black),
+                  StreamBuilder<List<CartItem>>(
+                      stream: CartService()
+                          .getCartItems(FirebaseAuth.instance.currentUser!.uid),
+                      builder: (context, snapshot) {
+                        final quantity =
+                            (snapshot.data == null || snapshot.data!.isEmpty)
+                                ? 0
+                                : snapshot.data
+                                    ?.map((e) => e.quantity)
+                                    .reduce((value, element) => value + element);
+                        return Positioned(
+                          left: 18,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red
+                            ),
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                snapshot.data == null ? '0' : quantity.toString(),
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white, elevation: 10),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            auth.signOut();
-                            Get.to(const SignIn());
-                          },
-                          child: Text('yes'.tr,
-                              style: const TextStyle(color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red, elevation: 10),
-                        ),
-                      ],
-                    ));
-              },
-              child: ListTile(
-                title: Text(
-                  'logout'.tr,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red),
-                ),
+                        );
+                      })
+                ],
               ),
             ),
           ],
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.greenAccent,
+          title: Padding(
+            padding: const EdgeInsets.only(top:8.0),
+            child: Image.asset('images/logo2.png', width: 100, height: 100),
+          ),
+          centerTitle: true,
         ),
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: Get.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: Get.height * .02,
+      drawer: Padding(
+        padding: const EdgeInsets.only(top:8.0),
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(30),
+                child: Image.asset('images/logo2.png'),
+                width: Get.width,
+                height: Get.height * .2,
+                alignment: Alignment.center,
+                color: Colors.blue.shade50,
               ),
-              const OfferCarousel(),
-              SizedBox(
-                height: Get.height * .025,
+              ListTile(
+                title: Text(
+                  'wallet'.tr,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const Wallet());
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextFormField(
-                  readOnly: true,
-                  onTap: () {
-                    Get.to(const Search());
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey.shade100,
-                    prefixIcon: const Icon(
-                      Icons.search_rounded,
-                      size: 30,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 1),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25)),
+              ListTile(
+                title: Text(
+                  'technical_support'.tr,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const TechnicalSupport());
+                },
+              ),
+              // GestureDetector(
+              //   child: ListTile(
+              //     title: Text(
+              //       'offers'.tr,
+              //       style: const TextStyle(
+              //           fontSize: 18, fontWeight: FontWeight.bold),
+              //     ),
+              //     onTap: () {
+              //       Get.to(const OffersHome());
+              //     },
+              //   ),
+              // ),
+              // GestureDetector(
+              //   child: ListTile(
+              //     title: Text(
+              //       'profile'.tr,
+              //       style: const TextStyle(
+              //           fontSize: 18, fontWeight: FontWeight.bold),
+              //     ),
+              //     onTap: () {
+              //       Get.to(const PrfileScreen());
+              //     },
+              //   ),
+              // ),
+              ListTile(
+                title: Text(
+                  'language'.tr,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const Language());
+                },
+              ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(const AboutUs());
+                },
+                child: ListTile(
+                  title: Text(
+                    'who_we_are'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              SizedBox(
-                height: Get.height * .04,
+              ListTile(
+                title: Text(
+                  'our_location'.tr,
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  Get.to(const OurLocationPage());
+                },
               ),
-              Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  alignment: Get.locale == const Locale('ar')
-                      ? Alignment.topRight
-                      : Alignment.topLeft,
-                  child: Text(
-                    'categories'.tr,
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'orders Management'.tr,
                     style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
-                  )),
-              SizedBox(
-                height: Get.height * .001,
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const OrdersManagement());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'admins'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const AdminsPage());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'add category'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const AddCategoryScreen());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'add subcategory'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const AddSubCategoryScreen());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'add product'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const AddProductScreen());
+                  },
+                ),
+              ListTile(
+                title: Row(
+                  children: [
+                    Text(
+                      'share app'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Icon(
+                      Icons.share,
+                      color: Colors.black,
+                    )
+                  ],
+                ),
+                onTap: () async {
+                  // Set the app link and the message to be shared
+                  const String appLink =
+                      'https://play.google.com/store/apps/details?id=com.example.myapp';
+                  const String message = 'Share our app with others: $appLink';
+
+                  // Share the app link and message using the share dialog
+                  await FlutterShare.share(
+                      title: 'Share App', text: message, linkUrl: appLink);
+                },
               ),
-              SizedBox(
-                height: Get.height * .2,
-                child: StreamBuilder<List<Category>>(
+              GestureDetector(
+                onTap: () {
+                  Get.defaultDialog(
+                      title: 'Are you sure?'.tr,
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'no'.tr,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white, elevation: 10),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              auth.signOut();
+                              Get.to(const SignIn());
+                            },
+                            child: Text('yes'.tr,
+                                style: const TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red, elevation: 10),
+                          ),
+                        ],
+                      ));
+                },
+                child: ListTile(
+                  title: Text(
+                    'logout'.tr,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Expanded(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: Get.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: Get.height * .02,
+                ),
+                const OfferCarousel(),
+                SizedBox(
+                  height: Get.height * .025,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: TextFormField(
+                    readOnly: true,
+                    onTap: () {
+                      Get.to(const Search());
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 1),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: 3,
+                          color: Colors.green
+                        ),
+                          borderRadius: BorderRadius.circular(25)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            width: 3,
+                              color: Colors.green
+                          ),
+
+                          borderRadius: BorderRadius.circular(25)),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: Get.height * .04,
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    alignment: Get.locale == const Locale('ar')
+                        ? Alignment.topRight
+                        : Alignment.topLeft,
+                    child: Text(
+                      'categories'.tr,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                    )),
+                SizedBox(
+                  height: Get.height * .001,
+                ),
+                StreamBuilder<List<Category>>(
                     stream: CategoryService().getCategories(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
@@ -439,180 +474,210 @@ class _HomePageState extends State<HomePage> {
                         );
                       }
                       final categories = snapshot.data;
-                      return ListView.builder(
-                        itemCount: categories!.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final category = categories[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Get.to(SubCategoriesScreen(
-                                categoryId: category.id,
-                              ));
-                            },
-                            child: Column(
+                      return SizedBox(
+                        height: 320,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 2.0),
+                          itemCount: categories!.length,
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return Column(
                               children: [
-                                Container(
-                                  decoration: const BoxDecoration(boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey,
-                                        spreadRadius: 1,
-                                        blurRadius: 4)
-                                  ]),
-                                  margin: const EdgeInsets.all(8),
-                                  child: CachedNetworkImage(
-                                    imageUrl: category.image,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  width: Get.width * .27,
-                                  height: Get.height * .13,
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(SubCategoriesScreen(
+                                      categoryId: category.id,
+                                    ));
+                                  },
+                                  child:
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: CachedNetworkImage(
+                                              imageUrl: category.image,
+                                              fit: BoxFit.fill,
+                                              imageBuilder: (context, imageProvider) =>
+                                              Container(
+                                                width: Get.width * .13,
+                                                height: Get.height * .13,
+                                                decoration: BoxDecoration(
+                                                   boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey,
+                                                      blurRadius: 4
+                                                    )
+                                                  ],
+                                                  border: Border.all(
+                                                    width: 3,
+                                                    color: Colors.green
+                                                  ),
+                                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                                  image: DecorationImage(image: imageProvider ,fit: BoxFit.cover)
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          /*Text(
+                                            category.name,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )
+
+                                           */
+
                                 ),
-                                Text(
-                                  category.name,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: mainColor),
-                                )
                               ],
-                            ),
-                          );
-                        },
+                            );
+                          },
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 5,
+                            crossAxisCount: 4),
+                        ),
                       );
                     }),
-              ),
-              SizedBox(
-                height: Get.height * .015,
-              ),
-              Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  alignment: Get.locale!.languageCode == 'ar'
-                      ? Alignment.topRight
-                      : Alignment.topLeft,
-                  child: Text(
-                    'best_selling'.tr,
-                    style: const TextStyle(
-                        fontSize: 21, fontWeight: FontWeight.bold),
-                  )),
-              SizedBox(
-                height: Get.height * .001,
-              ),
-              StreamBuilder<List<Product>>(
-                  stream: ProductsService().getBestSellingProducts(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text('Error'),
-                      );
-                    }
+                Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    alignment: Get.locale!.languageCode == 'ar'
+                        ? Alignment.topRight
+                        : Alignment.topLeft,
+                    child: Text(
+                      'best_selling'.tr,
+                      style: const TextStyle(
+                          fontSize: 21, fontWeight: FontWeight.bold),
+                    )),
+                SizedBox(
+                  height: Get.height * .001,
+                ),
+                StreamBuilder<List<Product>>(
+                    stream: ProductsService().getBestSellingProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('Error'),
+                        );
+                      }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                    final products = snapshot.data!;
+                      final products = snapshot.data!;
 
-                    return Container(
-                      margin: const EdgeInsets.all(15),
-                      width: Get.width * .95,
-                      height: Get.height * .30,
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            final product = products[index];
-                            return SizedBox(
-                              width: Get.width * .3,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.to(ProductDetails(product: product));
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.grey,
-                                                spreadRadius: 1,
-                                                blurRadius: 4)
-                                          ]),
-                                      child: CachedNetworkImage(
-                                        imageUrl: product.image,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      width: Get.width * .3,
-                                      height: Get.height * .13,
-                                    ),
-                                    Text(
-                                      product.name,
-                                      maxLines: 10,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        if (product.discount > 0)
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Text(
-                                                product.price.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red),
-                                              ),
+                      return Container(
+                        margin: const EdgeInsets.all(15),
+                        width: Get.width * .95,
+                        height: Get.height * .30,
+                        child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final product = products[index];
+                              return SizedBox(
+                                width: Get.width * .3,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(ProductDetails(product: product));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl: product.image,
+                                          fit: BoxFit.fill,
+                                          imageBuilder: (context, imageProvider) =>
                                               Container(
-                                                width: 20,
-                                                height: 1.5,
-                                                color: Colors.grey.shade700,
-                                              )
-                                            ],
-                                          ),
-                                        const SizedBox(
-                                          width: 12,
+                                                width: Get.width * .3,
+                                                height: Get.height * .13,
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Colors.grey,
+                                                          blurRadius: 4
+                                                      )
+                                                    ],
+                                                    border: Border.all(
+                                                        width: 3,
+                                                        color: Colors.green
+                                                    ),
+                                                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                                    image: DecorationImage(image: imageProvider ,fit: BoxFit.cover)
+                                                ),
+                                              ),
                                         ),
-                                        if (product.discount > 0)
-                                          Text(
-                                            (product.price - product.discount)
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green),
+                                      ),
+                                      Text(
+                                        product.name,
+                                        maxLines: 10,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          if (product.discount > 0)
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Text(
+                                                  product.price.toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.red),
+                                                ),
+                                                Container(
+                                                  width: 20,
+                                                  height: 1.5,
+                                                  color: Colors.grey.shade700,
+                                                )
+                                              ],
+                                            ),
+                                          const SizedBox(
+                                            width: 11,
                                           ),
-                                        if (product.discount == 0)
-                                          Text(
-                                            product.price.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green),
-                                          ),
-                                      ],
-                                    )
-                                  ],
+                                          if (product.discount > 0)
+                                            Text(
+                                              (product.price - product.discount)
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green),
+                                            ),
+                                          if (product.discount == 0)
+                                            Text(
+                                              product.price.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.green),
+                                            ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              width: 20,
-                            );
-                          },
-                          itemCount: products.length),
-                    );
-                  })
-            ],
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                width: 20,
+                              );
+                            },
+                            itemCount: products.length),
+                      );
+                    })
+              ],
+            ),
           ),
         ),
       ),

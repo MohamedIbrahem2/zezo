@@ -19,12 +19,13 @@ import 'view/splash_view.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: 'AIzaSyDX7pjs8hv3X-kP7yEsW8tDP20YUnfJweI',
-        appId: '725795991138',
-        messagingSenderId: '1:725795991138:android:c361c71306360407cb6b3b',
-        projectId: 'stockat-accbf',
-        storageBucket: 'stockat-accbf.appspot.com',
+    options:
+      const FirebaseOptions(
+          apiKey: 'AIzaSyDX7pjs8hv3X-kP7yEsW8tDP20YUnfJweI',
+          appId: '725795991138',
+          messagingSenderId: '1:725795991138:android:c361c71306360407cb6b3b',
+          projectId: 'stockat-accbf',
+          storageBucket: 'stockat-accbf.appspot.com'
       )
   );
 

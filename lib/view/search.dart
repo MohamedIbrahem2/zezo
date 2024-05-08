@@ -71,180 +71,180 @@ class _SearchState extends State<Search> {
           padding: const EdgeInsets.only(
             top: 40,
           ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextFormField(
-                  onChanged: (value) {
-                    if (value.isEmpty) {
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          searchValue = null;
+                        });
+                        return;
+                      }
                       setState(() {
-                        searchValue = null;
+                        searchValue = value;
                       });
-                      return;
-                    }
-                    setState(() {
-                      searchValue = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.grey.shade100,
-                    prefixIcon: const Icon(
-                      Icons.search_rounded,
-                      size: 30,
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
+                        size: 30,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 1),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25)),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 1),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25)),
                   ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(10),
-                width: Get.width,
-                height: Get.height * .83,
-                child: StreamBuilder<List<Product>>(
-                    stream: ProductsService().searchForProduct(searchValue),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('Error'),
-                        );
-                      }
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  width: Get.width,
+                  height: Get.height * .83,
+                  child: StreamBuilder<List<Product>>(
+                      stream: ProductsService().searchForProduct(searchValue),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('Error'),
+                          );
+                        }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                      final products = snapshot.data;
+                        final products = snapshot.data;
 
-                      return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 300,
-                                  childAspectRatio: .8,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10),
-                          itemCount: products!.length,
-                          itemBuilder: (context, index) {
-                            final product = products[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 5,
-                                            spreadRadius: 2,
-                                            color: Colors.grey),
-                                      ]),
-                                  child: Image.network(product.image),
-                                  width: Get.width * .4,
-                                  height: Get.height * .14,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  product.name,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                        return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 300,
+                                    childAspectRatio: .6,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10),
+                            itemCount: products!.length,
+                            itemBuilder: (context, index) {
+                              final product = products[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 5,
+                                              spreadRadius: 2,
+                                              color: Colors.grey),
+                                        ]),
+                                    child: Image.network(product.image),
+                                    width: Get.width * .4,
+                                    height: Get.height * .14,
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (product.discount > 0)
-                                      Stack(
-                                        alignment: Alignment.center,
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    product.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (product.discount > 0)
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Text(
+                                              product.price.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red),
+                                            ),
+                                            Container(
+                                              width: 20,
+                                              height: 1.5,
+                                              color: Colors.grey.shade700,
+                                            )
+                                          ],
+                                        ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      if (product.discount > 0)
+                                        Text(
+                                          (product.price - product.discount)
+                                              .toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                      if (product.discount == 0)
+                                        Text(
+                                          (product.price).toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        CartService().addToCart(
+                                          productId: product.id,
+                                          productName: product.name,
+                                          price: product.price - product.discount,
+                                          quantity: 1,
+                                          image: product.image,
+                                          userId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                        );
+                                      },
+                                      child: const Row(
                                         children: [
                                           Text(
-                                            product.price.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.red),
+                                            'Get',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          Container(
-                                            width: 20,
-                                            height: 1.5,
-                                            color: Colors.grey.shade700,
+
+                                          Icon(
+                                            Icons.add_shopping_cart,
+                                            color: Colors.white,
                                           )
                                         ],
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                       ),
-                                    const SizedBox(
-                                      width: 12,
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green),
                                     ),
-                                    if (product.discount > 0)
-                                      Text(
-                                        (product.price - product.discount)
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green),
-                                      ),
-                                    if (product.discount == 0)
-                                      Text(
-                                        (product.price).toString(),
-                                        style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green),
-                                      ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      CartService().addToCart(
-                                        productId: product.id,
-                                        productName: product.name,
-                                        price: product.price - product.discount,
-                                        quantity: 1,
-                                        image: product.image,
-                                        userId: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                      );
-                                    },
-                                    child: const Row(
-                                      children: [
-                                        Text(
-                                          'Get',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Icon(
-                                          Icons.add_shopping_cart,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green),
+                                    width: Get.width * .25,
                                   ),
-                                  width: Get.width * .25,
-                                ),
-                              ],
-                            );
-                          });
-                    }),
-              )
-            ],
+                                ],
+                              );
+                            });
+                      }),
+                )
+              ],
+            ),
           ),
         ));
   }

@@ -35,9 +35,11 @@ class _SignInState extends State<SignIn> {
     // TODO: implement dispose
     super.dispose();
 
-    setState(() {
+    /*setState(() {
       // _controller.dispose();
     });
+
+     */
   }
 
   var isloading = false;

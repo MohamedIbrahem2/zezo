@@ -158,7 +158,8 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                           final product = products[index];
                           return InkWell(
                             onTap: () {
-                              if (context.watch<AdminProvider>().isAdmin) {
+                              final provider = Provider.of<AdminProvider>(context, listen: false);
+                              if (provider.isAdmin) {
                                 Get.to(() => ProductDetails(
                                       product: product,
                                     ));

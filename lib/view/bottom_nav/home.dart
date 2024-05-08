@@ -569,7 +569,6 @@ class _HomePageState extends State<HomePage> {
                       }
 
                       final products = snapshot.data!;
-
                       return Container(
                         margin: const EdgeInsets.all(15),
                         width: Get.width * .95,

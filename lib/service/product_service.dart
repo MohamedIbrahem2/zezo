@@ -131,7 +131,8 @@ class ProductsService {
   Stream<List<Product>> searchForProduct(String? productName) {
     final collection = FirebaseFirestore.instance.collection('products');
     return collection
-        .where('name', isEqualTo: productName)
+        .where('name' , isGreaterThanOrEqualTo: productName)
+        .where('name' , isLessThanOrEqualTo: productName!+ '\uf7ff')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();

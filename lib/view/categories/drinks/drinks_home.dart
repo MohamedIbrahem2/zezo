@@ -16,7 +16,7 @@ class SubCategoriesScreen extends StatefulWidget {
 }
 
 class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
-  String? searchValue;
+  final TextEditingController searchValue = TextEditingController();
   late Future<Category> getCategoryFuture;
   @override
   void initState() {
@@ -62,11 +62,12 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
               onChanged: (value) {
                 if (value.isEmpty) {
                   setState(() {
-                    searchValue = null;
+                    searchValue.text = '';
+                    return;
                   });
                 } else {
                   setState(() {
-                    searchValue = value;
+                    searchValue.text = value;
                   });
                 }
               },
@@ -91,7 +92,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           Expanded(
             child: StreamBuilder<List<Subcategory>>(
                 stream: SubCategoryService().searchSubcategoriesByCategory(
-                    searchValue, widget.categoryId),
+                    searchValue.text, widget.categoryId),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(

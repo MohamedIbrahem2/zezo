@@ -81,7 +81,8 @@ class SubCategoryService {
       String? searchValue, String categoryId) {
     final collection = FirebaseFirestore.instance.collection('subcategories');
     return collection
-        .where('name', isEqualTo: searchValue)
+        .where('name' , isGreaterThanOrEqualTo: searchValue)
+        .where('name' , isLessThanOrEqualTo: searchValue!+ '\uf7ff')
         .where('categoryId', isEqualTo: categoryId)
         .snapshots()
         .map((snapshot) {

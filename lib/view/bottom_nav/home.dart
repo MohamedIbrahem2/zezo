@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -406,7 +408,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: Get.height * .02,
+                  height: Get.height * .01,
                 ),
                 const OfferCarousel(),
                 SizedBox(
@@ -445,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(
-                  height: Get.height * .04,
+                  height: Get.height * .02,
                 ),
                 Container(
                     margin: const EdgeInsets.only(left: 10),
@@ -475,9 +477,9 @@ class _HomePageState extends State<HomePage> {
                       }
                       final categories = snapshot.data;
                       return SizedBox(
-                        height: 320,
+                        height: Get.height * 0.55,
                         child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 2.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 2.0),
                           itemCount: categories!.length,
                           itemBuilder: (context, index) {
                             final category = categories[index];
@@ -498,7 +500,7 @@ class _HomePageState extends State<HomePage> {
                                               imageBuilder: (context, imageProvider) =>
                                               Container(
                                                 width: Get.width * .13,
-                                                height: Get.height * .13,
+                                                height: 70,
                                                 decoration: BoxDecoration(
                                                    boxShadow: [
                                                     BoxShadow(
@@ -516,25 +518,25 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                           ),
-                                          /*Text(
-                                            category.name,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                          )
-
-                                           */
-
                                 ),
+                                Expanded(
+                                  child: Text(
+                                    category.name,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                )
                               ],
                             );
                           },
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisSpacing: 5,
-                            crossAxisCount: 4),
+                            childAspectRatio: 1.3,
+                            mainAxisSpacing: 8,
+                            crossAxisCount: 3),
                         ),
                       );
                     }),

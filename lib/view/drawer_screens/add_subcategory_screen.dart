@@ -204,7 +204,7 @@ class _AddSubCategoryScreenState extends State<AddSubCategoryScreen> {
                         }
                       }
                     },
-                    child: const Text('Add Category'),
+                    child: const Text('Add SubCategory'),
                   ),
               ],
             ),

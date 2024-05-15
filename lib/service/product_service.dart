@@ -94,6 +94,25 @@ class ProductsService {
     });
   }
 
+  Future<void> addProductToBestSelling(Product product) async{
+    final collection = FirebaseFirestore.instance.collection('bestselling');
+    await collection.add({
+      'name': product.name,
+      'price': product.price,
+      'categoryId': product.categoryId,
+      'subcategoryId': product.subcategoryId,
+      'discount': product.discount,
+      'image': product.image,
+      'salesCount': 0,
+    });
+
+
+  }
+  Future<void> removeProductFromBestSelling(Product product) async{
+    final collection = FirebaseFirestore.instance.collection('bestselling');
+    await collection.doc(product.id).delete();
+  }
+
   Stream<List<Product>> getProductsByCategory(String categoryId) {
     final collection = FirebaseFirestore.instance.collection('products');
     return collection
@@ -102,6 +121,24 @@ class ProductsService {
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
     });
+  }
+  //delete Subcategory by id
+  Future<void> deleteSubcategory(String subcategoryId) async{
+    final CollectionReference dataCollection = 
+        FirebaseFirestore.instance.collection('subcategories');
+    await dataCollection.doc(subcategoryId).delete();
+  }
+  //delete Category by id
+  Future<void> deleteCategory(String categoryId) async{
+    final CollectionReference dataCollection =
+    FirebaseFirestore.instance.collection('categories');
+    await dataCollection.doc(categoryId).delete();
+  }
+  //delete Product by id
+  Future<void> deleteProduct(String productId) async{
+    final CollectionReference dataCollection =
+    FirebaseFirestore.instance.collection('products');
+    await dataCollection.doc(productId).delete();
   }
 
   Stream<List<Product>> getProductsBySubcategory(String subcategoryId) {
@@ -117,7 +154,7 @@ class ProductsService {
   // get the best selling products
 
   Stream<List<Product>> getBestSellingProducts() {
-    final collection = FirebaseFirestore.instance.collection('products');
+    final collection = FirebaseFirestore.instance.collection('bestselling');
     return collection
         .orderBy('salesCount', descending: true)
         .limit(10)

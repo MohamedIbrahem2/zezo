@@ -58,7 +58,7 @@ class TechnicalSupport extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  launch('https://wa.me/+966541297377');
+                  launch('https://wa.me/+0555808297');
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -80,7 +80,7 @@ class TechnicalSupport extends StatelessWidget {
                           child: Image.asset('images/whatsapp.png')),
                       GestureDetector(
                           onTap: () {
-                            launch("tel://+966540818867");
+                            launch("tel://+0555808297");
                           },
                           child: const Icon(Icons.call)),
                       const Text(
@@ -105,7 +105,7 @@ class TechnicalSupport extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  launch('https://wa.me/+966592524664');
+                  launch('https://wa.me/+0541297377');
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -127,7 +127,7 @@ class TechnicalSupport extends StatelessWidget {
                           child: Image.asset('images/whatsapp.png')),
                       GestureDetector(
                           onTap: () {
-                            launch("tel://+966540818867");
+                            launch("tel://+0541297377");
                           },
                           child: const Icon(Icons.call)),
                       const Text(
@@ -152,7 +152,7 @@ class TechnicalSupport extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  launch('https://wa.me/+966541297377');
+                  launch('https://wa.me/+0541297377');
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -174,7 +174,7 @@ class TechnicalSupport extends StatelessWidget {
                           child: Image.asset('images/whatsapp.png')),
                       GestureDetector(
                           onTap: () {
-                            launch("tel://+966540818867");
+                            launch("tel://+0541297377");
                           },
                           child: const Icon(Icons.call)),
                       const Text(
@@ -235,7 +235,7 @@ class TechnicalSupport extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        launch('https://wa.me/+966 59 623 5266');
+                        launch('https://wa.me/+0566682732');
                       },
                       child: Container(
                         width: Get.width * .28,
@@ -258,7 +258,7 @@ class TechnicalSupport extends StatelessWidget {
                                 child: Image.asset('images/whatsapp.png')),
                             GestureDetector(
                                 onTap: () {
-                                  launch("tel://+966540818867");
+                                  launch("tel://+0566682732");
                                 },
                                 child: const Icon(Icons.call)),
                           ],
@@ -281,7 +281,7 @@ class TechnicalSupport extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        launch('https://wa.me/+966 57 268 6794');
+                        launch('https://wa.me/+0568456527');
                       },
                       child: Container(
                         width: Get.width * .28,
@@ -304,7 +304,7 @@ class TechnicalSupport extends StatelessWidget {
                                 child: Image.asset('images/whatsapp.png')),
                             GestureDetector(
                                 onTap: () {
-                                  launch("tel://+966540818867");
+                                  launch("tel://+0568456527");
                                 },
                                 child: const Icon(Icons.call)),
                           ],
@@ -315,95 +315,6 @@ class TechnicalSupport extends StatelessWidget {
                 ),
                 SizedBox(
                   height: Get.height * .02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        launch('https://wa.me/+966 54 523 1004');
-                      },
-                      child: Container(
-                        width: Get.width * .28,
-                        height: Get.height * .05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                  spreadRadius: 1,
-                                  blurRadius: 3,
-                                  color: Colors.grey)
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizedBox(
-                                width: 25,
-                                height: 25,
-                                child: Image.asset('images/whatsapp.png')),
-                            GestureDetector(
-                                onTap: () {
-                                  launch("tel://+966540818867");
-                                },
-                                child: const Icon(Icons.call)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: Get.height * .02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        launch('https://wa.me/+966 54 139 0913');
-                      },
-                      child: Container(
-                        width: Get.width * .28,
-                        height: Get.height * .05,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                  spreadRadius: 1,
-                                  blurRadius: 3,
-                                  color: Colors.grey)
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizedBox(
-                                width: 25,
-                                height: 25,
-                                child: Image.asset('images/whatsapp.png')),
-                            GestureDetector(
-                                onTap: () {
-                                  launch("tel://+201064871625");
-                                },
-                                child: const Icon(Icons.call)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),

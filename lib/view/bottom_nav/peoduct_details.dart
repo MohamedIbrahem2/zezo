@@ -158,7 +158,50 @@ class _ProductDetailsState extends State<ProductDetails> {
               ],
             ),
             const SizedBox(
-              height: 70,
+              height: 20,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue
+                        ),
+                        onPressed: () async{
+                          await ProductsService().addProductToBestSelling(product);
+                          Get.defaultDialog(
+                            title: product.name.tr + " Added successfully to BestSelling.",
+                          );
+                        },
+                        child: const Text(
+                            style: TextStyle(color: Colors.white),
+                            "Add to Best selling")),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red
+                        ),
+                        onPressed: () async{
+                          await ProductsService().removeProductFromBestSelling(product);
+                          Get.defaultDialog(
+                              title: product.name.tr + " Removed successfully from BestSelling.",
+                              );
+                        },
+                        child: const Text(
+                            style: TextStyle(color: Colors.white),
+                            "Remove from Best selling")),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
             ),
             StreamBuilder<List<CartItem>>(
                 stream: CartService().getCartItemsByProductId(

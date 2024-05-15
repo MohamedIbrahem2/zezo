@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:stockat/service/category_service.dart';
+import 'package:stockat/service/product_service.dart';
+import 'package:stockat/service/products_service.dart';
 import 'package:stockat/view/categories/drinks/soft_drinks.dart';
 
+import '../../../main.dart';
 import '../../../service/subcategory_service.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
@@ -112,6 +116,48 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                       itemBuilder: (c, index) {
                         final subcategory = subcategories[index];
                         return GestureDetector(
+                          onLongPress: (){
+                            final provider = Provider.of<AdminProvider>(context, listen: false);
+                            if(provider.isAdmin) {
+                              Get.defaultDialog(
+                                  title: 'Do you want to delete ' +
+                                      subcategory.name.tr + " Subcategory ?",
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceAround,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'no'.tr,
+                                          style: const TextStyle(
+                                              color: Colors.black),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            elevation: 10),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          await ProductsService()
+                                              .deleteSubcategory(
+                                              subcategory.id);
+                                          Navigator.pop(context);
+                                          print(subcategory.id);
+                                        },
+                                        child: Text('yes'.tr,
+                                            style: const TextStyle(
+                                                color: Colors.white)),
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                            elevation: 10),
+                                      ),
+                                    ],
+                                  ));
+                            }
+                          },
                           onTap: () {
                             Get.to(SubCategoriesProducts(
                                 subCategoryId: subcategory.id,

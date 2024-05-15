@@ -913,10 +913,10 @@ class _CheckHomeState extends State<CheckHome> {
                 onClosing: () {},
                 builder: (context) => GestureDetector(
                   onTap: () {
-                    if (totalPrice < 500) {
+                    if (totalPrice < 300) {
                       Get.snackbar(
                         '',
-                        'Minimum order is 500 SR',
+                        'Minimum order is 300 SR',
                         duration: const Duration(seconds: 2),
                         snackPosition: SnackPosition.TOP,
                         titleText: const Text(
@@ -927,7 +927,7 @@ class _CheckHomeState extends State<CheckHome> {
                               fontWeight: FontWeight.w500),
                         ),
                         messageText: const Text(
-                          'Minimum order is 500 SR',
+                          'Minimum order is 300 SR',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,

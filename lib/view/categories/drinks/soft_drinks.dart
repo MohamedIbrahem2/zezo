@@ -165,6 +165,47 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                     ));
                               }
                             },
+                            onLongPress: (){
+                              final provider = Provider.of<AdminProvider>(context, listen: false);
+                              if(provider.isAdmin) {
+                                Get.defaultDialog(
+                                    title: 'Do you want to delete ' +
+                                        product.name.tr + " product ?",
+                                    content: Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'no'.tr,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white,
+                                              elevation: 10),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            await ProductsService()
+                                                .deleteProduct(
+                                                product.id);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('yes'.tr,
+                                              style: const TextStyle(
+                                                  color: Colors.white)),
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                              elevation: 10),
+                                        ),
+                                      ],
+                                    ));
+                              }
+                            },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [

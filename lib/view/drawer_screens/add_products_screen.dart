@@ -318,7 +318,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         }
                       }
                     },
-                    child: const Text('Add Category'),
+                    child: const Text('Add Product'),
                   ),
               ],
             ),

@@ -29,6 +29,7 @@ class SubCategoriesProducts extends StatefulWidget {
 class _DrinksItemsState extends State<SubCategoriesProducts> {
   int count = 1;
   var controller = Get.put(SoftDrinksViewModel());
+  bool test = true;
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +194,9 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                             await ProductsService()
                                                 .deleteProduct(
                                                 product.id);
+                                            ProductsService()
+                                                .deleteProductFromBestSelling(
+                                                product.id);
                                             Navigator.pop(context);
                                           },
                                           child: Text('yes'.tr,
@@ -279,26 +283,34 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                 SizedBox(
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      final result = await CartService()
-                                          .isProductInCart(
-                                              product.id,
-                                              FirebaseAuth
-                                                  .instance.currentUser!.uid);
-                                      // if (result != null && result > 0) {
-                                      //   // remove snakebar
+                                      if(product.available == false){
+                                        null;
+                                        Get.defaultDialog(
+                                          title: 'Sorry This Product is Not Available Right Now',
+                                        );
+                                      }else {
+                                        final result = await CartService()
+                                            .isProductInCart(
+                                            product.id,
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid);
+                                        // if (result != null && result > 0) {
+                                        //   // remove snakebar
 
-                                      //   Get.snackbar(
-                                      //       'Sorry', 'Product already in cart');
-                                      // }
-                                      CartService().addToCart(
-                                        productId: product.id,
-                                        productName: product.name,
-                                        price: product.price - product.discount,
-                                        quantity: count,
-                                        image: product.image,
-                                        userId: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                      );
+                                        //   Get.snackbar(
+                                        //       'Sorry', 'Product already in cart');
+                                        // }
+                                        CartService().addToCart(
+                                          productId: product.id,
+                                          productName: product.name,
+                                          price: product.price -
+                                              product.discount,
+                                          quantity: count,
+                                          image: product.image,
+                                          userId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                        );
+                                      }
                                     },
                                     child: const Row(
                                       children: [

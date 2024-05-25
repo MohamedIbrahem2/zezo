@@ -299,7 +299,7 @@ class _EditProductState extends State<EditProduct> {
                                     double.parse(deiscountController.text),
                                 image: _imageUrl,
                                 categoryId: category!.id,
-                                subcategoryId: subcategory!.id,
+                                subcategoryId: subcategory!.id, available: widget.product.available,
                               ));
                               setState(() {
                                 isLoading = false;

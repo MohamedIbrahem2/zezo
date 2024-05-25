@@ -9,8 +9,10 @@ class Product {
   final double discount;
   final String image;
   final int salesCount;
+  bool available;
   Product(
       {required this.id,
+        required this.available,
       required this.name,
       required this.price,
       required this.categoryId,
@@ -22,6 +24,7 @@ class Product {
   factory Product.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     return Product(
+      available: data['avalible'],
       id: snapshot.id,
       name: data['name'],
       price: (data['price'] as num).toDouble(),
@@ -35,6 +38,7 @@ class Product {
 
   Map<String, dynamic> toMap() {
     return {
+      'avalible': available,
       'name': name,
       'price': price,
       'categoryId': categoryId,
@@ -46,6 +50,7 @@ class Product {
   }
 
   Product copyWith({
+    required bool available,
     String? name,
     double? price,
     String? categoryId,
@@ -62,7 +67,8 @@ class Product {
       subcategoryId: subcategoryId ?? this.subcategoryId,
       discount: discount ?? this.discount,
       image: image ?? this.image,
-      salesCount: salesCount ?? this.salesCount,
+      salesCount: salesCount ?? this.salesCount, available: available,
+
     );
   }
 }
@@ -70,6 +76,7 @@ class Product {
 class ProductsService {
   Future<void> addProduct(
       {required String productName,
+        required bool available,
       required double productPrice,
       required double discount,
       required String image,
@@ -77,6 +84,7 @@ class ProductsService {
       required String subcategoryId}) async {
     final collection = FirebaseFirestore.instance.collection('products');
     await collection.add({
+      'avalible' : false,
       'name': productName,
       'price': productPrice,
       'categoryId': categoryId,
@@ -93,6 +101,29 @@ class ProductsService {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
     });
   }
+  Stream<List<Product>> getUnavailableProducts() {
+    final collection = FirebaseFirestore.instance.collection('products');
+    return collection.where('avalible', isEqualTo: false).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
+    });
+  }
+  Future<void> productNotAvailable(String product) async {
+    final collection = FirebaseFirestore.instance.collection('products');
+    return await collection.doc(product).update(
+        {
+      'avalible' : false,
+    },
+    );
+  }
+  Future<void> productAvailable(String product)async{
+    final collection = FirebaseFirestore.instance.collection('products');
+    return await collection.doc(product).update(
+        {
+          'avalible' : true,
+        },
+    );
+  }
+
 
   Future<void> addProductToBestSelling(Product product) async{
     final collection = FirebaseFirestore.instance.collection('bestselling');
@@ -138,6 +169,11 @@ class ProductsService {
   Future<void> deleteProduct(String productId) async{
     final CollectionReference dataCollection =
     FirebaseFirestore.instance.collection('products');
+    await dataCollection.doc(productId).delete();
+  }
+  Future<void> deleteProductFromBestSelling(String productId) async{
+    final CollectionReference dataCollection =
+    FirebaseFirestore.instance.collection('bestselling');
     await dataCollection.doc(productId).delete();
   }
 

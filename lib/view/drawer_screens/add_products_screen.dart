@@ -301,7 +301,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   : double.parse(priceController.text),
                               discount: deiscountController.text.isEmpty
                                   ? 0
-                                  : double.parse(deiscountController.text),
+                                  : double.parse(deiscountController.text), available: false,
                             );
                             setState(() {
                               isLoading = false;

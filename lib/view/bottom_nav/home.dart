@@ -16,6 +16,7 @@ import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/peoduct_details.dart';
 import 'package:stockat/view/categories/drinks/drinks_home.dart';
 import 'package:stockat/view/drawer_screens/add_subcategory_screen.dart';
+import 'package:stockat/view/drawer_screens/unavailable_product.dart';
 import 'package:stockat/view/my_page_screens/orders_management.dart';
 import 'package:stockat/view/my_page_screens/our_location_page.dart';
 import 'package:stockat/view/sign_in.dart';
@@ -298,6 +299,17 @@ class _HomePageState extends State<HomePage> {
               if (context.watch<AdminProvider>().isAdmin)
                 ListTile(
                   title: Text(
+                    'Unavailable Product'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const UnavailableProduct());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
                     'add category'.tr,
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
@@ -539,8 +551,8 @@ class _HomePageState extends State<HomePage> {
                                           fit: BoxFit.fill,
                                           imageBuilder: (context, imageProvider) =>
                                           Container(
-                                            width: Get.width * .13,
-                                            height: 70,
+                                            width: Get.width * .26,
+                                            height: Get.height * .13,
                                             decoration: BoxDecoration(
                                                boxShadow: [
                                                 BoxShadow(
@@ -559,14 +571,12 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                             ),
-                            Expanded(
-                              child: Text(
-                                category.name,
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
+                            Text(
+                              category.name,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
                             )
                           ],
                         );
@@ -574,8 +584,8 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1.3,
-                        mainAxisSpacing: 8,
+                        childAspectRatio: 0.8,
+                        mainAxisSpacing: 15,
                         crossAxisCount: 3),
                     );
                   }),
@@ -611,54 +621,99 @@ class _HomePageState extends State<HomePage> {
                     }
 
                     final products = snapshot.data!;
-                    return Container(
-                      margin: const EdgeInsets.all(15),
-                      width: Get.width * .95,
-                      height: Get.height * .35,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
+                    return GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.4,
+                          crossAxisCount: 3),
+                      itemBuilder: (BuildContext context, int index) {
                             final product = products[index];
-                            return SizedBox(
-                              width: Get.width * .3,
-                              child: GestureDetector(
-                                onTap: () {
-                                  final provider = Provider.of<AdminProvider>(context, listen: false);
-                                  if(provider.isAdmin) {
-                                    Get.to(ProductDetails(product: product));
-                                  }
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CachedNetworkImage(
-                                        imageUrl: product.image,
-                                        fit: BoxFit.fill,
-                                        imageBuilder: (context, imageProvider) =>
-                                            Container(
-                                              width: Get.width * .3,
-                                              height: Get.height * .13,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        color: Colors.grey,
-                                                        blurRadius: 4
-                                                    )
-                                                  ],
-                                                  border: Border.all(
-                                                      width: 3,
-                                                      color: Colors.green
-                                                  ),
-                                                  borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                                  image: DecorationImage(image: imageProvider ,fit: BoxFit.cover)
-                                              ),
+                            return GestureDetector(
+                              onLongPress:() {
+                                final provider = Provider.of<AdminProvider>(context, listen: false);
+                                if(provider.isAdmin) {
+                                  Get.defaultDialog(
+                                      title: 'Do you want to delete ' +
+                                          product.name.tr + " Category ?",
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceAround,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              'no'.tr,
+                                              style: const TextStyle(
+                                                  color: Colors.black),
                                             ),
-                                      ),
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                elevation: 10),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              await ProductsService()
+                                                  .deleteProductFromBestSelling(
+                                                  product.id);
+                                              ProductsService()
+                                                  .deleteProduct(
+                                                  product.id);
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('yes'.tr,
+                                                style: const TextStyle(
+                                                    color: Colors.white)),
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.red,
+                                                elevation: 10),
+                                          ),
+                                        ],
+                                      ));
+                                }
+
+                              },
+                              onTap: () {
+                                final provider = Provider.of<AdminProvider>(context, listen: false);
+                                if(provider.isAdmin) {
+                                  Get.to(ProductDetails(product: product));
+                                }
+                              },
+                              child: Column(
+                                //crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CachedNetworkImage(
+                                      imageUrl: product.image,
+                                      fit: BoxFit.fill,
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                            width: Get.width * .3,
+                                            height: Get.height * .13,
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                   BoxShadow(
+                                                      color: Colors.grey,
+                                                      blurRadius: 4
+                                                  )
+                                                ],
+                                                border: Border.all(
+                                                    width: 3,
+                                                    color: Colors.green
+                                                ),
+                                                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                                image: DecorationImage(image: imageProvider ,fit: BoxFit.cover)
+                                            ),
+                                          ),
                                     ),
-                                    Text(
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
                                       product.name,
                                       maxLines: 10,
                                       style: const TextStyle(
@@ -666,53 +721,60 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        if (product.discount > 0)
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Text(
-                                                product.price.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red),
-                                              ),
-                                              Container(
-                                                width: 20,
-                                                height: 1.5,
-                                                color: Colors.grey.shade700,
-                                              )
-                                            ],
-                                          ),
-                                        const SizedBox(
-                                          width: 11,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      if (product.discount > 0)
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Text(
+                                              product.price.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red),
+                                            ),
+                                            Container(
+                                              width: 20,
+                                              height: 1.5,
+                                              color: Colors.grey.shade700,
+                                            )
+                                          ],
                                         ),
-                                        if (product.discount > 0)
-                                          Text(
-                                            (product.price - product.discount)
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green),
-                                          ),
-                                        if (product.discount == 0)
-                                          Text(
-                                            product.price.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green),
-                                          ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      child: ElevatedButton(
-                                        onPressed: () async {
+                                      const SizedBox(
+                                        width: 11,
+                                      ),
+                                      if (product.discount > 0)
+                                        Text(
+                                          (product.price - product.discount)
+                                              .toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                      if (product.discount == 0)
+                                        Text(
+                                          product.price.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green),
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        if(product.available == false){
+                                          null;
+                                          Get.defaultDialog(
+                                              title: 'Sorry This Product is Not Available Right Now',
+                                              );
+                                        }else {
                                           final result = await CartService()
                                               .isProductInCart(
                                               product.id,
@@ -727,48 +789,44 @@ class _HomePageState extends State<HomePage> {
                                           CartService().addToCart(
                                             productId: product.id,
                                             productName: product.name,
-                                            price: product.price - product.discount,
+                                            price: product.price -
+                                                product.discount,
                                             quantity: count,
                                             image: product.image,
                                             userId: FirebaseAuth
                                                 .instance.currentUser!.uid,
                                           );
-                                        },
-                                        child: const Row(
-                                          children: [
-                                            Text(
-                                              'Get',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                        }
+                                      },
+                                      child: const Row(
+                                        children: [
+                                          Text(
+                                            'Get',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
 
-                                            Icon(
-                                              Icons.add_shopping_cart,
-                                              color: Colors.white,
-                                            )
-                                          ],
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green),
+                                          Icon(
+                                            Icons.add_shopping_cart,
+                                            color: Colors.white,
+                                          )
+                                        ],
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                       ),
-                                      width: Get.width * .25,
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green),
                                     ),
-                                  ],
-                                ),
+                                    width: Get.width * .25,
+                                  ),
+                                ],
                               ),
                             );
                           },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              width: 20,
-                            );
-                          },
-                          itemCount: products.length),
-                    );
-                  })
+    );
+                      },
+                  )
             ],
           ),
         ),

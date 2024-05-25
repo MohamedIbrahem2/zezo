@@ -158,7 +158,30 @@ class _ProductDetailsState extends State<ProductDetails> {
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:  product.available == false ? Colors.red : Colors.blue
+                  ),
+                    onPressed: () async {
+                    if(product.available) {
+                      await ProductsService().productNotAvailable(product.id);
+                      Get.defaultDialog(
+                        middleText: "Successfully being unavailable",
+                          );
+                    }else{
+                      await ProductsService().productAvailable(product.id);
+                      Get.defaultDialog(
+                        middleText: "Successfully being available",
+                      );
+                    }
+                    },
+                    child: product.available == false ? const Center(child: Text("Make Product available",style: TextStyle(color: Colors.white),)): const Center(child: Text("Make Product Unavailable",style: TextStyle(color: Colors.white),))),
+              ),
             ),
             Row(
               children: [
@@ -167,7 +190,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue
+                            backgroundColor:  Colors.blue
                         ),
                         onPressed: () async{
                           await ProductsService().addProductToBestSelling(product);

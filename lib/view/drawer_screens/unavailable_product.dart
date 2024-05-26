@@ -24,214 +24,212 @@ class _UnavailableProductState extends State<UnavailableProduct> {
       appBar: AppBar(
         title: const Text('Unavailable Products'),
       ),
-      body: Expanded(
-        child: StreamBuilder<List<Product>>(
-            stream: ProductsService().getUnavailableProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text('Error'),
-                );
-              }
+      body: StreamBuilder<List<Product>>(
+          stream: ProductsService().getUnavailableProducts(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text('Error'),
+              );
+            }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              final products = snapshot.data;
-              return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      childAspectRatio: .7,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10),
-                  itemCount: products!.length
-                  , itemBuilder: (context, index){
-                final product = products[index];
-                return InkWell(
-                  onTap: () {
-                    final provider = Provider.of<AdminProvider>(context, listen: false);
-                    if (provider.isAdmin) {
-                      Get.to(() => ProductDetails(
-                        product: product,
-                      ));
-                    }
-                  },
-                  onLongPress: (){
-                    final provider = Provider.of<AdminProvider>(context, listen: false);
-                    if(provider.isAdmin) {
-                      Get.defaultDialog(
-                          title: 'Do you want to delete ' +
-                              product.name.tr + " product ?",
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .spaceAround,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'no'.tr,
-                                  style: const TextStyle(
-                                      color: Colors.black),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    elevation: 10),
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final products = snapshot.data;
+            return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    childAspectRatio: .7,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemCount: products!.length
+                , itemBuilder: (context, index){
+              final product = products[index];
+              return InkWell(
+                onTap: () {
+                  final provider = Provider.of<AdminProvider>(context, listen: false);
+                  if (provider.isAdmin) {
+                    Get.to(() => ProductDetails(
+                      product: product,
+                    ));
+                  }
+                },
+                onLongPress: (){
+                  final provider = Provider.of<AdminProvider>(context, listen: false);
+                  if(provider.isAdmin) {
+                    Get.defaultDialog(
+                        title: 'Do you want to delete ' +
+                            product.name.tr + " product ?",
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'no'.tr,
+                                style: const TextStyle(
+                                    color: Colors.black),
                               ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await ProductsService()
-                                      .deleteProduct(
-                                      product.id);
-                                  ProductsService()
-                                      .deleteProductFromBestSelling(
-                                      product.id);
-                                  Navigator.pop(context);
-                                },
-                                child: Text('yes'.tr,
-                                    style: const TextStyle(
-                                        color: Colors.white)),
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    elevation: 10),
-                              ),
-                            ],
-                          ));
-                    }
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  blurRadius: 5,
-                                  spreadRadius: 2,
-                                  color: Colors.grey),
-                            ]),
-                        child: CachedNetworkImage(
-                            imageUrl: product.image),
-                        width: Get.width * .4,
-                        height: Get.height * .14,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        product.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (product.discount > 0)
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Text(
-                                  product.price.toString(),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  elevation: 10),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                await ProductsService()
+                                    .deleteProduct(
+                                    product.id);
+                                ProductsService()
+                                    .deleteProductFromBestSelling(
+                                    product.id);
+                                Navigator.pop(context);
+                              },
+                              child: Text('yes'.tr,
                                   style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red),
-                                ),
-                                Container(
-                                  width: 20,
-                                  height: 1.5,
-                                  color: Colors.grey.shade700,
-                                )
-                              ],
+                                      color: Colors.white)),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  elevation: 10),
                             ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          if (product.discount > 0)
-                            Text(
-                              (product.price - product.discount)
-                                  .toString(),
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                            ),
-                          if (product.discount == 0)
-                            Text(
-                              (product.price).toString(),
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                            ),
-                        ],
+                          ],
+                        ));
+                  }
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 5,
+                                spreadRadius: 2,
+                                color: Colors.grey),
+                          ]),
+                      child: CachedNetworkImage(
+                          imageUrl: product.image),
+                      width: Get.width * .4,
+                      height: Get.height * .14,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if(product.available == false){
-                              null;
-                              Get.defaultDialog(
-                                title: 'Sorry This Product is Not Available Right Now',
-                              );
-                            }else {
-                              final result = await CartService()
-                                  .isProductInCart(
-                                  product.id,
-                                  FirebaseAuth
-                                      .instance.currentUser!.uid);
-                              // if (result != null && result > 0) {
-                              //   // remove snakebar
-
-                              //   Get.snackbar(
-                              //       'Sorry', 'Product already in cart');
-                              // }
-                              CartService().addToCart(
-                                productId: product.id,
-                                productName: product.name,
-                                price: product.price -
-                                    product.discount,
-                                quantity: count,
-                                image: product.image,
-                                userId: FirebaseAuth
-                                    .instance.currentUser!.uid,
-                              );
-                            }
-                          },
-                          child: const Row(
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (product.discount > 0)
+                          Stack(
+                            alignment: Alignment.center,
                             children: [
                               Text(
-                                'Get',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                                product.price.toString(),
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
                               ),
-
-                              Icon(
-                                Icons.add_shopping_cart,
-                                color: Colors.white,
+                              Container(
+                                width: 20,
+                                height: 1.5,
+                                color: Colors.grey.shade700,
                               )
                             ],
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
                           ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green),
+                        const SizedBox(
+                          width: 12,
                         ),
-                        width: Get.width * .25,
+                        if (product.discount > 0)
+                          Text(
+                            (product.price - product.discount)
+                                .toString(),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                        if (product.discount == 0)
+                          Text(
+                            (product.price).toString(),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                      ],
+                    ),
+                    SizedBox(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if(product.available == false){
+                            null;
+                            Get.defaultDialog(
+                              title: 'Sorry This Product is Not Available Right Now',
+                            );
+                          }else {
+                            final result = await CartService()
+                                .isProductInCart(
+                                product.id,
+                                FirebaseAuth
+                                    .instance.currentUser!.uid);
+                            // if (result != null && result > 0) {
+                            //   // remove snakebar
+
+                            //   Get.snackbar(
+                            //       'Sorry', 'Product already in cart');
+                            // }
+                            CartService().addToCart(
+                              productId: product.id,
+                              productName: product.name,
+                              price: product.price -
+                                  product.discount,
+                              quantity: count,
+                              image: product.image,
+                              userId: FirebaseAuth
+                                  .instance.currentUser!.uid,
+                            );
+                          }
+                        },
+                        child: const Row(
+                          children: [
+                            Text(
+                              'Get',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+
+                            Icon(
+                              Icons.add_shopping_cart,
+                              color: Colors.white,
+                            )
+                          ],
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
                       ),
-                    ],
-                  ),
-                );
-              });
-            }
-        ),
+                      width: Get.width * .25,
+                    ),
+                  ],
+                ),
+              );
+            });
+          }
       ),
     );
   }

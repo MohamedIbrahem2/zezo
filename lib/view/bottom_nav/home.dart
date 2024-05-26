@@ -16,6 +16,7 @@ import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/peoduct_details.dart';
 import 'package:stockat/view/categories/drinks/drinks_home.dart';
 import 'package:stockat/view/drawer_screens/add_subcategory_screen.dart';
+import 'package:stockat/view/drawer_screens/sendMessage.dart';
 import 'package:stockat/view/drawer_screens/unavailable_product.dart';
 import 'package:stockat/view/my_page_screens/orders_management.dart';
 import 'package:stockat/view/my_page_screens/our_location_page.dart';
@@ -294,6 +295,17 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () {
                     Get.to(const AdminsPage());
+                  },
+                ),
+              if (context.watch<AdminProvider>().isAdmin)
+                ListTile(
+                  title: Text(
+                    'Send Message'.tr,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const SendMessage());
                   },
                 ),
               if (context.watch<AdminProvider>().isAdmin)

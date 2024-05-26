@@ -49,7 +49,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
             return const Text(
               '...',
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             );
           },
         ),
@@ -84,9 +84,9 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                 ),
                 contentPadding: const EdgeInsets.symmetric(vertical: 1),
                 enabledBorder:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                 focusedBorder:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
               ),
             ),
           ),
@@ -105,14 +105,14 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                   }
                   final subcategories = snapshot.data;
                   return GridView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
+                    // physics: const NeverScrollableScrollPhysics(),
                       itemCount: subcategories!.length,
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1.2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10),
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 1.2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10),
                       itemBuilder: (c, index) {
                         final subcategory = subcategories[index];
                         return GestureDetector(

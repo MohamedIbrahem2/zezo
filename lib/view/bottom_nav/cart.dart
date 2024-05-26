@@ -33,11 +33,13 @@ class _Screen2State extends State<Screen2> {
       appBar: AppBar(
         title: const Center(child:  Text("Cart")),
         backgroundColor: Colors.green,
-        leading: const BackButton(),
+        leading: const BackButton(
+
+        ),
       ),
       body: Container(
         margin:
-            const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
+        const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
         child: StreamBuilder<List<CartItem>>(
             stream: CartService().getCartItems(
               FirebaseAuth.instance.currentUser!.uid,
@@ -100,13 +102,13 @@ class _Screen2State extends State<Screen2> {
                     height: 200,
                     child: ListTile(
                       visualDensity:
-                          const VisualDensity(vertical: 4, horizontal: 4),
+                      const VisualDensity(vertical: 4, horizontal: 4),
                       leading: CachedNetworkImage(
                         imageUrl: cartItem.image,
                         placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        const Icon(Icons.error),
                       ),
                       title: Text(cartItem.productName),
                       subtitle: Text('${cartItem.price} SAR'),
@@ -147,8 +149,8 @@ class _Screen2State extends State<Screen2> {
             final total = snapshot.data == null || snapshot.data!.isEmpty
                 ? 0.0
                 : snapshot.data!.fold(0.0, (previousValue, element) {
-                    return previousValue + (element.price * element.quantity);
-                  });
+              return previousValue + (element.price * element.quantity);
+            });
 
             if (total == 0) {
               return BottomSheet(
@@ -208,7 +210,7 @@ class _Screen2State extends State<Screen2> {
                           const TextSpan(
                               text: '  SAR',
                               style:
-                                  TextStyle(fontSize: 18, color: Colors.black)),
+                              TextStyle(fontSize: 18, color: Colors.black)),
                         ])),
                       ],
                     ),

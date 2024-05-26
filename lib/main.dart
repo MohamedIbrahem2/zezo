@@ -3,6 +3,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -19,13 +20,11 @@ import 'view/splash_view.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options:
-      const FirebaseOptions(
-          apiKey: 'AIzaSyDX7pjs8hv3X-kP7yEsW8tDP20YUnfJweI',
-          appId: '725795991138',
-          messagingSenderId: '1:725795991138:android:c361c71306360407cb6b3b',
-          projectId: 'stockat-accbf',
-          storageBucket: 'stockat-accbf.appspot.com'
+      options: const FirebaseOptions(
+        apiKey: 'AIzaSyDX7pjs8hv3X-kP7yEsW8tDP20YUnfJweI',
+        appId: '1:725795991138:android:c361c71306360407cb6b3b',
+        messagingSenderId: '725795991138',
+        projectId: 'stockat-accbf',
       )
   );
 
@@ -59,12 +58,18 @@ class App extends StatefulWidget {
   @override
   State<App> createState() => _AppState();
 }
+getToken()async{
+  String? myToken = await FirebaseMessaging.instance.getToken();
+  print("++++++++++++++++++++++");
+  print(myToken);
+}
 
 class _AppState extends State<App> {
   var user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
+    getToken();
     if (user != null) {
       FcmProvider().initialize();
       // AuthViewModel().checkIfAdmin();

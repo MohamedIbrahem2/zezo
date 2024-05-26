@@ -8,9 +8,9 @@ class Subcategory {
 
   Subcategory(
       {required this.id,
-      required this.name,
-      required this.categoryId,
-      required this.image});
+        required this.name,
+        required this.categoryId,
+        required this.image});
 
   factory Subcategory.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;

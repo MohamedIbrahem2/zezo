@@ -13,13 +13,13 @@ class Product {
   Product(
       {required this.id,
         required this.available,
-      required this.name,
-      required this.price,
-      required this.categoryId,
-      required this.image,
-      required this.salesCount,
-      required this.subcategoryId,
-      required this.discount});
+        required this.name,
+        required this.price,
+        required this.categoryId,
+        required this.image,
+        required this.salesCount,
+        required this.subcategoryId,
+        required this.discount});
 
   factory Product.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
@@ -77,11 +77,11 @@ class ProductsService {
   Future<void> addProduct(
       {required String productName,
         required bool available,
-      required double productPrice,
-      required double discount,
-      required String image,
-      required String categoryId,
-      required String subcategoryId}) async {
+        required double productPrice,
+        required double discount,
+        required String image,
+        required String categoryId,
+        required String subcategoryId}) async {
     final collection = FirebaseFirestore.instance.collection('products');
     await collection.add({
       'avalible' : false,
@@ -126,22 +126,18 @@ class ProductsService {
 
 
   Future<void> addProductToBestSelling(Product product) async{
-    final collection = FirebaseFirestore.instance.collection('bestselling');
-    await collection.add({
-      'name': product.name,
-      'price': product.price,
-      'categoryId': product.categoryId,
-      'subcategoryId': product.subcategoryId,
-      'discount': product.discount,
-      'image': product.image,
-      'salesCount': 0,
+    final collection = FirebaseFirestore.instance.collection('products');
+    await collection.doc(product.id).update({
+      "isbestselling" : true,
     });
 
 
   }
   Future<void> removeProductFromBestSelling(Product product) async{
-    final collection = FirebaseFirestore.instance.collection('bestselling');
-    await collection.doc(product.id).delete();
+    final collection = FirebaseFirestore.instance.collection('products');
+    await collection.doc(product.id).update({
+      'isbestselling' : false,
+    });
   }
 
   Stream<List<Product>> getProductsByCategory(String categoryId) {
@@ -153,10 +149,24 @@ class ProductsService {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
     });
   }
+  /*Future<void> removeProductFromBestSellingTest() async{
+    final collection = FirebaseFirestore.instance.collection('products');
+    await collection.get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.set({
+          'isbestselling': false,
+        },
+        SetOptions(merge: true)
+        );
+      }
+    });
+  }
+
+   */
   //delete Subcategory by id
   Future<void> deleteSubcategory(String subcategoryId) async{
-    final CollectionReference dataCollection = 
-        FirebaseFirestore.instance.collection('subcategories');
+    final CollectionReference dataCollection =
+    FirebaseFirestore.instance.collection('subcategories');
     await dataCollection.doc(subcategoryId).delete();
   }
   //delete Category by id
@@ -190,10 +200,9 @@ class ProductsService {
   // get the best selling products
 
   Stream<List<Product>> getBestSellingProducts() {
-    final collection = FirebaseFirestore.instance.collection('bestselling');
+    final collection = FirebaseFirestore.instance.collection('products');
     return collection
-        .orderBy('salesCount', descending: true)
-        .limit(10)
+        .where('isbestselling', isEqualTo: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();
@@ -214,8 +223,8 @@ class ProductsService {
 
 // update product
   Future<void> updateProduct(
-    Product product,
-  ) async {
+      Product product,
+      ) async {
     final collection = FirebaseFirestore.instance
         .collection('products')
         .doc(product.id)

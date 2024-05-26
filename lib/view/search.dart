@@ -42,11 +42,11 @@ class _SearchState extends State<Search> {
                           .getCartItems(FirebaseAuth.instance.currentUser!.uid),
                       builder: (context, snapshot) {
                         final quantity = (snapshot.data == null ||
-                                snapshot.data!.isEmpty)
+                            snapshot.data!.isEmpty)
                             ? 0
                             : snapshot.data
-                                ?.map((e) => e.quantity)
-                                .reduce((value, element) => value + element);
+                            ?.map((e) => e.quantity)
+                            .reduce((value, element) => value + element);
                         return Positioned(
                           top: 3,
                           left: 14,
@@ -299,9 +299,9 @@ class _SearchState extends State<Search> {
                               );
                             });
                       }
-                        return const Center(child: Text("Type Your product name "),);
-                        }
-                    ),
+                      return const Center(child: Text("Type Your product name "),);
+                    }
+                ),
               )
             ],
           ),

@@ -17,7 +17,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final AuthViewModel yourController =
-      Get.put(AuthViewModel()..getUserProfile());
+  Get.put(AuthViewModel()..getUserProfile());
 
   @override
   void initState() {
@@ -69,14 +69,14 @@ class _HomeViewState extends State<HomeView> {
       body: screens[bottomNavProvider.currentIndex],
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(40), topLeft: Radius.circular(40)
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black38,spreadRadius: 0,blurRadius: 5
-            )
-          ]
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40), topLeft: Radius.circular(40)
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38,spreadRadius: 0,blurRadius: 5
+              )
+            ]
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.only(

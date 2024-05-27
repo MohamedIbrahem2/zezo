@@ -84,7 +84,7 @@ class ProductsService {
         required String subcategoryId}) async {
     final collection = FirebaseFirestore.instance.collection('products');
     await collection.add({
-      'avalible' : false,
+      'avalible' : true,
       'name': productName,
       'price': productPrice,
       'categoryId': categoryId,
@@ -92,6 +92,7 @@ class ProductsService {
       'discount': discount,
       'image': image,
       'salesCount': 0,
+      'isbestselling' : false
     });
   }
 

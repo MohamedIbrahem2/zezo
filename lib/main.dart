@@ -25,6 +25,7 @@ main() async {
         appId: '1:725795991138:android:c361c71306360407cb6b3b',
         messagingSenderId: '725795991138',
         projectId: 'stockat-accbf',
+        storageBucket: 'stockat-accbf.appspot.com'
       )
   );
 

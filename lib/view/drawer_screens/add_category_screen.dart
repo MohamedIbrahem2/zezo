@@ -131,7 +131,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         await _uploadImage();
                         if (_imageUrl.isNotEmpty) {
                           await CategoryService()
-                              .addCategory(nameController.text, _imageUrl);
+                              .addCategory(nameController.text);
                           setState(() {
                             isLoading = false;
                           });

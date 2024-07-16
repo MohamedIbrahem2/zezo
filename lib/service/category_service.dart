@@ -3,38 +3,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Category {
   final String id;
   final String name;
-  final String image;
 
-  Category({required this.id, required this.name, required this.image});
+  Category({required this.id, required this.name});
 
   factory Category.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     return Category(
       id: snapshot.id,
       name: data['name'],
-      image: data['image'],
     );
   }
 
   @override
-  String toString() => "Category<$id:$name:$image>";
+  String toString() => "Category<$id:$name>";
 
   Map<String, Object?> toDocument() {
     return {
       'name': name,
-      'image': image,
     };
   }
 
   Category copyWith({
     String? id,
     String? name,
-    String? image,
   }) {
     return Category(
       id: id ?? this.id,
       name: name ?? this.name,
-      image: image ?? this.image,
     );
   }
 
@@ -44,12 +39,11 @@ class Category {
 
     return other is Category &&
         other.id == id &&
-        other.name == name &&
-        other.image == image;
+        other.name == name ;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ image.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode;
 }
 
 class CategoryService {
@@ -70,10 +64,9 @@ class CategoryService {
   }
 
   // add a category
-  Future<void> addCategory(String name, String image) async {
+  Future<void> addCategory(String name) async {
     await _categoryCollectionRef.add({
       'name': name,
-      'image': image,
     });
   }
 

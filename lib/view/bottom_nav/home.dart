@@ -500,105 +500,33 @@ class _HomePageState extends State<HomePage> {
                       );
                     }
                     final categories = snapshot.data;
-                    return GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      itemCount: categories!.length,
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        return Column(
-                          children: [
-                            GestureDetector(
-                              onLongPress:() {
-                                final provider = Provider.of<AdminProvider>(context, listen: false);
-                                if(provider.isAdmin) {
-                                  Get.defaultDialog(
-                                      title: 'Do you want to delete ' +
-                                          category.name.tr + " Category ?",
-                                      content: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceAround,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              'no'.tr,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.white,
-                                                elevation: 10),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () async {
-                                              await ProductsService()
-                                                  .deleteCategory(
-                                                  category.id);
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('yes'.tr,
-                                                style: const TextStyle(
-                                                    color: Colors.white)),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                elevation: 10),
-                                          ),
-                                        ],
-                                      ));
-                                }
-
-                           },
-                              onTap: () {
-                                Get.to(SubCategoriesScreen(
-                                  categoryId: category.id,
-                                ));
-                              },
-                              child:
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CachedNetworkImage(
-                                          imageUrl: category.image,
-                                          fit: BoxFit.fill,
-                                          imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                            width: Get.width * .26,
-                                            height: Get.height * .13,
-                                            decoration: BoxDecoration(
-                                               boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey,
-                                                  blurRadius: 4
-                                                )
-                                              ],
-                                              border: Border.all(
-                                                width: 3,
-                                                color: Colors.green
-                                              ),
-                                              borderRadius: const BorderRadius.all(Radius.circular(30)),
-                                              image: DecorationImage(image: imageProvider ,fit: BoxFit.cover)
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                            ),
-                            Text(
-                              category.name,
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            )
-                          ],
-                        );
-                      },
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.8,
-                        mainAxisSpacing: 15,
-                        crossAxisCount: 3),
+                    return SizedBox(
+                      width: Get.width,
+                      height: Get.height * 0.3,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                        itemCount: categories!.length,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          return Column(
+                            children: [
+                              Text(
+                                category.name,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: Get.width * .16,
+                              )
+                            ],
+                          );
+                        },
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                      ),
                     );
                   }),
               SizedBox(

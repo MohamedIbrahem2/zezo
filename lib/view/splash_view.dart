@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:is_first_run/is_first_run.dart';
 import 'package:get/get.dart';
+import 'package:stockat/view/onbording_view.dart';
 import 'package:stockat/view/sign_in.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,15 +12,22 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
+late bool first;
+firstTime()async {
+  bool firstRun = await IsFirstRun.isFirstRun();
+  first = firstRun;
+}
+
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    firstTime();
     Timer(
         const Duration(seconds: 4),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const SignIn())));
+            context, MaterialPageRoute(builder: (context) =>  first ? const OnBording() : const SignIn() )));
   }
 
   @override
@@ -26,24 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Container(
           color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('logos/splash.png'),
-              Image.asset('images/logo2.png'),
-              SizedBox(
-                height: Get.height * .05,
-              ),
-              const Text(
-                'By/ Eng Tareq',
-                style: TextStyle(color: Colors.black),
-              ),
-              const Text(
-                'جميع الحقوق محفوظه',
-                style: TextStyle(color: Colors.black),
-              ),
-            ],
-          )),
+          child: Center(child: Image.asset('images/MYD logo2.png'))),
     );
   }
 }

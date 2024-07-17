@@ -77,7 +77,14 @@ class _SignInState extends State<SignIn> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: Get.height * .25,
+                        height: Get.height * .01,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(child: Image.asset('images/MYD logo2.png')),
+                      ),
+                      SizedBox(
+                        height: Get.height * .05,
                       ),
                       Container(
                         padding: const EdgeInsets.all(15),
@@ -131,18 +138,24 @@ class _SignInState extends State<SignIn> {
                                 onChanged: (value) {
                                   controller.email = value;
                                 },
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(
                                   labelText: 'Email',
-                                  border: OutlineInputBorder(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: mainColor,width: 2.0),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                        const BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter email';
                                   }
-
                                   // regx
                                   const pattern =
                                       r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$';
@@ -160,11 +173,18 @@ class _SignInState extends State<SignIn> {
                                 onChanged: (value) {
                                   controller.password = value;
                                 },
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(
                                   labelText: 'Password',
-                                  border: OutlineInputBorder(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: mainColor,width: 2.0),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                        const BorderRadius.all(Radius.circular(10)),
                                   ),
                                 ),
                                 validator: (value) {
@@ -219,7 +239,7 @@ class _SignInState extends State<SignIn> {
                                       backgroundColor: mainColor,
                                       fixedSize:
                                           Size.fromWidth(Get.width * .8)),
-                                  child: const Text('SIGN IN'))
+                                  child: const Text('SIGN IN',style: TextStyle(color: Colors.white),))
                             ],
                           ),
                         ),

@@ -31,9 +31,10 @@ class _Screen2State extends State<Screen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child:  Text("Cart")),
-        backgroundColor: Colors.green,
+        title: const Center(child:  Text("Cart",style: TextStyle(color: Colors.white),)),
+        backgroundColor: mainColor,
         leading: const BackButton(
+          color: Colors.white,
 
         ),
       ),
@@ -153,30 +154,35 @@ class _Screen2State extends State<Screen2> {
             });
 
             if (total == 0) {
-              return BottomSheet(
-                elevation: 20,
-                onClosing: () {},
-                builder: (context) => InkWell(
-                  onTap: () {
-                    BottomNavbarProvider.instance(context, listen: false)
-                        .changeIndex(0);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: BottomSheet(
+                  elevation: 20,
+                  onClosing: () {},
+                  builder: (context) => InkWell(
+                    onTap: () {
+                      BottomNavbarProvider.instance(context, listen: false)
+                          .changeIndex(0);
 
-                    Get.offAll(const HomeView());
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    width: Get.width,
-                    height: Get.height * .07,
-                    color: Colors.green,
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_shopping_cart),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text('Go To Home To SHop Now')
-                      ],
+                      Get.offAll(const HomeView());
+                    },
+                    child: Container(
+
+                      decoration: BoxDecoration(
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(25)),
+                      width: Get.width,
+                      height: Get.height * .07,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_shopping_cart,color: Colors.white,),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text('Go To Home To Sop Now',style: TextStyle(color: Colors.white),)
+                        ],
+                      ),
                     ),
                   ),
                 ),

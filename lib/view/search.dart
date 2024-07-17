@@ -151,7 +151,7 @@ class _SearchState extends State<Search> {
                                   if(provider.isAdmin) {
                                     Get.defaultDialog(
                                         title: 'Do you want to delete ' +
-                                            product.name.tr + " Product ?",
+                                            product.brand.tr + " Product ?",
                                         content: Row(
                                           mainAxisAlignment: MainAxisAlignment
                                               .spaceAround,
@@ -190,24 +190,11 @@ class _SearchState extends State<Search> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                blurRadius: 5,
-                                                spreadRadius: 2,
-                                                color: Colors.grey),
-                                          ]),
-                                      child: Image.network(product.image),
-                                      width: Get.width * .4,
-                                      height: Get.height * .14,
-                                    ),
                                     const SizedBox(
                                       height: 8,
                                     ),
                                     Text(
-                                      product.name,
+                                      product.brand,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -216,12 +203,12 @@ class _SearchState extends State<Search> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        if (product.discount > 0)
+                                        if (product.discountPrice > 0)
                                           Stack(
                                             alignment: Alignment.center,
                                             children: [
                                               Text(
-                                                product.price.toString(),
+                                                product.regularPrice.toString(),
                                                 style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
@@ -237,18 +224,18 @@ class _SearchState extends State<Search> {
                                         const SizedBox(
                                           width: 12,
                                         ),
-                                        if (product.discount > 0)
+                                        if (product.discountPrice > 0)
                                           Text(
-                                            (product.price - product.discount)
+                                            (product.regularPrice - product.discountPrice)
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.green),
                                           ),
-                                        if (product.discount == 0)
+                                        if (product.discountPrice == 0)
                                           Text(
-                                            (product.price).toString(),
+                                            (product.regularPrice).toString(),
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
@@ -261,11 +248,11 @@ class _SearchState extends State<Search> {
                                         onPressed: () {
                                           CartService().addToCart(
                                             productId: product.id,
-                                            productName: product.name,
-                                            price: product.price -
-                                                product.discount,
+                                            productName: product.brand,
+                                            price: product.regularPrice -
+                                                product.discountPrice,
                                             quantity: 1,
-                                            image: product.image,
+                                            image: "",
                                             userId: FirebaseAuth
                                                 .instance.currentUser!.uid,
                                           );

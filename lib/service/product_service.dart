@@ -2,72 +2,88 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
   final String id;
-  final String name;
-  final double price;
-  final String categoryId;
-  final String subcategoryId;
-  final double discount;
-  final String image;
-  final int salesCount;
-  bool available;
+  final String brand;
+  final String category;
+  final double regularPrice;
+  final String description;
+  final double discountPrice;
+  final double stock;
+  final String title;
+  final String weight;
+  final List images;
   Product(
-      {required this.id,
-        required this.available,
-        required this.name,
-        required this.price,
-        required this.categoryId,
-        required this.image,
-        required this.salesCount,
-        required this.subcategoryId,
-        required this.discount});
+      {
+        required this.category,
+        required this.brand,
+        required this.description,
+        required this.stock,
+        required this.title,
+        required this.weight,
+        required this.id,
+        required this.regularPrice,
+        required this.images,
+        required this.discountPrice});
 
   factory Product.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
+    double parseDouble(dynamic value) {
+      if (value is num) {
+        return value.toDouble();
+      } else if (value is String) {
+        return double.tryParse(value) ?? 0.0;
+      } else {
+        return 0.0;
+      }
+    }
     return Product(
-      available: data['avalible'],
       id: snapshot.id,
-      name: data['name'],
-      price: (data['price'] as num).toDouble(),
-      categoryId: data['categoryId'],
-      subcategoryId: data['subcategoryId'],
-      discount: data['discount'],
-      image: data['image'],
-      salesCount: data['salesCount'],
+      regularPrice: parseDouble(data['regularPrice']),
+      discountPrice: parseDouble(data['discountPrice']),
+      images: data['images'],
+      brand: data['brand'],
+      description: data['description'],
+      stock: parseDouble(data['stock']),
+      title: data['title'],
+      weight: data['weight'],
+      category: 'category',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'avalible': available,
-      'name': name,
-      'price': price,
-      'categoryId': categoryId,
-      'subcategoryId': subcategoryId,
-      'discount': discount,
-      'image': image,
-      'salesCount': salesCount,
+      'regularPrice': regularPrice,
+      'discount': discountPrice,
+      'images': images,
+      'brand': brand,
+      'description': description,
+      'stock' : stock,
+      'title' : title,
+      'weight' : weight,
+      'category': category
     };
   }
 
   Product copyWith({
-    required bool available,
-    String? name,
-    double? price,
-    String? categoryId,
-    String? subcategoryId,
-    double? discount,
-    String? image,
-    int? salesCount,
+    double? regularPrice,
+    double? discountPrice,
+    String? images,
+    String? brand,
+    String? description,
+    double? stock,
+    String? title,
+    String? weight
   }) {
     return Product(
       id: id,
-      name: name ?? this.name,
-      price: price ?? this.price,
-      categoryId: categoryId ?? this.categoryId,
-      subcategoryId: subcategoryId ?? this.subcategoryId,
-      discount: discount ?? this.discount,
-      image: image ?? this.image,
-      salesCount: salesCount ?? this.salesCount, available: available,
+      regularPrice: regularPrice ?? this.regularPrice,
+      discountPrice: discountPrice ?? this.discountPrice,
+      brand: brand ?? this.brand,
+      description: description ?? this.description,
+      stock: stock ?? this.stock,
+      title: title ?? this.title,
+      weight: weight ?? this.weight,
+      images: [],
+      category: category,
 
     );
   }
@@ -144,7 +160,7 @@ class ProductsService {
   Stream<List<Product>> getProductsByCategory(String categoryId) {
     final collection = FirebaseFirestore.instance.collection('products');
     return collection
-        .where('categoryId', isEqualTo: categoryId)
+        .where('category', isEqualTo: categoryId)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();

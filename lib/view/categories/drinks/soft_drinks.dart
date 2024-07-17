@@ -171,7 +171,7 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                               if(provider.isAdmin) {
                                 Get.defaultDialog(
                                     title: 'Do you want to delete ' +
-                                        product.name.tr + " product ?",
+                                        product.brand.tr + " product ?",
                                     content: Row(
                                       mainAxisAlignment: MainAxisAlignment
                                           .spaceAround,
@@ -213,25 +213,12 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 5,
-                                            spreadRadius: 2,
-                                            color: Colors.grey),
-                                      ]),
-                                  child: CachedNetworkImage(
-                                      imageUrl: product.image),
-                                  width: Get.width * .4,
-                                  height: Get.height * .14,
-                                ),
+
                                 const SizedBox(
                                   height: 8,
                                 ),
                                 Text(
-                                  product.name,
+                                  product.brand,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -240,12 +227,12 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (product.discount > 0)
+                                    if (product.discountPrice > 0)
                                       Stack(
                                         alignment: Alignment.center,
                                         children: [
                                           Text(
-                                            product.price.toString(),
+                                            product.regularPrice.toString(),
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
@@ -261,18 +248,18 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                     const SizedBox(
                                       width: 12,
                                     ),
-                                    if (product.discount > 0)
+                                    if (product.discountPrice > 0)
                                       Text(
-                                        (product.price - product.discount)
+                                        (product.regularPrice - product.discountPrice)
                                             .toString(),
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.green),
                                       ),
-                                    if (product.discount == 0)
+                                    if (product.discountPrice == 0)
                                       Text(
-                                        (product.price).toString(),
+                                        (product.regularPrice).toString(),
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -283,12 +270,6 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                 SizedBox(
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      if(product.available == false){
-                                        null;
-                                        Get.defaultDialog(
-                                          title: 'Sorry This Product is Not Available Right Now',
-                                        );
-                                      }else {
                                         final result = await CartService()
                                             .isProductInCart(
                                             product.id,
@@ -302,15 +283,15 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                                         // }
                                         CartService().addToCart(
                                           productId: product.id,
-                                          productName: product.name,
-                                          price: product.price -
-                                              product.discount,
+                                          productName: product.brand,
+                                          price: product.regularPrice -
+                                              product.discountPrice,
                                           quantity: count,
-                                          image: product.image,
+                                          image: '',
                                           userId: FirebaseAuth
                                               .instance.currentUser!.uid,
                                         );
-                                      }
+
                                     },
                                     child: const Row(
                                       children: [

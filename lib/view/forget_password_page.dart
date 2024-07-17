@@ -245,7 +245,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: mainColor,
                                   fixedSize: Size.fromWidth(Get.width * .8)),
-                              child: const Text('Send Reset Link'))
+                              child: const Text('Send Reset Link',style: TextStyle(color: Colors.white),))
                         ],
                       ),
                     ),
@@ -260,7 +260,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
                       ),
-                      child: const Text('New Customer'))
+                      child: const Text('New Customer',style: TextStyle(color: Colors.white)))
                 ],
               ),
             ),

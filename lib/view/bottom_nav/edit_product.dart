@@ -30,23 +30,23 @@ class _EditProductState extends State<EditProduct> {
     priceController.text = '0';
     deiscountController.text = '0';
 
-    nameController.text = widget.product.name;
-    priceController.text = widget.product.price.toString();
-    deiscountController.text = widget.product.discount.toString();
-    _imageUrl = widget.product.image;
+    nameController.text = widget.product.brand;
+    priceController.text = widget.product.regularPrice.toString();
+    deiscountController.text = widget.product.discountPrice.toString();
+    _imageUrl = widget.product.images.first;
 
-    CategoryService().getCategoryById(widget.product.categoryId).then((value) {
-      setState(() {
-        category = value;
-      });
-    });
-    SubCategoryService()
-        .getSubcategoryById(widget.product.subcategoryId)
-        .then((value) {
-      setState(() {
-        subcategory = value;
-      });
-    });
+    // CategoryService().getCategoryById(widget.product.categoryId).then((value) {
+    //   setState(() {
+    //     category = value;
+    //   });
+    // });
+    // SubCategoryService()
+    //     .getSubcategoryById(widget.product.subcategoryId)
+    //     .then((value) {
+    //   setState(() {
+    //     subcategory = value;
+    //   });
+    // });
     super.initState();
   }
 
@@ -83,8 +83,8 @@ class _EditProductState extends State<EditProduct> {
       if (_imageFile != null) {
         return FileImage(_imageFile!);
       }
-      if (widget.product.image.isNotEmpty) {
-        return NetworkImage(widget.product.image);
+      if (widget.product.images.first.isNotEmpty) {
+        return NetworkImage(widget.product.images.first);
       }
       return null;
     }
@@ -293,13 +293,11 @@ class _EditProductState extends State<EditProduct> {
                             if (_imageUrl.isNotEmpty) {
                               await ProductsService()
                                   .updateProduct(widget.product.copyWith(
-                                name: nameController.text,
-                                price: double.parse(priceController.text),
-                                discount:
+                                brand: nameController.text,
+                                regularPrice: double.parse(priceController.text),
+                                discountPrice:
                                     double.parse(deiscountController.text),
-                                image: _imageUrl,
-                                categoryId: category!.id,
-                                subcategoryId: subcategory!.id, available: widget.product.available,
+                                images: _imageUrl,
                               ));
                               setState(() {
                                 isLoading = false;

@@ -48,7 +48,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(product.image),
+                      image: NetworkImage(product.images.first),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -82,7 +82,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           IconButton(
                               onPressed: () {
                                 Get.to(ProductQrImageView(
-                                    id: product.id, productName: product.name));
+                                    id: product.id, productName: product.brand));
                               },
                               icon: const Icon(Icons.qr_code_scanner_outlined))
 
@@ -97,7 +97,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
 
                       Text(
-                        product.name,
+                        product.brand,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -105,7 +105,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Price: SR ${product.price.toStringAsFixed(2)}',
+                        'Price: SR ${product.regularPrice.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
@@ -113,7 +113,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Discount: ${product.discount}',
+                        'Discount: ${product.discountPrice}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
@@ -146,7 +146,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       const SizedBox(height: 8),
                       // total price
                       Text(
-                        'Total Price: SR ${(product.price - product.discount).toStringAsFixed(2)}',
+                        'Total Price: SR ${(product.regularPrice - product.discountPrice).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
@@ -160,29 +160,6 @@ class _ProductDetailsState extends State<ProductDetails> {
             const SizedBox(
               height: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:  product.available == false ? Colors.red : Colors.blue
-                  ),
-                    onPressed: () async {
-                    if(product.available) {
-                      await ProductsService().productNotAvailable(product.id);
-                      Get.defaultDialog(
-                        middleText: "Successfully being unavailable",
-                          );
-                    }else{
-                      await ProductsService().productAvailable(product.id);
-                      Get.defaultDialog(
-                        middleText: "Successfully being available",
-                      );
-                    }
-                    },
-                    child: product.available == false ? const Center(child: Text("Make Product available",style: TextStyle(color: Colors.white),)): const Center(child: Text("Make Product Unavailable",style: TextStyle(color: Colors.white),))),
-              ),
-            ),
             Row(
               children: [
                 Expanded(
@@ -195,7 +172,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         onPressed: () async{
                           await ProductsService().addProductToBestSelling(product);
                           Get.defaultDialog(
-                            title: product.name.tr + " Added successfully to BestSelling.",
+                            title: product.brand.tr + " Added successfully to BestSelling.",
                           );
                         },
                         child: const Text(
@@ -213,7 +190,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         onPressed: () async{
                           await ProductsService().removeProductFromBestSelling(product);
                           Get.defaultDialog(
-                              title: product.name.tr + " Removed successfully from BestSelling.",
+                              title: product.brand.tr + " Removed successfully from BestSelling.",
                               );
                         },
                         child: const Text(
@@ -274,9 +251,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     userId:
                                         FirebaseAuth.instance.currentUser!.uid,
                                     quantity: 1,
-                                    productName: product.name,
-                                    image: product.image,
-                                    price: product.price,
+                                    productName: product.brand,
+                                    image: product.images.first,
+                                    price: product.regularPrice,
 
                                     // product: product,
                                   );

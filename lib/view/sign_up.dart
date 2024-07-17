@@ -31,11 +31,11 @@ class SignUp extends GetWidget<AuthViewModel> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: Get.height * .07,
+                  height: Get.height * .06,
                 ),
                 Image.asset(
-                  'images/logo2.png',
-                  width: Get.width * .7,
+                  'images/MYD logo2.png',
+                  width: Get.width * .9,
                   height: Get.height * .2,
                 ),
                 Container(
@@ -92,11 +92,18 @@ class SignUp extends GetWidget<AuthViewModel> {
                           onChanged: (value) {
                             controller.name = value;
                           },
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             labelText: 'Name',
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: mainColor,width: 2.0),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              const BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                           validator: (value) {
@@ -112,11 +119,18 @@ class SignUp extends GetWidget<AuthViewModel> {
 
                         IntlPhoneField(
                           controller: phone,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             labelText: 'Phone Number',
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: mainColor,width: 2.0),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              const BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                           initialCountryCode: 'SA',
@@ -161,11 +175,18 @@ class SignUp extends GetWidget<AuthViewModel> {
                           onChanged: (value) {
                             controller.email = value;
                           },
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             labelText: 'Email',
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: mainColor,width: 2.0),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              const BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                           validator: (value) {
@@ -191,11 +212,19 @@ class SignUp extends GetWidget<AuthViewModel> {
                           onChanged: (value) {
                             controller.password = value;
                           },
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             labelText: 'Password',
-                            border: OutlineInputBorder(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.black,
+
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: mainColor,width: 2.0),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              const BorderRadius.all(Radius.circular(10)),
                             ),
                           ),
                           validator: (value) {
@@ -239,7 +268,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: mainColor,
                                 fixedSize: Size.fromWidth(Get.width * .8)),
-                            child: const Text('SIGN Up'))
+                            child: const Text('SIGN Up',style: TextStyle(color: Colors.white),))
                       ],
                     ),
                   ),
@@ -254,7 +283,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                     ),
-                    child: const Text('Already have an account?'))
+                    child: const Text('Already have an account?',style: TextStyle(color: Colors.white),))
               ],
             ),
           ),

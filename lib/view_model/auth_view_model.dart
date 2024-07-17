@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/view/home_view.dart';
 
@@ -56,7 +57,7 @@ class AuthViewModel extends GetxController {
         'Loading',
         'please wait',
         duration: const Duration(seconds: 2),
-        backgroundColor: Colors.green,
+        backgroundColor: mainColor,
         snackPosition: SnackPosition.BOTTOM,
       );
 
@@ -123,7 +124,7 @@ class AuthViewModel extends GetxController {
       Get.snackbar('Loading', 'please wait',
           snackPosition: SnackPosition.BOTTOM,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.greenAccent);
+          backgroundColor: mainColor);
       var data = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       userProfile = await _authService.getUserProfile(data.user!.uid);

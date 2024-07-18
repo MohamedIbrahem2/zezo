@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/order_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,11 +35,11 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade100,
+        backgroundColor: mainColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Order history',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -174,6 +175,7 @@ class _StatusTapsState extends State<StatusTaps> {
     final orderHistory = context.watch<OrdersHistoryProvider>();
     return Column(
       children: [
+        SizedBox(height:20,),
         SizedBox(
             height: 50,
             child: SingleChildScrollView(
@@ -194,15 +196,17 @@ class _StatusTapsState extends State<StatusTaps> {
                             color:
                                 context.watch<OrdersHistoryProvider>().status ==
                                         status
-                                    ? Colors.blue.shade100
-                                    : Colors.greenAccent.shade100,
+                                    ? mainColor
+                                    : Colors.pink.shade200,
                             boxShadow: const [
                               BoxShadow(
                                   blurRadius: 2,
                                   spreadRadius: 1,
                                   color: Colors.black)
                             ]),
-                        child: Text(status),
+                        child: Text(status,style: TextStyle(
+                          color: Colors.white
+                        ),),
                       ),
                     ),
                 ],

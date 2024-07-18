@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+            width: Get.width*.4,
           color: Colors.white,
           child: Center(child: Image.asset('images/MYD logo2.png'))),
     );

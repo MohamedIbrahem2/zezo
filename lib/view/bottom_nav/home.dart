@@ -128,240 +128,243 @@ class _HomePageState extends State<HomePage> {
       drawer: Padding(
         padding: const EdgeInsets.only(top:8.0),
         child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(30),
-                child: Image.asset('images/MYD logo2trans.png'),
-                width: Get.width,
-                height: Get.height * .2,
-                alignment: Alignment.center,
-                color: Colors.blue.shade50,
-              ),
-              ListTile(
-                title: Text(
-                  'wallet'.tr,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(30),
+                  child: Image.asset('images/MYD logo2trans.png'),
+                  width: Get.width,
+                  height: Get.height * .2,
+                  alignment: Alignment.center,
+                  color: Colors.blue.shade50,
                 ),
-                onTap: () {
-                  Get.to(const Wallet());
-                },
-              ),
-              ListTile(
-                title: Text(
-                  'technical_support'.tr,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const TechnicalSupport());
-                },
-              ),
-              // GestureDetector(
-              //   child: ListTile(
-              //     title: Text(
-              //       'offers'.tr,
-              //       style: const TextStyle(
-              //           fontSize: 18, fontWeight: FontWeight.bold),
-              //     ),
-              //     onTap: () {
-              //       Get.to(const OffersHome());
-              //     },
-              //   ),
-              // ),
-              // GestureDetector(
-              //   child: ListTile(
-              //     title: Text(
-              //       'profile'.tr,
-              //       style: const TextStyle(
-              //           fontSize: 18, fontWeight: FontWeight.bold),
-              //     ),
-              //     onTap: () {
-              //       Get.to(const PrfileScreen());
-              //     },
-              //   ),
-              // ),
-              ListTile(
-                title: Text(
-                  'language'.tr,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const Language());
-                },
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(const AboutUs());
-                },
-                child: ListTile(
-                  title: Text(
-                    'who_we_are'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  'our_location'.tr,
-                  style:
-                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Get.to(const OurLocationPage());
-                },
-              ),
-              if (context.watch<AdminProvider>().isAdmin)
                 ListTile(
                   title: Text(
-                    'orders Management'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    'نقاط حسابك'.tr,
+                    style:
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    Get.to(const OrdersManagement());
+                    Get.to(const Wallet());
                   },
                 ),
-              if (context.watch<AdminProvider>().isAdmin)
                 ListTile(
                   title: Text(
-                    'admins'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    'الدعم الفني'.tr,
+                    style:
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    Get.to(const AdminsPage());
+                    Get.to(const TechnicalSupport());
                   },
                 ),
-              if (context.watch<AdminProvider>().isAdmin)
+                // GestureDetector(
+                //   child: ListTile(
+                //     title: Text(
+                //       'offers'.tr,
+                //       style: const TextStyle(
+                //           fontSize: 18, fontWeight: FontWeight.bold),
+                //     ),
+                //     onTap: () {
+                //       Get.to(const OffersHome());
+                //     },
+                //   ),
+                // ),
+                // GestureDetector(
+                //   child: ListTile(
+                //     title: Text(
+                //       'profile'.tr,
+                //       style: const TextStyle(
+                //           fontSize: 18, fontWeight: FontWeight.bold),
+                //     ),
+                //     onTap: () {
+                //       Get.to(const PrfileScreen());
+                //     },
+                //   ),
+                // ),
                 ListTile(
                   title: Text(
-                    'Send Message'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    'اللغة'.tr,
+                    style:
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    Get.to(const SendMessage());
+                    Get.to(const Language());
                   },
                 ),
-              if (context.watch<AdminProvider>().isAdmin)
-                ListTile(
-                  title: Text(
-                    'Unavailable Product'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                GestureDetector(
                   onTap: () {
-                    Get.to(const UnavailableProduct());
+                    Get.to(const AboutUs());
                   },
-                ),
-              if (context.watch<AdminProvider>().isAdmin)
-                ListTile(
-                  title: Text(
-                    'add category'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Get.to(const AddCategoryScreen());
-                  },
-                ),
-              if (context.watch<AdminProvider>().isAdmin)
-                ListTile(
-                  title: Text(
-                    'add subcategory'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Get.to(const AddSubCategoryScreen());
-                  },
-                ),
-              if (context.watch<AdminProvider>().isAdmin)
-                ListTile(
-                  title: Text(
-                    'add product'.tr,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Get.to(const AddProductScreen());
-                  },
-                ),
-              ListTile(
-                title: Row(
-                  children: [
-                    Text(
-                      'share app'.tr,
+                  child: ListTile(
+                    title: Text(
+                      'من نحن'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Icon(
-                      Icons.share,
-                      color: Colors.black,
-                    )
-                  ],
-                ),
-                onTap: () async {
-                  // Set the app link and the message to be shared
-                  const String appLink =
-                      'https://play.google.com/store/apps/details?id=com.example.myapp';
-                  const String message = 'Share our app with others: $appLink';
-
-                  // Share the app link and message using the share dialog
-                  await FlutterShare.share(
-                      title: 'Share App', text: message, linkUrl: appLink);
-                },
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.defaultDialog(
-                      title: 'Are you sure?'.tr,
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'no'.tr,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white, elevation: 10),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              auth.signOut();
-                              Get.to(const SignIn());
-                            },
-                            child: Text('yes'.tr,
-                                style: const TextStyle(color: Colors.white)),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red, elevation: 10),
-                          ),
-                        ],
-                      ));
-                },
-                child: ListTile(
-                  title: Text(
-                    'logout'.tr,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
                   ),
                 ),
-              ),
-            ],
+                ListTile(
+                  title: Text(
+                    'موقعنا'.tr,
+                    style:
+                        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Get.to(const OurLocationPage());
+                  },
+                ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'orders Management'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const OrdersManagement());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'admins'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const AdminsPage());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'Send Message'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const SendMessage());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'Unavailable Product'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const UnavailableProduct());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'add category'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const AddCategoryScreen());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'add subcategory'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const AddSubCategoryScreen());
+                    },
+                  ),
+                if (context.watch<AdminProvider>().isAdmin)
+                  ListTile(
+                    title: Text(
+                      'add product'.tr,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Get.to(const AddProductScreen());
+                    },
+                  ),
+                ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        ' مشاركة التطبيق'.tr,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Icon(
+                        Icons.share,
+                        color: Colors.black,
+                      )
+                    ],
+                  ),
+                  onTap: () async {
+                    // Set the app link and the message to be shared
+                    const String appLink =
+                        'https://play.google.com/store/apps/details?id=com.example.myapp';
+                    const String message = 'Share our app with others: $appLink';
+
+                    // Share the app link and message using the share dialog
+                    await FlutterShare.share(
+                        title: 'مشاركة التطبيق', text: message, linkUrl: appLink);
+                  },
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.defaultDialog(
+                        title: 'Are you sure?'.tr,
+                        content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'no'.tr,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white, elevation: 10),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                auth.signOut();
+                                Get.to(const SignIn());
+                              },
+                              child: Text('yes'.tr,
+                                  style: const TextStyle(color: Colors.white)),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red, elevation: 10),
+                            ),
+                          ],
+                        ));
+                  },
+                  child: ListTile(
+                    title: Text(
+                      'تسجيل الخروج'.tr,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -414,7 +417,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin: EdgeInsets.only(top: 15,right: 15),
                 alignment: Alignment.topRight,
-                child: Text('الاصناف',style: TextStyle(fontSize: 19,color: mainColor,
+                child: Text('الاصناف',style: TextStyle(fontSize: 19,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
 
@@ -500,7 +503,7 @@ class _HomePageState extends State<HomePage> {
 
                     final products = snapshot.data!;
                     return Container(
-                      height: Get.height*.32,
+                      height: Get.height*.295,
                       width: Get.width,
                       child: GridView.builder(
                         reverse: true,
@@ -509,12 +512,12 @@ class _HomePageState extends State<HomePage> {
                         itemCount: products.length,
                         shrinkWrap: true,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 1.48,
+                          childAspectRatio: 1.50,
                             crossAxisCount: 1),
                         itemBuilder: (BuildContext context, int index) {
                               final product = products[index];
                               return Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
                                   onLongPress:() {
                                     final provider = Provider.of<AdminProvider>(context, listen: false);
@@ -593,7 +596,7 @@ class _HomePageState extends State<HomePage> {
                                             imageBuilder: (context, imageProvider) =>
                                                 Container(
                                                 //  width: Get.width * .35,
-                                                  height: Get.height * .13,
+                                                  height: Get.height * .115,
                                                   decoration: BoxDecoration(image: DecorationImage(image: imageProvider ,)
                                                   ),
                                                 ),
@@ -601,7 +604,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
 
                                         Padding(
-                                          padding: const EdgeInsets.all(3.0),
+                                          padding: const EdgeInsets.all(2.0),
                                           child: Container(
                                             child: Text(
                                               textAlign: TextAlign.center,
@@ -611,7 +614,7 @@ class _HomePageState extends State<HomePage> {
                                               style: const TextStyle(
                                                 height: .95,
                                                   overflow: TextOverflow.ellipsis,
-                                                  fontSize: 14.5,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black),
                                             ),
@@ -623,7 +626,7 @@ class _HomePageState extends State<HomePage> {
                                             product.brand,
                                             maxLines: 2,
                                             style: const TextStyle(
-                                                fontSize: 13,
+                                                fontSize: 12,
                                                 color: Colors.black45),
                                           ),
                                         ),
@@ -632,7 +635,7 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                         Padding(
-                                          padding: const EdgeInsets.all(2.0),
+                                          padding: const EdgeInsets.all(1.0),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -644,7 +647,7 @@ class _HomePageState extends State<HomePage> {
                                                     Text(
                                                       product.regularPrice.toString(),
                                                       style: const TextStyle(
-                                                          fontSize: 12,
+                                                          fontSize: 11,
                                                           fontWeight: FontWeight.bold,
                                                           color: Colors.black),
                                                     ),
@@ -663,7 +666,7 @@ class _HomePageState extends State<HomePage> {
                                                   (product.regularPrice - product.discountPrice)
                                                       .toString(),
                                                   style:  TextStyle(
-                                                      fontSize: 18,
+                                                      fontSize: 17,
                                                       fontWeight: FontWeight.bold,
                                                       color: mainColor),
                                                 ),
@@ -671,7 +674,7 @@ class _HomePageState extends State<HomePage> {
                                                 Text(
                                                   product.regularPrice.toString(),
                                                   style:  TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize: 12,
                                                       fontWeight: FontWeight.bold,
                                                       color: mainColor),
                                                 ),
@@ -680,7 +683,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                             Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(4.0),
                                               child: SizedBox(
                                                 width: Get.width * 0.065,
                                                   height: Get.height * 0.03,
@@ -732,9 +735,9 @@ class _HomePageState extends State<HomePage> {
                       },
                   ),
               Container(
-                margin: EdgeInsets.only(top: 15,right: 15),
+                margin: EdgeInsets.only(top: 10,right: 15),
                 alignment: Alignment.topRight,
-                child: Text('الاكثر مبيعا',style: TextStyle(fontSize: 19,color: mainColor,
+                child: Text('الاكثر مبيعا',style: TextStyle(fontSize: 19,
                 fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
 
@@ -757,7 +760,7 @@ class _HomePageState extends State<HomePage> {
 
                   final products = snapshot.data!;
                   return Container(
-                    height: Get.height*.225,
+                    height: Get.height*.195,
                     width: Get.width,
                     child: GridView.builder(
                       reverse: true,
@@ -771,7 +774,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         final product = products[index];
                         return Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: GestureDetector(
                             onLongPress:() {
                               final provider = Provider.of<AdminProvider>(context, listen: false);
@@ -843,14 +846,14 @@ class _HomePageState extends State<HomePage> {
                                 //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(4.0),
                                     child: CachedNetworkImage(
                                       imageUrl: product.images.first,
                                      // fit: BoxFit.fill,
                                       imageBuilder: (context, imageProvider) =>
                                           Container(
                                             width: Get.width * .4,
-                                            height: Get.height * .05,
+                                            height: Get.height * .04,
                                             decoration: BoxDecoration(image: DecorationImage(image: imageProvider )
                                             ),
                                           ),
@@ -868,7 +871,7 @@ class _HomePageState extends State<HomePage> {
                                         style: const TextStyle(
                                             height: .95,
                                             overflow: TextOverflow.ellipsis,
-                                            fontSize: 12.5,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black),
                                       ),
@@ -913,7 +916,7 @@ class _HomePageState extends State<HomePage> {
                                                   ],
                                                 ),
                                               const SizedBox(
-                                                width: 10,
+                                                width: 8,
                                               ),
                                               if (product.discountPrice > 0)
                                                 Text(
@@ -928,7 +931,7 @@ class _HomePageState extends State<HomePage> {
                                                 Text(
                                                   product.regularPrice.toString(),
                                                   style:  TextStyle(
-                                                      fontSize: 14,
+                                                      fontSize: 10,
                                                       fontWeight: FontWeight.bold,
                                                       color: mainColor),
                                                 ),
@@ -937,7 +940,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(5.0),
                                           child: SizedBox(
                                             width: Get.width * 0.065,
                                             height: Get.height * 0.03,
@@ -982,6 +985,277 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10,right: 15),
+                alignment: Alignment.topRight,
+                child: Text('عناصرك المفضلة',style: TextStyle(fontSize: 19,
+                fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+
+                ),),
+              ),
+              StreamBuilder<List<Product>>(
+                stream: ProductsService().getProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return  Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  final products = snapshot.data!;
+                  return Container(
+                    height: Get.height*.195,
+                    width: Get.width,
+                    child: GridView.builder(
+                      reverse: true,
+                      scrollDirection: Axis.horizontal,
+                      //  physics: const NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1.3,
+                          crossAxisCount: 1),
+                      itemBuilder: (BuildContext context, int index) {
+                        final product = products[index];
+                        return Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: GestureDetector(
+                                onLongPress:() {
+                                  final provider = Provider.of<AdminProvider>(context, listen: false);
+                                  if(provider.isAdmin) {
+                                    Get.defaultDialog(
+                                        title: 'Do you want to delete ' +
+                                            product.brand.tr + " Category ?",
+                                        content: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                'no'.tr,
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  elevation: 10),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                await ProductsService()
+                                                    .deleteProductFromBestSelling(
+                                                    product.id);
+                                                ProductsService()
+                                                    .deleteProduct(
+                                                    product.id);
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('yes'.tr,
+                                                  style: const TextStyle(
+                                                      color: Colors.white)),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red,
+                                                  elevation: 10),
+                                            ),
+                                          ],
+                                        ));
+                                  }
+
+                                },
+                                onTap: () {
+                                  final provider = Provider.of<AdminProvider>(context, listen: false);
+                                  if(provider.isAdmin) {
+                                    Get.to(ProductDetails(product: product));
+                                  }
+                                },
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+
+                                    Container(
+
+                                      // height: Get.height * 0.09,
+                                      // width: Get.width * 0.4,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              offset: Offset(0.0, 1.0), //(x,y)
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(13)
+                                      ),
+                                      child: Column(
+                                        //crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: CachedNetworkImage(
+                                              imageUrl: product.images.first,
+                                             // fit: BoxFit.fill,
+                                              imageBuilder: (context, imageProvider) =>
+                                                  Container(
+                                                    width: Get.width * .4,
+                                                    height: Get.height * .04,
+                                                    decoration: BoxDecoration(image: DecorationImage(image: imageProvider )
+                                                    ),
+                                                  ),
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Container(
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                textDirection: TextDirection.rtl,
+                                                product.title,
+                                                maxLines: 2,
+                                                style: const TextStyle(
+                                                    height: .95,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: Text(
+                                              product.brand,
+                                              maxLines: 2,
+                                              style: const TextStyle(
+                                                  fontSize: 8,
+                                                  color: Colors.black45),
+                                            ),
+                                          ),
+                                          Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(1.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      if (product.discountPrice > 0)
+                                                        Stack(
+                                                          alignment: Alignment.center,
+                                                          children: [
+                                                            Text(
+                                                              product.regularPrice.toString(),
+                                                              style: const TextStyle(
+                                                                  fontSize: 10,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black),
+                                                            ),
+                                                            Container(
+                                                              width: 15,
+                                                              height: 1.5,
+                                                              color: mainColor,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      if (product.discountPrice > 0)
+                                                        Text(
+                                                          (product.regularPrice - product.discountPrice)
+                                                              .toString(),
+                                                          style:  TextStyle(
+                                                              fontSize: 10,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: mainColor),
+                                                        ),
+                                                      if (product.discountPrice == 0)
+                                                        Text(
+                                                          product.regularPrice.toString(),
+                                                          style:  TextStyle(
+                                                              fontSize: 10,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: mainColor),
+                                                        ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(5.0),
+                                                  child: SizedBox(
+                                                    width: Get.width * 0.065,
+                                                    height: Get.height * 0.03,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        final result = await CartService()
+                                                            .isProductInCart(
+                                                            product.id,
+                                                            FirebaseAuth
+                                                                .instance.currentUser!.uid);
+                                                        // if (result != null && result > 0) {
+                                                        //   // remove snakebar
+
+                                                        //   Get.snackbar(
+                                                        //       'Sorry', 'Product already in cart');
+                                                        // }
+                                                        CartService().addToCart(
+                                                          productId: product.id,
+                                                          productName: product.brand,
+                                                          price: product.regularPrice -
+                                                              product.discountPrice,
+                                                          quantity: count,
+                                                          userId: FirebaseAuth
+                                                              .instance.currentUser!.uid, image: '',
+                                                        );
+                                                      },
+                                                      child: const Center(
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      style: ElevatedButton.styleFrom(
+                                                          padding: EdgeInsets.zero,
+                                                          backgroundColor: mainColor),
+                                                    ),
+                                                  ),
+                                                )
+                                              ]
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Icon(Icons.star,color: Colors.green,),
+
+                          ],
                         );
                       },
                     ),

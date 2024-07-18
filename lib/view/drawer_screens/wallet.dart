@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../constants.dart';
+
 class Wallet extends StatefulWidget {
   const Wallet({Key? key}) : super(key: key);
 
@@ -15,11 +17,11 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade100,
+        backgroundColor: mainColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Your wallet',
-          style: TextStyle(fontSize: 20, color: Colors.black),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -51,7 +53,7 @@ class _WalletState extends State<Wallet> {
               ),
               width: Get.width * .7,
               height: Get.height * .2,
-              color: Colors.greenAccent,
+              color: mainColor,
             ),
             const Text(
               'Your points now',
@@ -68,7 +70,7 @@ class _WalletState extends State<Wallet> {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.greenAccent),
+                  color: Colors.black45),
             ),
             const SizedBox(
               height: 20,
@@ -95,7 +97,7 @@ class _WalletState extends State<Wallet> {
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent),
+                    backgroundColor: mainColor),
                 onPressed: () {
                   setState(() {
                     if (points >= 1000) {
@@ -117,7 +119,7 @@ class _WalletState extends State<Wallet> {
                               )
                             ],
                           ),
-                          backgroundColor: Colors.greenAccent);
+                          backgroundColor: mainColor);
                     } else {
                       Get.defaultDialog(
                           title: '',
@@ -138,7 +140,7 @@ class _WalletState extends State<Wallet> {
                               )
                             ],
                           ),
-                          backgroundColor: Colors.greenAccent);
+                          backgroundColor:mainColor);
                     }
                   });
                 },

@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants.dart';
+
 class TechnicalSupport extends StatelessWidget {
   const TechnicalSupport({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent.shade100,
+    //  backgroundColor: Colors.greenAccent.shade100,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: mainColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           'Technical Support ',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Column(
@@ -50,9 +52,9 @@ class TechnicalSupport extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
+              // const CircleAvatar(
+              //     backgroundImage: NetworkImage(
+              //         'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
               const SizedBox(
                 width: 20,
               ),
@@ -97,9 +99,9 @@ class TechnicalSupport extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
+              // const CircleAvatar(
+              //     backgroundImage: NetworkImage(
+              //         'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
               const SizedBox(
                 width: 20,
               ),
@@ -144,9 +146,9 @@ class TechnicalSupport extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
+              // const CircleAvatar(
+              //     backgroundImage: NetworkImage(
+              //         'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
               const SizedBox(
                 width: 20,
               ),
@@ -203,7 +205,7 @@ class TechnicalSupport extends StatelessWidget {
                     height: Get.height * .08,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.greenAccent.shade700,
+                        color: mainColor,
                         boxShadow: const [
                           BoxShadow(
                               spreadRadius: 1,
@@ -227,9 +229,9 @@ class TechnicalSupport extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
+                    // const CircleAvatar(
+                    //     backgroundImage: NetworkImage(
+                    //         'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
                     const SizedBox(
                       width: 10,
                     ),
@@ -273,9 +275,9 @@ class TechnicalSupport extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
+                    // const CircleAvatar(
+                    //     backgroundImage: NetworkImage(
+                    //         'https://pps.whatsapp.net/v/t61.24694-24/307317711_1262426030998902_748495295193957793_n.jpg?ccb=11-4&oh=01_AdRsJ3K3jcq5Fbt0bh5Phc_5aKAozMhq491lTdw4dgTY2A&oe=644D7F0C')),
                     const SizedBox(
                       width: 10,
                     ),

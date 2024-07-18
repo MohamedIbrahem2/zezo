@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:stockat/constants.dart';
 
 import '../../main.dart';
 
@@ -19,11 +20,11 @@ class _LanguageState extends State<Language> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.blue.shade50,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: mainColor,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           'language'.tr,
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
       body: Column(
@@ -40,7 +41,8 @@ class _LanguageState extends State<Language> {
                 style: const TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
-                    color: Colors.greenAccent),
+                  color: Colors.black45
+                    ),
               ),
               const SizedBox(
                 width: 15,
@@ -56,7 +58,7 @@ class _LanguageState extends State<Language> {
             height: Get.height * .1,
           ),
           RadioListTile(
-            activeColor: Colors.greenAccent,
+            activeColor: mainColor,
             title: const Text(
               'English',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
@@ -73,7 +75,7 @@ class _LanguageState extends State<Language> {
             },
           ),
           RadioListTile(
-            activeColor: Colors.greenAccent,
+            activeColor: mainColor,
             title: const Text(
               'عربي',
               style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
@@ -95,7 +97,7 @@ class _LanguageState extends State<Language> {
           ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.greenAccent,
+                  backgroundColor: mainColor,
                   fixedSize: Size.fromWidth(Get.width * .8)),
               child: Text(
                 'Ok'.tr,

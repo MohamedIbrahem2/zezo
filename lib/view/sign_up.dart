@@ -164,7 +164,7 @@ class SignUp extends GetWidget<AuthViewModel> {
                           //   },
                           // ),
                           SizedBox(
-                            height: Get.height * .02,
+                            height: Get.height *.02,
                           ),
                           TextFormField(
                             controller: email,

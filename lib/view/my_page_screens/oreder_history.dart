@@ -377,6 +377,7 @@ class _OrderItemState extends State<OrderItem> {
                         context: context,
                         builder: (c) => Dialog(
                               child: SizedBox(
+                                width: Get.width,
                                 height: 200,
                                 child: FutureBuilder<UserProfile>(
                                     future: auth.getUserProfile(order.userId),
@@ -389,7 +390,7 @@ class _OrderItemState extends State<OrderItem> {
                                       }
                                       final userProfile = snapHot.data;
                                       return Padding(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding: const EdgeInsets.all(10.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -406,6 +407,7 @@ class _OrderItemState extends State<OrderItem> {
                                                   userProfile!.name,
                                                   style: const TextStyle(
                                                       fontSize: 20,
+                                                      color: Colors.pink,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -414,7 +416,7 @@ class _OrderItemState extends State<OrderItem> {
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
-                                                      .spaceBetween,
+                                                      .start,
                                               children: [
                                                 const Text(
                                                   'User Phone',
@@ -424,53 +426,64 @@ class _OrderItemState extends State<OrderItem> {
                                                     Text(
                                                       userProfile.phone,
                                                       style: const TextStyle(
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       ),
                                                     ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          launchUrl(Uri.parse(
-                                                              'tel:${userProfile.phone}'));
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.phone,
-                                                          color: Colors.blue,
-                                                        )),
+
                                                   ],
                                                 )
                                               ],
                                             ),
+                                            IconButton(
+                                                onPressed: () {
+                                                  launchUrl(Uri.parse(
+                                                      'tel:${userProfile.phone}'));
+                                                },
+                                                icon: const Icon(
+                                                  Icons.phone,
+                                                  color: Colors.blue,
+                                                  size: 30,
+                                                )),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
-                                                      .spaceBetween,
+                                                      .start,
                                               children: [
                                                 const Text(
                                                   'User Email',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text(
                                                       userProfile.email ?? '',
                                                       style: const TextStyle(
+                                                        fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                       ),
                                                     ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          launchUrl(Uri.parse(
-                                                              'mailto:${userProfile.email}'));
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.email,
-                                                          color: Colors.blue,
-                                                        )),
+
                                                   ],
-                                                )
+                                                ),
+
                                               ],
                                             ),
+
+                                            IconButton(
+                                                onPressed: () {
+                                                  launchUrl(Uri.parse(
+                                                      'mailto:${userProfile.email}'));
+                                                },
+                                                icon: const Icon(
+                                                  Icons.email,
+                                                  color: Colors.blue,
+                                                  size: 30,
+                                                )),
                                             // ListTile(
                                             //   title: const Text('User Email'),
                                             //   trailing:

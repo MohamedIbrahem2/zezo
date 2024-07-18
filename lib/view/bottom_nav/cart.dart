@@ -31,7 +31,7 @@ class _Screen2State extends State<Screen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child:  Text("Cart",style: TextStyle(color: Colors.white),)),
+        title: const Center(child:  Text("العربه",style: TextStyle(color: Colors.white),)),
         backgroundColor: mainColor,
         leading: const BackButton(
           color: Colors.white,
@@ -235,7 +235,7 @@ class _Screen2State extends State<Screen2> {
                           textDirection: TextDirection.rtl,
                           'الدفع',
                           style: TextStyle(
-                            color: Colors.white,
+                              color: Colors.white,
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ))
                   ],

@@ -647,7 +647,7 @@ class _CheckHomeState extends State<CheckHome> {
                               padding: const EdgeInsets.all(10),
                               margin: const EdgeInsets.all(15),
                               width: Get.width * .9,
-                              height: Get.height * .25,
+                              height: Get.height * .26,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade50,
                                 boxShadow: const [
@@ -671,7 +671,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         '$totalQuantityقطع',
                                         style:  TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -679,7 +679,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'المنتجات',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
@@ -695,7 +695,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         '$totalPrice SR',
                                         style:  TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -703,7 +703,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'المجموع',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
 
@@ -721,7 +721,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         '${(totalPrice * .15).toStringAsFixed(1)} SR',
                                         style:  TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -729,7 +729,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'خدمه 15%',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
 
@@ -746,7 +746,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         '0 SR',
                                         style: TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -754,7 +754,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'تخفيض',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
 
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -772,7 +772,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         '0 SR',
                                         style: TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -780,7 +780,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'توصيل',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
 
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -799,7 +799,7 @@ class _CheckHomeState extends State<CheckHome> {
                                                 .toString() +
                                             ' SR',
                                         style:  TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 17,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
@@ -807,7 +807,7 @@ class _CheckHomeState extends State<CheckHome> {
                                         textDirection: TextDirection.rtl,
                                         'المجموع بالخدمه',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
 
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -957,35 +957,35 @@ class _CheckHomeState extends State<CheckHome> {
                 onClosing: () {},
                 builder: (context) => GestureDetector(
                   onTap: () {
-                    if (totalPrice < 250) {
-                      Get.snackbar(
-                        '',
-                        'أقل حد للطلب هو 250 SAR',
-                        duration: const Duration(seconds: 2),
-                        snackPosition: SnackPosition.TOP,
-                        titleText: const Text(
-                          textDirection: TextDirection.rtl,
-                          'لا يمكن اتمام الطلب',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        messageText: const Text(
-                          textDirection: TextDirection.rtl,
-                          'أقل حد للطلب هو 250 SAR',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: mainColor,
-                      );
-                      return;
-                    }
+                    // if (totalPrice < 250) {
+                    //   Get.snackbar(
+                    //     '',
+                    //     'أقل حد للطلب هو 250 SAR',
+                    //     duration: const Duration(seconds: 2),
+                    //     snackPosition: SnackPosition.TOP,
+                    //     titleText: const Text(
+                    //       textDirection: TextDirection.rtl,
+                    //       'لا يمكن اتمام الطلب',
+                    //       style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontSize: 18,
+                    //           fontWeight: FontWeight.w500),
+                    //     ),
+                    //     messageText: const Text(
+                    //       textDirection: TextDirection.rtl,
+                    //       'أقل حد للطلب هو 250 SAR',
+                    //       style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontSize: 18,
+                    //           fontWeight: FontWeight.bold),
+                    //     ),
+                    //     backgroundColor: mainColor,
+                    //   );
+                    //   return;
+                    // }
 
                     Get.defaultDialog(
-                        title: 'هل انت متأكد انك تريد الطلب ؟',
+                        title: 'هل تريد تاكيد الطلب ؟',
                         content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -1012,6 +1012,7 @@ class _CheckHomeState extends State<CheckHome> {
                                   'نعم',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                       fontSize: 18),
                                 )),
                             ElevatedButton(

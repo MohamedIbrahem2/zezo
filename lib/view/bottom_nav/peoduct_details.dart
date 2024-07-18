@@ -8,6 +8,7 @@ import 'package:stockat/view/bottom_nav/edit_product.dart';
 import '../../service/cart_service.dart';
 import '../../service/product_service.dart';
 import '../my_page_screens/qr_product_view.dart';
+import 'cart.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product product;
@@ -37,6 +38,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: mainColor,
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('تفاصيل المنتج',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),),
@@ -126,11 +128,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
 
                       Text(
+                        product.title,
+                        textDirection: TextDirection.rtl,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ), Text(
                         product.brand,
                         textDirection: TextDirection.rtl,
                         style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 19,
+                          color: Colors.black45
                         ),
                       ),
                       SizedBox(height: Get.height * 0.03),
@@ -258,7 +267,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   return Container(
                     width: double.infinity,
                     margin: const EdgeInsets.all(16.0),
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                       color: mainColor,
                       borderRadius: BorderRadius.circular(8),
@@ -270,13 +279,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                           color: Colors.white,
                         ),
                         SizedBox(width: Get.width * 0.06),
-                        const Text(
-                          textDirection: TextDirection.rtl,
-                          'أضافه الي عربه التسوق',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: (){
+                            Get.to(Screen2());
+                          },
+                          child: const Text(
+                            textDirection: TextDirection.rtl,
+                            'الذهاب الي عربه التسوق',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -292,7 +306,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     productId: product.id,
                                     userId:
                                         FirebaseAuth.instance.currentUser!.uid,
-                                    quantity: 1,
+                                    quantity: 0,
                                     productName: product.brand,
                                     image: product.images.first,
                                     price: product.regularPrice,
@@ -308,7 +322,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               quantity.toString(),
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

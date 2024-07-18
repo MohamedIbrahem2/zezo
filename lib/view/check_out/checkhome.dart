@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/order_service.dart';
 
@@ -111,11 +112,12 @@ class _CheckHomeState extends State<CheckHome> {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                backgroundColor: Colors.blue.shade50,
-                iconTheme: const IconThemeData(color: Colors.black),
+                backgroundColor: mainColor,
+                iconTheme:  const IconThemeData(color: Colors.white),
                 title: const Text(
-                  'Check Out',
-                  style: TextStyle(fontSize: 20, color: Colors.black),
+                  textDirection: TextDirection.rtl,
+                  'الدفع',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
               body: SingleChildScrollView(
@@ -123,19 +125,19 @@ class _CheckHomeState extends State<CheckHome> {
                   alignment: Alignment.center,
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 20,
+                       SizedBox(
+                        height: Get.height * .03,
                       ),
                       // cart items
                       SizedBox(
-                        height: 120,
+                        height: Get.height  * .16,
                         child: StreamBuilder<List<CartItem>>(
                             stream: CartService().getCartItems(
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return const Center(
-                                  child: Text('Something went wrong'),
+                                  child: Text('حدث خطأ ما',textDirection: TextDirection.rtl,),
                                 );
                               }
                               if (snapshot.connectionState ==
@@ -146,7 +148,7 @@ class _CheckHomeState extends State<CheckHome> {
                               }
                               if (snapshot.data!.isEmpty) {
                                 return const Center(
-                                  child: Text('No items in cart'),
+                                  child: Text('لا يوجد منتجات في عربة التسوق',textDirection: TextDirection.rtl,),
                                 );
                               }
                               final quantity = (snapshot.data == null ||
@@ -198,7 +200,7 @@ class _CheckHomeState extends State<CheckHome> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               SizedBox(
-                                                width: 120,
+                                                width: Get.width * .3,
                                                 child: AutoSizeText(
                                                   item.productName,
                                                   maxLines: 1,
@@ -212,10 +214,10 @@ class _CheckHomeState extends State<CheckHome> {
                                                 (item.quantity * item.price)
                                                         .toString() +
                                                     ' SR',
-                                                style: const TextStyle(
+                                                style:  TextStyle(
                                                     fontSize: 20.0,
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.green),
+                                                    color: mainColor),
                                               ),
                                             ],
                                           ),
@@ -234,9 +236,9 @@ class _CheckHomeState extends State<CheckHome> {
                                                         .removeCartItem(
                                                             item.id);
                                                   },
-                                                  child: const Icon(
+                                                  child:  Icon(
                                                     Icons.delete,
-                                                    color: Colors.red,
+                                                    color: mainColor,
                                                   ),
                                                 ),
                                               ),
@@ -257,7 +259,7 @@ class _CheckHomeState extends State<CheckHome> {
                                                             .updateCartItemQuantity(
                                                                 item.id,
                                                                 item.quantity +
-                                                                    1);
+                                                                    1,item.quantity);
                                                       },
                                                     ),
                                                     Text(item.quantity
@@ -275,7 +277,7 @@ class _CheckHomeState extends State<CheckHome> {
                                                               .updateCartItemQuantity(
                                                                   item.id,
                                                                   item.quantity -
-                                                                      1);
+                                                                      1,item.quantity);
                                                         },
                                                         child: const Icon(Icons
                                                             .remove_outlined))
@@ -308,17 +310,8 @@ class _CheckHomeState extends State<CheckHome> {
                         margin: const EdgeInsets.only(left: 15, top: 30),
                         alignment: Alignment.centerLeft,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            const Text(
-                              'Name :',
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
                             if (userProfile != null)
                               Text(
                                 userProfile!.name ?? '',
@@ -327,18 +320,36 @@ class _CheckHomeState extends State<CheckHome> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black),
                               ),
+                            SizedBox(
+                              width: Get.width * .04,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text(
+                                textDirection: TextDirection.rtl,
+                                'الأسم :',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15, top: 30),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Deliver to',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 15, top: 30),
+                          alignment: Alignment.centerRight,
+                          child: const Text(
+                            textDirection: TextDirection.rtl,
+                            'توصيل الي',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
                         ),
                       ),
 
@@ -357,21 +368,14 @@ class _CheckHomeState extends State<CheckHome> {
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                             color:
-                                                Theme.of(context).primaryColor,
+                                                mainColor,
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             border:
                                                 Border.all(color: Colors.grey)),
                                         child: Row(
                                           children: [
-                                            const Text(
-                                              'No Address Add New One',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
+
                                             GestureDetector(
                                               onTap: () {
                                                 Get.to(const AddressesPage());
@@ -380,7 +384,17 @@ class _CheckHomeState extends State<CheckHome> {
                                                 Icons.add,
                                                 color: Colors.white,
                                               ),
-                                            )
+                                            ),
+                                             SizedBox(
+                                              width:Get.width * .04,
+                                            ),
+                                            const Text(
+                                              textDirection: TextDirection.rtl,
+                                              'لا يوجد عنوان, قم بأضافه عنوان',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+
                                           ],
                                         ));
                                   }
@@ -388,7 +402,7 @@ class _CheckHomeState extends State<CheckHome> {
                                     validator: (value) {
                                       if (selectedAddress == null ||
                                           addressController.text.isEmpty) {
-                                        return 'Select Address';
+                                        return 'اختار العنوان';
                                       }
                                       return null;
                                     },
@@ -411,7 +425,7 @@ class _CheckHomeState extends State<CheckHome> {
                                     },
                                     // controller: addressController,
                                     decoration: const InputDecoration(
-                                      labelText: 'Enter Address',
+                                      labelText: 'ادخل العنوان',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
@@ -450,15 +464,19 @@ class _CheckHomeState extends State<CheckHome> {
                       //     alignment: Alignment.center,
                       //   ),
                       // ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15, top: 30),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Select Delivery Date',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 15, top: 30),
+                          alignment: Alignment.centerRight,
+                          child: const Text(
+                            textDirection: TextDirection.rtl,
+                            'اختار موعد التوصيل',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
                         ),
                       ),
                       Row(
@@ -474,7 +492,7 @@ class _CheckHomeState extends State<CheckHome> {
                                   _selectDate(context);
                                 },
                                 decoration: const InputDecoration(
-                                  labelText: 'Select Date',
+                                  labelText: 'اختار الموعد',
                                   border: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
@@ -483,15 +501,19 @@ class _CheckHomeState extends State<CheckHome> {
                           ),
                         ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 15, top: 30),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Phone Numbers',
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 15, top: 30),
+                          alignment: Alignment.centerRight,
+                          child: const Text(
+                            textDirection: TextDirection.rtl,
+                            'أرقام الهاتف',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
                         ),
                       ),
                       for (var i in phoneNumbersController)
@@ -504,7 +526,7 @@ class _CheckHomeState extends State<CheckHome> {
                               child: TextFormField(
                                   controller: i,
                                   decoration: const InputDecoration(
-                                    labelText: 'Phone Number',
+                                    labelText: 'رقم الهاتف',
                                     border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -522,9 +544,9 @@ class _CheckHomeState extends State<CheckHome> {
                                     .add(TextEditingController());
                                 setState(() {});
                               },
-                              icon: const Icon(
+                              icon:  Icon(
                                 Icons.add,
-                                color: Colors.purple,
+                                color: mainColor,
                               )),
                         ],
                       ),
@@ -646,16 +668,18 @@ class _CheckHomeState extends State<CheckHome> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Items',
-                                        style: TextStyle(
-                                          fontSize: 18,
+                                        textDirection: TextDirection.rtl,
+                                        '$totalQuantityقطع',
+                                        style:  TextStyle(
+                                          fontSize: 19,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
-                                      Text(
-                                        '$totalQuantity pieces',
-                                        style: const TextStyle(
-                                          fontSize: 19,
+                                      const Text(
+                                        textDirection: TextDirection.rtl,
+                                        'المنتجات',
+                                        style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
@@ -666,19 +690,23 @@ class _CheckHomeState extends State<CheckHome> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+
                                       Text(
-                                        'Total',
-                                        style: TextStyle(
-                                          fontSize: 18,
+                                        textDirection: TextDirection.rtl,
+                                        '$totalPrice SR',
+                                        style:  TextStyle(
+                                          fontSize: 19,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
-                                      Text(
-                                        '$totalPrice SR',
-                                        style: const TextStyle(
-                                          fontSize: 19,
+                                      const Text(
+                                        textDirection: TextDirection.rtl,
+                                        'المجموع',
+                                        style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
+
                                         ),
                                       ),
                                     ],
@@ -688,19 +716,23 @@ class _CheckHomeState extends State<CheckHome> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+
                                       Text(
-                                        'Vat 15%',
-                                        style: TextStyle(
-                                          fontSize: 18,
+                                        textDirection: TextDirection.rtl,
+                                        '${(totalPrice * .15).toStringAsFixed(1)} SR',
+                                        style:  TextStyle(
+                                          fontSize: 19,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
-                                      Text(
-                                        '${(totalPrice * .15).toStringAsFixed(1)} SR',
-                                        style: const TextStyle(
-                                          fontSize: 19,
+                                      const Text(
+                                        textDirection: TextDirection.rtl,
+                                        'خدمه 15%',
+                                        style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
+
                                         ),
                                       ),
                                     ],
@@ -709,17 +741,21 @@ class _CheckHomeState extends State<CheckHome> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'Discount',
+
+                                       Text(
+                                        textDirection: TextDirection.rtl,
+                                        '0 SR',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 19,
                                           color: Colors.grey.shade800,
                                         ),
                                       ),
                                       const Text(
-                                        '0 SR',
+                                        textDirection: TextDirection.rtl,
+                                        'تخفيض',
                                         style: TextStyle(
-                                          fontSize: 19,
+                                          fontSize: 18,
+
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
@@ -731,17 +767,21 @@ class _CheckHomeState extends State<CheckHome> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        'Delivery',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.grey.shade800,
-                                        ),
-                                      ),
-                                      const Text(
+
+                                       Text(
+                                        textDirection: TextDirection.rtl,
                                         '0 SR',
                                         style: TextStyle(
                                           fontSize: 19,
+                                          color: Colors.grey.shade800,
+                                        ),
+                                      ),
+                                       const Text(
+                                        textDirection: TextDirection.rtl,
+                                        'توصيل',
+                                        style: TextStyle(
+                                          fontSize: 18,
+
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
@@ -752,19 +792,23 @@ class _CheckHomeState extends State<CheckHome> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+
                                       Text(
-                                        'Total with VAT',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.grey.shade800,
-                                        ),
-                                      ),
-                                      Text(
+                                        textDirection: TextDirection.rtl,
                                         (totalPrice + (totalPrice * .15))
                                                 .toString() +
                                             ' SR',
-                                        style: const TextStyle(
+                                        style:  TextStyle(
                                           fontSize: 19,
+                                          color: Colors.grey.shade800,
+                                        ),
+                                      ),
+                                      const Text(
+                                        textDirection: TextDirection.rtl,
+                                        'المجموع بالخدمه',
+                                        style: TextStyle(
+                                          fontSize: 18,
+
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                         ),
@@ -902,8 +946,8 @@ class _CheckHomeState extends State<CheckHome> {
                       //       borderRadius: BorderRadius.circular(5)),
                       // ),
                       ,
-                      const SizedBox(
-                        height: 50,
+                       SizedBox(
+                        height: Get.height * .1,
                       )
                     ],
                   ),
@@ -916,37 +960,39 @@ class _CheckHomeState extends State<CheckHome> {
                     if (totalPrice < 250) {
                       Get.snackbar(
                         '',
-                        'Minimum order is 250 SR',
+                        'أقل حد للطلب هو 250 SAR',
                         duration: const Duration(seconds: 2),
                         snackPosition: SnackPosition.TOP,
                         titleText: const Text(
-                          'Can\'t place order',
+                          textDirection: TextDirection.rtl,
+                          'لا يمكن اتمام الطلب',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w500),
                         ),
                         messageText: const Text(
-                          'Minimum order is 250 SR',
+                          textDirection: TextDirection.rtl,
+                          'أقل حد للطلب هو 250 SAR',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
-                        backgroundColor: Colors.green,
+                        backgroundColor: mainColor,
                       );
                       return;
                     }
 
                     Get.defaultDialog(
-                        title: 'Are you sure to place order?',
+                        title: 'هل انت متأكد انك تريد الطلب ؟',
                         content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 10,
-                                    backgroundColor: Colors.greenAccent),
+                                    backgroundColor: mainColor),
                                 onPressed: () async {
                                   await OrderService().placeOrder(
                                       FirebaseAuth.instance.currentUser!.uid,
@@ -962,7 +1008,8 @@ class _CheckHomeState extends State<CheckHome> {
                                           .toList());
                                 },
                                 child: const Text(
-                                  'yes',
+                                  textDirection: TextDirection.rtl,
+                                  'نعم',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
@@ -975,7 +1022,8 @@ class _CheckHomeState extends State<CheckHome> {
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  'cancle',
+                                  textDirection: TextDirection.rtl,
+                                  'ألغاء',
                                   style: TextStyle(color: Colors.black),
                                 ))
                           ],
@@ -985,9 +1033,10 @@ class _CheckHomeState extends State<CheckHome> {
                     alignment: Alignment.center,
                     width: Get.width,
                     height: 50,
-                    color: Colors.greenAccent,
+                    color: mainColor,
                     child: const Text(
-                      'Checkout',
+                      textDirection: TextDirection.rtl,
+                      'دفع',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

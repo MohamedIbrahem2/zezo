@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:stockat/constants.dart';
 
 class CartItem {
   final String id;
@@ -71,7 +72,7 @@ class CartService {
         'userId': userId,
         'image': image,
       });
-      showSimpleNotification(Text("done_cart_message".tr),
+      showSimpleNotification(Text("تم الأضافه الي العربه".tr,textDirection: TextDirection.rtl,),
           leading: Builder(builder: (
         context,
       ) {
@@ -80,11 +81,11 @@ class CartService {
               //cancel
               OverlaySupportEntry.of(context)!.dismiss();
             },
-            icon: const Icon(Icons.cancel));
-      }), background: Colors.green);
+            icon: const Icon(Icons.done));
+      }), background: mainColor);
     } else {
       // update the quantity
-      await updateCartItemQuantity(productId, quantity! + 1);
+      await updateCartItemQuantity(productId, quantity! + 1,quantity);
     }
   }
 
@@ -99,14 +100,14 @@ class CartService {
   }
 
   Future<void> updateCartItemQuantity(
-      String cartItemId, int newQuantity) async {
+      String cartItemId, int newQuantity,int lastQuantity) async {
     final collection = FirebaseFirestore.instance.collection('cart');
     await collection.doc(cartItemId).update({'quantity': newQuantity});
     if (newQuantity == 0) {
       await removeCartItem(cartItemId);
     }
-    if (newQuantity > 0) {
-      showSimpleNotification(Text("done_cart_message".tr),
+    if (newQuantity > lastQuantity) {
+      showSimpleNotification(Text("تم الأضافه الي العربه".tr,textDirection: TextDirection.rtl,),
           leading: Builder(builder: (
         context,
       ) {
@@ -115,12 +116,12 @@ class CartService {
               //cancel
               OverlaySupportEntry.of(context)!.dismiss();
             },
-            icon: const Icon(Icons.cancel));
-      }), background: Colors.green);
+            icon: const Icon(Icons.done));
+      }), background: mainColor);
       // Get.closeAllSnackbars();
       // Get.snackbar('Done', 'Added to cart successfully');
     } else {
-      showSimpleNotification(Text("done_cart_message".tr),
+      showSimpleNotification(Text("تم الحذف من العربه".tr,textDirection: TextDirection.rtl,),
           leading: Builder(builder: (
         context,
       ) {
@@ -130,7 +131,7 @@ class CartService {
               OverlaySupportEntry.of(context)!.dismiss();
             },
             icon: const Icon(Icons.cancel));
-      }), background: Colors.green);
+      }), background:mainColor);
       // Get.closeAllSnackbars();
 
       // Get.snackbar('Done', 'Removed to cart successfully');

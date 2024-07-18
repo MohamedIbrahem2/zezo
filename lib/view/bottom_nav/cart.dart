@@ -59,7 +59,7 @@ class _Screen2State extends State<Screen2> {
               if (cartItems.isEmpty) {
                 // no item yet go to home page to shop
                 return const Center(
-                  child: Text('No items yet, go to home page to shop'),
+                  child: Text('لا يوجد منتجات مختاره, اذهب للصفحه الرئيسيه للتسوق',textDirection: TextDirection.rtl,),
                 );
               }
 
@@ -79,7 +79,7 @@ class _Screen2State extends State<Screen2> {
                         child: const Icon(Icons.add),
                         onTap: () {
                           CartService().updateCartItemQuantity(
-                              cartItem.id, cartItem.quantity + 1);
+                              cartItem.id, cartItem.quantity + 1,cartItem.quantity);
                         },
                       ),
                       Text(
@@ -94,7 +94,7 @@ class _Screen2State extends State<Screen2> {
                               return;
                             }
                             CartService().updateCartItemQuantity(
-                                cartItem.id, cartItem.quantity - 1);
+                                cartItem.id, cartItem.quantity - 1,cartItem.quantity);
                           },
                           child: const Icon(Icons.remove_outlined))
                     ],
@@ -120,7 +120,7 @@ class _Screen2State extends State<Screen2> {
                             child: const Icon(Icons.add),
                             onTap: () {
                               CartService().updateCartItemQuantity(
-                                  cartItem.id, cartItem.quantity + 1);
+                                  cartItem.id, cartItem.quantity + 1,cartItem.quantity);
                             },
                           ),
                           Text('${cartItem.quantity}'),
@@ -131,7 +131,7 @@ class _Screen2State extends State<Screen2> {
                                   return;
                                 }
                                 CartService().updateCartItemQuantity(
-                                    cartItem.id, cartItem.quantity - 1);
+                                    cartItem.id, cartItem.quantity - 1,cartItem.quantity);
                               },
                               child: const Icon(Icons.remove_outlined))
                         ],
@@ -180,7 +180,9 @@ class _Screen2State extends State<Screen2> {
                           SizedBox(
                             width: 10,
                           ),
-                          Text('Go To Home To Sop Now',style: TextStyle(color: Colors.white),)
+                          Text('اذهب للصفحه الرئيسيه للتسوق الأن',
+                            textDirection: TextDirection.rtl
+                            ,style: TextStyle(color: Colors.white),)
                         ],
                       ),
                     ),
@@ -203,16 +205,17 @@ class _Screen2State extends State<Screen2> {
                     Column(
                       children: [
                         const Text(
-                          'TOTAL',
+                          'الكل',
+                          textDirection: TextDirection.rtl,
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
                         Text.rich(TextSpan(children: [
                           TextSpan(
                               text: total.toStringAsFixed(2),
-                              style: const TextStyle(
+                              style:  TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue)),
+                                  color: mainColor)),
                           const TextSpan(
                               text: '  SAR',
                               style:
@@ -229,8 +232,10 @@ class _Screen2State extends State<Screen2> {
                           fixedSize: const Size(150, 45),
                         ),
                         child: const Text(
-                          'CHECKOUT',
+                          textDirection: TextDirection.rtl,
+                          'الدفع',
                           style: TextStyle(
+                            color: Colors.white,
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ))
                   ],

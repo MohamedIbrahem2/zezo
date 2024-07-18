@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/service/address_service.dart';
 
 import '../service/map_helper.dart';
@@ -60,11 +62,11 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 30,
+           SizedBox(
+            height: Get.height * .01,
           ),
-          const SizedBox(
-            height: 10,
+           SizedBox(
+            height: Get.height * .01,
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -73,7 +75,10 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    child: const Text('Current location'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: mainColor
+                    ),
+                    child: const Text('الموقع الحالي',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),),
                     onPressed: () async {
                       bool serviceEnabled;
                       LocationPermission permission;
@@ -186,7 +191,8 @@ class _SelectAdressScreenState extends State<SelectAdressScreen> {
             height: 20,
           ),
           ElevatedButton(
-            child: const Text('add address'),
+            style: ElevatedButton.styleFrom(backgroundColor: mainColor),
+            child: const Text('أضافه عنوان',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),),
             onPressed: () async {
               final placeMark = await mapHelper.getAdressFromCurrent();
               if (!mounted) return;

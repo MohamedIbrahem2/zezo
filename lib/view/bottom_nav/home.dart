@@ -500,7 +500,6 @@ class _HomePageState extends State<HomePage> {
                               child: GestureDetector(
                                 onLongPress:() {
                                   final provider = Provider.of<AdminProvider>(context, listen: false);
-                                  if(provider.isAdmin) {
                                     Get.defaultDialog(
                                         title: 'Do you want to delete ' +
                                             product.brand.tr + " Category ?",
@@ -540,14 +539,12 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ));
-                                  }
 
                                 },
                                 onTap: () {
                                   final provider = Provider.of<AdminProvider>(context, listen: false);
-                                  if(provider.isAdmin) {
                                     Get.to(ProductDetails(product: product));
-                                  }
+
                                 },
                                 child: Container(
 

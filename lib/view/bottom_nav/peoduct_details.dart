@@ -1,6 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/view/bottom_nav/edit_product.dart';
 
 import '../../service/cart_service.dart';
@@ -18,6 +20,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   late Product product;
+
   @override
   void initState() {
     product = widget.product;
@@ -34,7 +37,9 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Details'),
+        backgroundColor: mainColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('تفاصيل المنتج',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -44,19 +49,42 @@ class _ProductDetailsState extends State<ProductDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 300,
-                  width: double.infinity,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(product.images.first),
-                      fit: BoxFit.cover,
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
+                      ),
+                    ],
+                  ),
+                  child: CarouselSlider(
+                    options: CarouselOptions(height: Get.height * 0.36),
+                    items: product.images.map((url) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                                width: Get.width,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image.network(
+                                    url,
+                                    fit: BoxFit.fill,
+                                  ),
+                                )),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       // edit product button
                       Row(
@@ -75,14 +103,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                             },
                             icon: const Icon(Icons.edit),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: Get.width * 0.03),
 
                           // qr code button
 
                           IconButton(
                               onPressed: () {
                                 Get.to(ProductQrImageView(
-                                    id: product.id, productName: product.brand));
+                                    id: product.id,
+                                    productName: product.brand));
                               },
                               icon: const Icon(Icons.qr_code_scanner_outlined))
 
@@ -98,28 +127,39 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                       Text(
                         product.brand,
+                        textDirection: TextDirection.rtl,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Get.height * 0.03),
                       Text(
-                        'Price: SR ${product.regularPrice.toStringAsFixed(2)}',
+                        textDirection: TextDirection.rtl,
+                        product.description,
+                        style: const TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.03),
+                      Text(
+                        textDirection: TextDirection.rtl,
+                        'السعر: SR ${product.regularPrice.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Get.height * 0.03),
                       Text(
-                        'Discount: ${product.discountPrice}',
+                        textDirection: TextDirection.rtl,
+                        'التخفيض: ${product.discountPrice}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Get.height * 0.03),
                       // Text(
                       //   'Category: ${product.categoryId}',
                       //   style: const TextStyle(
@@ -143,10 +183,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       //     fontWeight: FontWeight.normal,
                       //   ),
                       // ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: Get.height * 0.03),
                       // total price
                       Text(
-                        'Total Price: SR ${(product.regularPrice - product.discountPrice).toStringAsFixed(2)}',
+                        textDirection: TextDirection.rtl,
+                        'السعر الكلي: SR ${(product.regularPrice - product.discountPrice).toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
@@ -157,9 +198,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: Get.height * 0.03),
             Row(
               children: [
                 Expanded(
@@ -167,17 +206,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor:  Colors.blue
-                        ),
-                        onPressed: () async{
-                          await ProductsService().addProductToBestSelling(product);
+                            backgroundColor: mainColor),
+                        onPressed: () async {
+                          await ProductsService()
+                              .addProductToBestSelling(product);
                           Get.defaultDialog(
-                            title: product.brand.tr + " Added successfully to BestSelling.",
+                            title: product.brand.tr +
+                                " Added successfully to BestSelling.",
                           );
                         },
                         child: const Text(
+                          textDirection: TextDirection.rtl,
                             style: TextStyle(color: Colors.white),
-                            "Add to Best selling")),
+                            "أضافه الي الأعلي مبيعا")),
                   ),
                 ),
                 Expanded(
@@ -185,24 +226,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red
-                        ),
-                        onPressed: () async{
-                          await ProductsService().removeProductFromBestSelling(product);
+                            backgroundColor: Colors.black),
+                        onPressed: () async {
+                          await ProductsService()
+                              .removeProductFromBestSelling(product);
                           Get.defaultDialog(
-                              title: product.brand.tr + " Removed successfully from BestSelling.",
-                              );
+                            title: product.brand.tr +
+                                " Removed successfully from BestSelling.",
+                          );
                         },
                         child: const Text(
+                          textDirection: TextDirection.rtl,
                             style: TextStyle(color: Colors.white),
-                            "Remove from Best selling")),
+                            "حذف من الأعلي مبيعا")),
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: Get.height * 0.04),
             StreamBuilder<List<CartItem>>(
                 stream: CartService().getCartItemsByProductId(
                     FirebaseAuth.instance.currentUser!.uid, product.id),
@@ -219,7 +260,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     margin: const EdgeInsets.all(16.0),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: mainColor,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -228,12 +269,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Icons.shopping_cart,
                           color: Colors.white,
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: Get.width * 0.06),
                         const Text(
-                          'Add to Cart',
+                          textDirection: TextDirection.rtl,
+                          'أضافه الي عربه التسوق',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -274,7 +316,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 onPressed: () {
                                   if (items != null) {
                                     CartService().updateCartItemQuantity(
-                                        items[0].id, quantity! - 1);
+                                        items[0].id, quantity! - 1,quantity);
                                   }
                                 },
                                 icon: const Icon(

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/view/select_location_screen.dart';
 
 import '../service/address_service.dart';
@@ -19,8 +21,9 @@ class _AddressesPageState extends State<AddressesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Shipping Addresses'),
-          backgroundColor: Colors.green),
+        iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text('عناوين الشحن',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),),
+          backgroundColor: mainColor),
       body: Column(
         children: [
           StreamBuilder<List<Address>>(
@@ -47,14 +50,20 @@ class _AddressesPageState extends State<AddressesPage> {
                 }
                 if (snapHost.hasError) {
                   return const Center(
-                    child: Text('Error'),
+                    child: Text('خطأ',textDirection: TextDirection.rtl,),
                   );
                 }
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }),
+          SizedBox(
+            height: Get.height * 0.03,
+          ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: mainColor
+            ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -69,7 +78,7 @@ class _AddressesPageState extends State<AddressesPage> {
                 //     street: 'street',
                 //     description: 'country'));
               },
-              child: const Text('Add Address'))
+              child: const Text('أضافه عنوان',textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),))
         ],
       ),
     );

@@ -43,7 +43,7 @@ class ForgetPasswordPage extends StatefulWidget {
 }
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
-  late VideoPlayerController _controller;
+ // late VideoPlayerController _controller;
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   bool isLoading = false;
@@ -87,22 +87,22 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.asset('videos/vid.mp4')
-      ..initialize().then((value) {
-        _controller.play();
-        _controller.setLooping(false);
-        setState(() {});
-      });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller = VideoPlayerController.asset('videos/vid.mp4')
+  //     ..initialize().then((value) {
+  //       _controller.play();
+  //       _controller.setLooping(false);
+  //       setState(() {});
+  //     });
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -146,226 +146,229 @@ class _EditprofileState extends State<Editprofile> {
                 child: SizedBox(
                   width: Get.width,
                   child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: Get.height * .07,
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Edit Profile'.tr,
-                            style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: Get.height * .07,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        CircleAvatar(
-                          radius: 80,
-                          child: isPhotoLoading
-                              ? const CircularProgressIndicator()
-                              : InkWell(
-                                  onTap: () async {
-                                    await _pickImage();
-                                    await _uploadImage();
-                                    if (_imageUrl.isNotEmpty) {
-                                      uploadUserPhoto(_imageUrl);
-                                    }
-                                  },
-                                  child: getImagePovider(userProfile!.photo) !=
-                                          null
-                                      ? null
-                                      : const Icon(
-                                          Icons.add_a_photo,
-                                          size: 40,
-                                        ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'تعديل الملف الشخصي'.tr,
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.pink),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          CircleAvatar(
+                            radius: 80,
+                            child: isPhotoLoading
+                                ? const CircularProgressIndicator()
+                                : InkWell(
+                                    onTap: () async {
+                                      await _pickImage();
+                                      await _uploadImage();
+                                      if (_imageUrl.isNotEmpty) {
+                                        uploadUserPhoto(_imageUrl);
+                                      }
+                                    },
+                                    child: getImagePovider(userProfile!.photo) !=
+                                            null
+                                        ? null
+                                        : const Icon(
+                                            Icons.add_a_photo,
+                                            size: 40,
+                                          ),
+                                  ),
+                            backgroundImage: getImagePovider(userProfile!.photo),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: const [
+                                  BoxShadow(blurRadius: 2, color: Colors.grey)
+                                ]),
+                            width: Get.width * .9,
+                            height: Get.height * .92,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 5,
                                 ),
-                          backgroundImage: getImagePovider(userProfile!.photo),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                              boxShadow: const [
-                                BoxShadow(blurRadius: 2, color: Colors.grey)
-                              ]),
-                          width: Get.width * .9,
-                          height: Get.height * .92,
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              SizedBox(
-                                height: Get.height * .02,
-                              ),
-                              // Container(
-                              //   alignment: Alignment.topLeft,
-                              //   child: const Text(
-                              //     'Name',
-                              //     style: TextStyle(
-                              //         fontSize: 17,
-                              //         fontWeight: FontWeight.w300,
-                              //         color: Colors.grey),
-                              //   ),
-                              // ),
-                              CustomTextForm(
-                                  controller: nameController,
+                                SizedBox(
+                                  height: Get.height * .02,
+                                ),
+                                // Container(
+                                //   alignment: Alignment.topLeft,
+                                //   child: const Text(
+                                //     'Name',
+                                //     style: TextStyle(
+                                //         fontSize: 17,
+                                //         fontWeight: FontWeight.w300,
+                                //         color: Colors.grey),
+                                //   ),
+                                // ),
+                                CustomTextForm(
+                                    controller: nameController,
+                                    obsecure: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'الاسم'.tr,
+                                      border: const OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(10)),
+                                      ),
+                                    )
+                                    // hint: 'stockat',
+                                    ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                // Container(
+                                //   alignment: Alignment.topLeft,
+                                //   child: const Text(
+                                //     'phone',
+                                //     style: TextStyle(
+                                //         fontSize: 17,
+                                //         fontWeight: FontWeight.w300,
+                                //         color: Colors.grey),
+                                //   ),
+                                // ),
+                                CustomTextForm(
+                                  controller: phoneController,
                                   obsecure: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Name'.tr,
+                                    labelText: 'رقم الهاتف'.tr,
                                     border: const OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
                                     ),
-                                  )
-                                  // hint: 'stockat',
                                   ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              // Container(
-                              //   alignment: Alignment.topLeft,
-                              //   child: const Text(
-                              //     'phone',
-                              //     style: TextStyle(
-                              //         fontSize: 17,
-                              //         fontWeight: FontWeight.w300,
-                              //         color: Colors.grey),
-                              //   ),
-                              // ),
-                              CustomTextForm(
-                                controller: phoneController,
-                                obsecure: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Phone Number'.tr,
-                                  border: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                ),
-                                validate: (p0) {
-                                  if (p0!.isEmpty) {
-                                    return 'phone is required'.tr;
-                                  } else if (p0.length < 10) {
-                                    return 'phone must be valid'.tr;
-                                  }
-
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              // Container(
-                              //   alignment: Alignment.topLeft,
-
-                              //   child: const Text(
-                              //     'Email',
-                              //     style: TextStyle(
-                              //         fontSize: 17,
-                              //         fontWeight: FontWeight.w300,
-                              //         color: Colors.grey),
-                              //   ),
-                              // ),
-                              CustomTextForm(
-                                controller: emailController,
-                                obsecure: false,
-                                decoration: InputDecoration(
-                                  labelText: 'Email'.tr,
-                                  border: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                ),
-                                validate: (p0) {
-                                  if (p0!.isEmpty) {
-                                    return 'email is required'.tr;
-                                  } else if (!p0.contains('@')) {
-                                    return 'email must be valid'.tr;
-                                  }
-
-                                  return null;
-                                },
-                              ),
-                              // const SizedBox(
-                              //   height: 15,
-                              // ),
-                              // Container(
-                              //   alignment: Alignment.topLeft,
-                              //   child: const Text(
-                              //     'Password',
-                              //     style: TextStyle(
-                              //         fontSize: 17,
-                              //         fontWeight: FontWeight.w300,
-                              //         color: Colors.grey),
-                              //   ),
-                              // ),
-                              // CustomTextForm(
-                              //   controller: passwordController,
-                              //   obsecure: false,
-                              //   secure: true,
-                              //   hint: '*************',
-                              //   validate: (p0) {
-                              //     if (p0!.isEmpty) {
-                              //       return 'password is required';
-                              //     } else if (p0.length < 6) {
-                              //       return 'password must be at least 6 characters';
-                              //     }
-                              //     return null;
-                              //   },
-                              // ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: Get.height * .03,
-                              ),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    if (_fromKey.currentState!.validate()) {
-                                      authService.updateUserProfile(
-                                        userId: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        name: nameController.text,
-                                        phone: phoneController.text,
-                                        // cr: crController.text,
-                                        // vat: vatController.text,
-                                      );
-                                      // if (emailController.text.isNotEmpty) {
-                                      //   authService
-                                      //       .updateEmail(emailController.text);
-                                      // }
+                                  validate: (p0) {
+                                    if (p0!.isEmpty) {
+                                      return 'phone is required'.tr;
+                                    } else if (p0.length < 10) {
+                                      return 'phone must be valid'.tr;
                                     }
-                                    setState(() {});
+
+                                    return null;
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: mainColor,
-                                      fixedSize:
-                                          Size.fromWidth(Get.width * .8)),
-                                  child: const Text(
-                                    'EDIT',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ))
-                            ],
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                // Container(
+                                //   alignment: Alignment.topLeft,
+
+                                //   child: const Text(
+                                //     'Email',
+                                //     style: TextStyle(
+                                //         fontSize: 17,
+                                //         fontWeight: FontWeight.w300,
+                                //         color: Colors.grey),
+                                //   ),
+                                // ),
+                                CustomTextForm(
+                                  controller: emailController,
+                                  obsecure: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'البريد الالكتروني'.tr,
+                                    border: const OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                  ),
+                                  validate: (p0) {
+                                    if (p0!.isEmpty) {
+                                      return 'email is required'.tr;
+                                    } else if (!p0.contains('@')) {
+                                      return 'email must be valid'.tr;
+                                    }
+
+                                    return null;
+                                  },
+                                ),
+                                // const SizedBox(
+                                //   height: 15,
+                                // ),
+                                // Container(
+                                //   alignment: Alignment.topLeft,
+                                //   child: const Text(
+                                //     'Password',
+                                //     style: TextStyle(
+                                //         fontSize: 17,
+                                //         fontWeight: FontWeight.w300,
+                                //         color: Colors.grey),
+                                //   ),
+                                // ),
+                                // CustomTextForm(
+                                //   controller: passwordController,
+                                //   obsecure: false,
+                                //   secure: true,
+                                //   hint: '*************',
+                                //   validate: (p0) {
+                                //     if (p0!.isEmpty) {
+                                //       return 'password is required';
+                                //     } else if (p0.length < 6) {
+                                //       return 'password must be at least 6 characters';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  height: Get.height * .03,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      if (_fromKey.currentState!.validate()) {
+                                        authService.updateUserProfile(
+                                          userId: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          name: nameController.text,
+                                          phone: phoneController.text,
+                                          // cr: crController.text,
+                                          // vat: vatController.text,
+                                        );
+                                        // if (emailController.text.isNotEmpty) {
+                                        //   authService
+                                        //       .updateEmail(emailController.text);
+                                        // }
+                                      }
+                                      setState(() {});
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: mainColor,
+                                        fixedSize:
+                                            Size.fromWidth(Get.width * .8)),
+                                    child: const Text(
+                                      'تعديل',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,color: Colors.white),
+                                    ))
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

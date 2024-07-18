@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stockat/constants.dart';
 import 'package:stockat/view/select_location_screen.dart';
 
 import '../service/address_service.dart';
@@ -19,8 +20,9 @@ class _AddressesPageState extends State<AddressesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Shipping Addresses'),
-          backgroundColor: Colors.green),
+        centerTitle: true,
+          title: const Text('عنوان التوصيل',style: TextStyle(color: Colors.white),),
+          backgroundColor: mainColor),
       body: Column(
         children: [
           StreamBuilder<List<Address>>(
@@ -54,7 +56,11 @@ class _AddressesPageState extends State<AddressesPage> {
                   child: CircularProgressIndicator(),
                 );
               }),
+          SizedBox(height: 35,),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                fixedSize: Size.fromWidth(250),
+                backgroundColor: mainColor),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -69,7 +75,9 @@ class _AddressesPageState extends State<AddressesPage> {
                 //     street: 'street',
                 //     description: 'country'));
               },
-              child: const Text('Add Address'))
+              child: const Text('Add Address',style: TextStyle(
+                color: Colors.white
+              ),))
         ],
       ),
     );

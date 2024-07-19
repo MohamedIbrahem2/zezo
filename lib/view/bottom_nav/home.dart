@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/service/category_service.dart';
@@ -24,6 +25,7 @@ import 'package:stockat/view/sign_in.dart';
 
 import '../../service/cart_service.dart';
 import '../../service/offer_service.dart';
+import '../../widgets/shimmer.dart';
 import '../drawer_screens/add_category_screen.dart';
 import '../drawer_screens/add_products_screen.dart';
 import '../drawer_screens/language.dart';
@@ -220,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'orders Management'.tr,
+                      'أداره الطلبات'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -231,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'admins'.tr,
+                      'الأدمن'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -242,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'Send Message'.tr,
+                      'أرسال رساله'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -253,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'Unavailable Product'.tr,
+                      'المنتجات الغير متاحه'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -264,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'add category'.tr,
+                      'اضافه صنف'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -275,18 +277,7 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'add subcategory'.tr,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Get.to(const AddSubCategoryScreen());
-                    },
-                  ),
-                if (context.watch<AdminProvider>().isAdmin)
-                  ListTile(
-                    title: Text(
-                      'add product'.tr,
+                      'اضافه منتج'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -496,13 +487,11 @@ class _HomePageState extends State<HomePage> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return buildShimmer();
                     }
 
                     final products = snapshot.data!;
-                    return Container(
+                    return SizedBox(
                       height: Get.height*.295,
                       width: Get.width,
                       child: GridView.builder(
@@ -521,7 +510,7 @@ class _HomePageState extends State<HomePage> {
                                 child: GestureDetector(
                                   onLongPress:() {
                                     final provider = Provider.of<AdminProvider>(context, listen: false);
-                                    // if(provider.isAdmin) {
+                                     if(provider.isAdmin) {
                                       Get.defaultDialog(
                                           title: 'Do you want to delete ' +
                                               product.brand.tr + " Category ?",
@@ -561,14 +550,14 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ],
                                           ));
-                                    // }
+                                     }
 
                                   },
                                   onTap: () {
                                     final provider = Provider.of<AdminProvider>(context, listen: false);
-                                    // if(provider.isAdmin) {
+                                    if(provider.isAdmin) {
                                       Get.to(ProductDetails(product: product));
-                                    // }
+                                    }
                                   },
                                   child: Container(
 
@@ -707,7 +696,7 @@ class _HomePageState extends State<HomePage> {
                                                           product.discountPrice,
                                                       quantity: count,
                                                       userId: FirebaseAuth
-                                                          .instance.currentUser!.uid, image: '',
+                                                          .instance.currentUser!.uid, image: product.images.first,
                                                     );
                                                   },
                                                   child: const Center(
@@ -753,9 +742,7 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return  buildShimmer();
                   }
 
                   final products = snapshot.data!;
@@ -1010,9 +997,7 @@ class _HomePageState extends State<HomePage> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return buildShimmer();
                   }
 
                   final products = snapshot.data!;
@@ -1353,4 +1338,6 @@ class OfferCarousel extends StatelessWidget {
       },
     );
   }
+
+
 }

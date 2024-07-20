@@ -255,17 +255,6 @@ class _HomePageState extends State<HomePage> {
                 if (context.watch<AdminProvider>().isAdmin)
                   ListTile(
                     title: Text(
-                      'المنتجات الغير متاحه'.tr,
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Get.to(const UnavailableProduct());
-                    },
-                  ),
-                if (context.watch<AdminProvider>().isAdmin)
-                  ListTile(
-                    title: Text(
                       'اضافه صنف'.tr,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),

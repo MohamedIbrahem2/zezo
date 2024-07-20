@@ -4,6 +4,9 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockat/notifications_db.dart';
 
@@ -19,6 +22,44 @@ class FcmProvider {
   final String serverKey =
       'AAAAqPzP7mI:APA91bFp0h8aIwpfIOEqYcA49RBidh8uDg_ns7hGy9ketdNmQZsysXSeak7mbjCLhuVF9Pv0YBfLl-tXwHOq9nuYoRPc8CIuzu38sEYt9XGFsYYdMBT2iKB74LbBgAxfs8SOYBODNNKs';
 
+  Future<void> sendMessage(List<String> tokens, String message,String title,Function(bool) setLoading) async {
+    final body = {
+      "registration_ids": tokens,
+      "notification": {
+        "title": title,
+        "body": message,
+      },
+    };
+
+    try {
+      setLoading(true);
+
+      final response = await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'key=$serverKey',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar('تم الأرسال', 'بنجاح',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.green);
+      } else {
+        Get.snackbar('فشل', 'حدث خطأ ما',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.red);
+      }
+    } catch (e) {
+      print('An error occurred while sending the message: $e');
+    } finally {
+      setLoading(false);
+    }
+  }
   Future<void> sendHttppNotification(
     String token,
     String title,

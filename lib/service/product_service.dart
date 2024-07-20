@@ -156,6 +156,14 @@ class ProductsService {
       'isbestselling' : false,
     });
   }
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  Future<List<String>> getAllTokens() async {
+    QuerySnapshot snapshot = await _db.collection('users').where('fcm', isNotEqualTo: null).get();
+
+    List<String> tokens = snapshot.docs.map((doc) => doc['fcm'] as String).toList();
+
+    return tokens;
+  }
 
   Stream<List<Product>> getProductsByCategory(String categoryId) {
     final collection = FirebaseFirestore.instance.collection('products');
@@ -230,8 +238,8 @@ class ProductsService {
   Stream<List<Product>> searchForProduct(String? productName) {
     final collection = FirebaseFirestore.instance.collection('products');
     return collection
-        .where('name' , isGreaterThanOrEqualTo: productName)
-        .where('name' , isLessThanOrEqualTo: productName!+ '\uf7ff')
+        .where('title' , isGreaterThanOrEqualTo: productName)
+        .where('title' , isLessThanOrEqualTo: productName!+ '\uf7ff')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Product.fromSnapshot(doc)).toList();

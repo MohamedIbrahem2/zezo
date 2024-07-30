@@ -1,9 +1,14 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:stockat/view/home_view.dart';
 import 'package:stockat/view/sign_up.dart';
 
 import '../constants.dart';
@@ -21,6 +26,46 @@ class _SignInState extends State<SignIn> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var controller = Get.put(AuthViewModel());
   // late VideoPlayerController _controller;
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      // TODO
+      print('exception->$e');
+    }
+  }
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    if (loginResult.status == LoginStatus.success) {
+      // Get the AccessToken
+      final AccessToken accessToken = loginResult.accessToken!;
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+      FacebookAuthProvider.credential(accessToken.tokenString);
+
+      // Once signed in, return the UserCredential
+      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    } else {
+      throw FirebaseAuthException(
+        code: loginResult.status.toString(),
+        message: loginResult.message,
+      );
+    }
+  }
+
 
   @override
   void initState() {
@@ -38,6 +83,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    ValueNotifier userCredential = ValueNotifier('');
     return Scaffold(
       body: ModalProgressHUD(
         opacity: .5,
@@ -245,20 +291,38 @@ class _SignInState extends State<SignIn> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          width: 50,
-                          height: 35,
-                         // color: Colors.grey,
-                          child: Image.asset('images/google (1).png'),
-                        ) ,
-                          Container(
-                            child: Image.asset('images/facebook.png'),
+                        GestureDetector(
+                          onTap:() async {
+                            userCredential.value = await signInWithGoogle();
+                            if (userCredential.value != null)
+                              print(userCredential.value.user!.email);
+                            Get.off(const HomeView());
+                          },
+                          child: Container(
                             margin: EdgeInsets.all(10),
-                          width: 50,
-                          height: 35,
-                         // color: Colors.white,
-                        )
+                            width: 50,
+                            height: 35,
+                           // color: Colors.grey,
+                            child: Image.asset('images/google (1).png'),
+                          ),
+                        ) ,
+                          GestureDetector(
+                            onTap: ()async {
+                              try {
+                                UserCredential userCredential = await signInWithFacebook();
+                                print(userCredential.user);
+                              } catch (e) {
+                                print(e);
+                              }
+                            },
+                            child: Container(
+                              child: Image.asset('images/facebook.png'),
+                              margin: EdgeInsets.all(10),
+                            width: 50,
+                            height: 35,
+                                                     // color: Colors.white,
+                                                    ),
+                          )
                         ],
                       ),
                       SizedBox(

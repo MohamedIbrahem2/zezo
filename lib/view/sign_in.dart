@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:stockat/view/sign_up.dart';
 
 import '../constants.dart';
 import '../view_model/auth_view_model.dart';
+import 'complete_profile_page.dart';
 import 'forget_password_page.dart';
 
 class SignIn extends StatefulWidget {
@@ -25,23 +27,46 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var controller = Get.put(AuthViewModel());
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  User? user;
   // late VideoPlayerController _controller;
-  Future<dynamic> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<void> _signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
 
-      final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+    user = (await _auth.signInWithCredential(credential)).user;
 
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+    if (user != null) {
+      _checkUserProfile();
+    }
+  }
+
+  Future<void> _checkUserProfile() async {
+    DocumentSnapshot userDoc = await _firestore.collection('users').doc(user!.uid).get();
+
+    if (userDoc.exists) {
+      // User data exists
+      Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
+      if (data != null && data.containsKey('name') && data.containsKey('phone')) {
+        // User profile information is available
+      } else {
+        // User profile information is incomplete
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
+        );
+      }
+    } else {
+      // User document does not exist
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CompleteProfilePage(user: user)),
       );
-
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on Exception catch (e) {
-      // TODO
-      print('exception->$e');
     }
   }
   Future<UserCredential> signInWithFacebook() async {
@@ -293,10 +318,8 @@ class _SignInState extends State<SignIn> {
                         children: [
                         GestureDetector(
                           onTap:() async {
-                            userCredential.value = await signInWithGoogle();
-                            if (userCredential.value != null)
-                              print(userCredential.value.user!.email);
-                            Get.off(const HomeView());
+                             _signInWithGoogle();
+                            // Get.off(const HomeView());
                           },
                           child: Container(
                             margin: EdgeInsets.all(10),
@@ -306,23 +329,23 @@ class _SignInState extends State<SignIn> {
                             child: Image.asset('images/google (1).png'),
                           ),
                         ) ,
-                          GestureDetector(
-                            onTap: ()async {
-                              try {
-                                UserCredential userCredential = await signInWithFacebook();
-                                print(userCredential.user);
-                              } catch (e) {
-                                print(e);
-                              }
-                            },
-                            child: Container(
-                              child: Image.asset('images/facebook.png'),
-                              margin: EdgeInsets.all(10),
-                            width: 50,
-                            height: 35,
-                                                     // color: Colors.white,
-                                                    ),
-                          )
+                          // GestureDetector(
+                          //   onTap: ()async {
+                          //     try {
+                          //       UserCredential userCredential = await signInWithFacebook();
+                          //       print(userCredential.user);
+                          //     } catch (e) {
+                          //       print(e);
+                          //     }
+                          //   },
+                          //   child: Container(
+                          //     child: Image.asset('images/facebook.png'),
+                          //     margin: EdgeInsets.all(10),
+                          //   width: 50,
+                          //   height: 35,
+                          //                            // color: Colors.white,
+                          //                           ),
+                          // )
                         ],
                       ),
                       SizedBox(

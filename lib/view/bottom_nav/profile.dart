@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/reset_password.dart';
+import 'package:stockat/service/products_service.dart';
 import 'package:stockat/view/my_page_screens/edit_profile.dart';
 import 'package:stockat/view/sign_in.dart';
 
@@ -53,9 +54,17 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       body: StreamBuilder(
         builder: (context, snapShot2) {
-          if (snapShot2.hasData) {
-            dynamic document = snapShot2.data;
-            name = document['name'];
+          if (!snapShot2.hasData) {
+            if (snapShot2.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }else{
+              dynamic document = snapShot2.data;
+              name = document['name'];
+            }
+
+
             // email = document['email'];
             // pic = document['pic'];
           }

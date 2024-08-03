@@ -54,6 +54,7 @@ class _SignInState extends State<SignIn> {
       Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
       if (data != null && data.containsKey('name') && data.containsKey('phone')) {
         // User profile information is available
+        Get.offAll(const HomeView());
       } else {
         // User profile information is incomplete
         Navigator.push(

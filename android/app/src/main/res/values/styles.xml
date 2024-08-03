@@ -10,10 +10,6 @@
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
-    <string name="app_name">Your App Name</string>
-    <string name="facebook_app_id">1012041710560471</string>
-    <string name="fb_login_protocol_scheme">fb1012041710560471</string>
-    <string name="facebook_client_token">dea2b38ec66b372e3addfff847df59bb</string>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
          Flutter UI initializes, as well as behind your Flutter UI while its

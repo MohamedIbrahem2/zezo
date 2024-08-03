@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stockat/constants.dart';
@@ -43,6 +44,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
   int count = 1;
   FirebaseAuth auth = FirebaseAuth.instance;
   bool first = true;
@@ -342,7 +345,8 @@ class _HomePageState extends State<HomePage> {
                             ElevatedButton(
                               onPressed: () {
                                 auth.signOut();
-                                Get.to(const SignIn());
+                                _handleSignOut();
+                                Get.offAll(const SignIn());
                               },
                               child: Text('yes'.tr,
                                   style: const TextStyle(color: Colors.white)),

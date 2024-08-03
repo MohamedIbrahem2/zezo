@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                     ),
                   ),
-                  StreamBuilder<List<CartItem>>(
+                  FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
                       stream: CartService()
                           .getCartItems(FirebaseAuth.instance.currentUser!.uid),
                       builder: (context, snapshot) {
@@ -110,7 +110,26 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         );
-                      })
+                      }): Positioned(
+                    left: 18,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red
+                      ),
+                      width: 25,
+                      height: 25,
+                      child: Center(
+                        child: Text(
+                          '0',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -667,26 +686,32 @@ class _HomePageState extends State<HomePage> {
                                                   height: Get.height * 0.03,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    final result = await CartService()
-                                                        .isProductInCart(
-                                                        product.id,
-                                                        FirebaseAuth
-                                                            .instance.currentUser!.uid);
-                                                    // if (result != null && result > 0) {
-                                                    //   // remove snakebar
+                                                    if(FirebaseAuth.instance.currentUser == null){
+                                                      Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                      Get.to(const SignIn());
+                                                    }else{
+                                                      final result = await CartService()
+                                                          .isProductInCart(
+                                                          product.id,
+                                                          FirebaseAuth
+                                                              .instance.currentUser!.uid);
+                                                      // if (result != null && result > 0) {
+                                                      //   // remove snakebar
 
-                                                    //   Get.snackbar(
-                                                    //       'Sorry', 'Product already in cart');
-                                                    // }
-                                                    CartService().addToCart(
-                                                      productId: product.id,
-                                                      productName: product.brand,
-                                                      price: product.regularPrice -
-                                                          product.discountPrice,
-                                                      quantity: count,
-                                                      userId: FirebaseAuth
-                                                          .instance.currentUser!.uid, image: product.images.first,
-                                                    );
+                                                      //   Get.snackbar(
+                                                      //       'Sorry', 'Product already in cart');
+                                                      // }
+                                                      CartService().addToCart(
+                                                        productId: product.id,
+                                                        productName: product.brand,
+                                                        price: product.regularPrice -
+                                                            product.discountPrice,
+                                                        quantity: count,
+                                                        userId: FirebaseAuth
+                                                            .instance.currentUser!.uid, image: product.images.first,
+                                                      );
+                                                    }
+
                                                   },
                                                   child: const Center(
                                                     child: Icon(
@@ -922,26 +947,32 @@ class _HomePageState extends State<HomePage> {
                                             height: Get.height * 0.03,
                                             child: ElevatedButton(
                                               onPressed: () async {
-                                                final result = await CartService()
-                                                    .isProductInCart(
-                                                    product.id,
-                                                    FirebaseAuth
-                                                        .instance.currentUser!.uid);
-                                                // if (result != null && result > 0) {
-                                                //   // remove snakebar
+                                                if(FirebaseAuth.instance.currentUser == null){
+                                                  Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                  Get.to(const SignIn());
+                                                }else{
+                                                  final result = await CartService()
+                                                      .isProductInCart(
+                                                      product.id,
+                                                      FirebaseAuth
+                                                          .instance.currentUser!.uid);
+                                                  // if (result != null && result > 0) {
+                                                  //   // remove snakebar
 
-                                                //   Get.snackbar(
-                                                //       'Sorry', 'Product already in cart');
-                                                // }
-                                                CartService().addToCart(
-                                                  productId: product.id,
-                                                  productName: product.brand,
-                                                  price: product.regularPrice -
-                                                      product.discountPrice,
-                                                  quantity: count,
-                                                  userId: FirebaseAuth
-                                                      .instance.currentUser!.uid, image: '',
-                                                );
+                                                  //   Get.snackbar(
+                                                  //       'Sorry', 'Product already in cart');
+                                                  // }
+                                                  CartService().addToCart(
+                                                    productId: product.id,
+                                                    productName: product.brand,
+                                                    price: product.regularPrice -
+                                                        product.discountPrice,
+                                                    quantity: count,
+                                                    userId: FirebaseAuth
+                                                        .instance.currentUser!.uid, image: product.images.first,
+                                                  );
+                                                }
+
                                               },
                                               child: const Center(
                                                 child: Icon(
@@ -1184,26 +1215,32 @@ class _HomePageState extends State<HomePage> {
                                                     height: Get.height * 0.03,
                                                     child: ElevatedButton(
                                                       onPressed: () async {
-                                                        final result = await CartService()
-                                                            .isProductInCart(
-                                                            product.id,
-                                                            FirebaseAuth
-                                                                .instance.currentUser!.uid);
-                                                        // if (result != null && result > 0) {
-                                                        //   // remove snakebar
+                                                        if(FirebaseAuth.instance.currentUser == null){
+                                                          Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                          Get.to(const SignIn());
+                                                        }else{
+                                                          final result = await CartService()
+                                                              .isProductInCart(
+                                                              product.id,
+                                                              FirebaseAuth
+                                                                  .instance.currentUser!.uid);
+                                                          // if (result != null && result > 0) {
+                                                          //   // remove snakebar
 
-                                                        //   Get.snackbar(
-                                                        //       'Sorry', 'Product already in cart');
-                                                        // }
-                                                        CartService().addToCart(
-                                                          productId: product.id,
-                                                          productName: product.brand,
-                                                          price: product.regularPrice -
-                                                              product.discountPrice,
-                                                          quantity: count,
-                                                          userId: FirebaseAuth
-                                                              .instance.currentUser!.uid, image: '',
-                                                        );
+                                                          //   Get.snackbar(
+                                                          //       'Sorry', 'Product already in cart');
+                                                          // }
+                                                          CartService().addToCart(
+                                                            productId: product.id,
+                                                            productName: product.brand,
+                                                            price: product.regularPrice -
+                                                                product.discountPrice,
+                                                            quantity: count,
+                                                            userId: FirebaseAuth
+                                                                .instance.currentUser!.uid, image: product.images.first,
+                                                          );
+                                                        }
+
                                                       },
                                                       child: const Center(
                                                         child: Icon(

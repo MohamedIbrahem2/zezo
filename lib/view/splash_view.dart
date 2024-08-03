@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:get/get.dart';
+import 'package:stockat/view/home_view.dart';
 import 'package:stockat/view/onbording_view.dart';
 import 'package:stockat/view/sign_in.dart';
 
@@ -27,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer(
         const Duration(seconds: 4),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) =>  first ? const OnBording() : const SignIn() )));
+            context, MaterialPageRoute(builder: (context) =>  first ? const OnBording() : const HomeView())));
   }
 
   @override

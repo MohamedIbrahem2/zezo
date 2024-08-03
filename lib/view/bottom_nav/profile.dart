@@ -52,7 +52,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
+      body: FirebaseAuth.instance.currentUser != null ? StreamBuilder(
         builder: (context, snapShot2) {
           if (!snapShot2.hasData) {
             if (snapShot2.connectionState == ConnectionState.waiting) {
@@ -232,11 +232,11 @@ class _SettingsState extends State<Settings> {
             ),
           );
         },
-        stream: FirebaseFirestore.instance
+        stream:FirebaseFirestore.instance
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .snapshots(),
-      ),
+      ) : Center(child: Text("للوصول الي الصفحه الشخصيه برجاء تسجيل الدخول"),),
     );
   }
 

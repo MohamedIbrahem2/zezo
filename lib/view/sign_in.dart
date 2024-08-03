@@ -33,10 +33,10 @@ class _SignInState extends State<SignIn> {
   // late VideoPlayerController _controller;
   Future<void> _signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
     );
 
     user = (await _auth.signInWithCredential(credential)).user;

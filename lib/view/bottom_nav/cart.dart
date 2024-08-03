@@ -41,7 +41,7 @@ class _Screen2State extends State<Screen2> {
       body: Container(
         margin:
         const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
-        child: StreamBuilder<List<CartItem>>(
+        child: FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
             stream: CartService().getCartItems(
               FirebaseAuth.instance.currentUser!.uid,
             ),
@@ -140,9 +140,9 @@ class _Screen2State extends State<Screen2> {
                   );
                 },
               );
-            }),
+            }): Text("يجب تسجيل الدخول لأضافه شئ لعربه التسوق"),
       ),
-      bottomSheet: StreamBuilder<List<CartItem>>(
+      bottomSheet: FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
           stream: CartService().getCartItems(
             FirebaseAuth.instance.currentUser!.uid,
           ),
@@ -242,7 +242,7 @@ class _Screen2State extends State<Screen2> {
                 ),
               ),
             );
-          }),
+          }) : Text("يجب تسجيل الدخول لأضافه شئ الي عربه التسوق"),
     );
   }
 }

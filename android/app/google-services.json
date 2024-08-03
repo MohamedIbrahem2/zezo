@@ -7,6 +7,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:725795991138:android:95ba45b2c59f1d94cb6b3b",
+        "android_client_info": {
+          "package_name": "com.stockat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725795991138-tqt4j1jd3gu8odfcj9f0jmnn277snp8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stockat",
+            "certificate_hash": "1526d7f63a35071c4b0e99157c1f153964ea8b5c"
+          }
+        },
+        {
+          "client_id": "725795991138-d67ieaq2motuuglas97755vc3or7kbpm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX7pjs8hv3X-kP7yEsW8tDP20YUnfJweI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725795991138-7b8gmj4lcuhc3an0mg62uvl1dim0su1c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "725795991138-32vbhnkktcveji9v9p8cuv4ae5viepac.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stockat"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:725795991138:android:c361c71306360407cb6b3b",
         "android_client_info": {
           "package_name": "com.stockat"

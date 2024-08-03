@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockat/view/home_view.dart';
 import 'package:stockat/view/sign_in.dart';
 
 class OnBording extends StatefulWidget {
@@ -83,8 +84,7 @@ class _OnBordingState extends State<OnBording> {
               left: 0,
               right: 250,
               child: TextButton(onPressed: (){
-                Get.to(const SignIn());
-
+                Get.to(const HomeView());
               }, child: Text("تخطي",textDirection: TextDirection.rtl,
                   style: TextStyle(fontSize: 20,color: Colors.white)))
           ),

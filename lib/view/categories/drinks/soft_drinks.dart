@@ -39,7 +39,7 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
           IconButton(
             icon: const Icon(Icons.search_rounded),
             onPressed: () {
-              Get.to(const Search());
+              Get.to(const Search(uniqueId: '',));
               // setState(() {
               //   Get.defaultDialog(
               //       title: 'search',
@@ -58,7 +58,7 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(const Screen2());
+              Get.to(const Screen2(uniqueId: '',));
             },
             child: Stack(
               children: [
@@ -162,7 +162,7 @@ class _DrinksItemsState extends State<SubCategoriesProducts> {
                               final provider = Provider.of<AdminProvider>(context, listen: false);
                               if (provider.isAdmin) {
                                 Get.to(() => ProductDetails(
-                                      product: product,
+                                      product: product, uniqueId: '',
                                     ));
                               }
                             },

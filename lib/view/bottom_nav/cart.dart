@@ -2,19 +2,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockat/bottom_navbar_provider.dart';
 import 'package:stockat/service/cart_service.dart';
 import 'package:stockat/view/home_view.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../constants.dart';
 import '../check_out/checkhome.dart';
+import '../sign_in.dart';
 
 class Screen2 extends StatefulWidget {
-  const Screen2({Key? key}) : super(key: key);
+  final String uniqueId;
+  const Screen2({Key? key, required this.uniqueId}) : super(key: key);
 
   @override
   State<Screen2> createState() => _Screen2State();
 }
+
 
 class _Screen2State extends State<Screen2> {
   int count = 0;
@@ -26,7 +31,10 @@ class _Screen2State extends State<Screen2> {
     'https://ik.imagekit.io/baeimages/catalog/product/cache/b190492e876561b9a9369467f00721c5/6/2/6281031114162-persil-gel-deep-clean-white-flower-3-ltr_vglvitcgz0q8w57m.jpg?tr=w-300',
     'https://cdnprod.mafretailproxy.com/sys-master-root/h81/h0b/11281795612702/17115_1.jpg_480Wx480H',
   ];
-
+  @override
+  void initState(){
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +49,11 @@ class _Screen2State extends State<Screen2> {
       body: Container(
         margin:
         const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 100),
-        child: FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
+        child:  StreamBuilder<List<CartItem>>(
             stream: CartService().getCartItems(
-              FirebaseAuth.instance.currentUser!.uid,
+              FirebaseAuth
+                  .instance.currentUser != null ?
+              FirebaseAuth.instance.currentUser!.uid : widget.uniqueId,
             ),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -140,11 +150,13 @@ class _Screen2State extends State<Screen2> {
                   );
                 },
               );
-            }): Text("يجب تسجيل الدخول لأضافه شئ لعربه التسوق"),
+            }),
       ),
-      bottomSheet: FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
+      bottomSheet:  StreamBuilder<List<CartItem>>(
           stream: CartService().getCartItems(
-            FirebaseAuth.instance.currentUser!.uid,
+            FirebaseAuth
+                .instance.currentUser != null ?
+            FirebaseAuth.instance.currentUser!.uid : widget.uniqueId,
           ),
           builder: (context, snapshot) {
             final total = snapshot.data == null || snapshot.data!.isEmpty
@@ -225,7 +237,13 @@ class _Screen2State extends State<Screen2> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          Get.to(const CheckHome());
+                          if(FirebaseAuth.instance.currentUser == null){
+                              Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                              Get.to(const SignIn());
+                          }else{
+                            Get.to( CheckHome(unique: widget.uniqueId,));
+                          }
+
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: mainColor,
@@ -242,7 +260,7 @@ class _Screen2State extends State<Screen2> {
                 ),
               ),
             );
-          }) : Text("يجب تسجيل الدخول لأضافه شئ الي عربه التسوق"),
+          }),
     );
   }
 }

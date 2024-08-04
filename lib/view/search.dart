@@ -14,7 +14,8 @@ import 'bottom_nav/cart.dart';
 import 'bottom_nav/peoduct_details.dart';
 
 class Search extends StatefulWidget {
-  const Search({super.key});
+  final String uniqueId;
+  const Search({super.key, required this.uniqueId});
 
   @override
   State<Search> createState() => _SearchState();
@@ -31,7 +32,7 @@ class _SearchState extends State<Search> {
           actions: [
             GestureDetector(
               onTap: () {
-                Get.to(const Screen2());
+                Get.to( Screen2(uniqueId: widget.uniqueId,));
               },
               child: Stack(
                 children: [
@@ -217,7 +218,7 @@ class _SearchState extends State<Search> {
                                     onTap: () {
                                       final provider = Provider.of<AdminProvider>(context, listen: false);
                                       if(provider.isAdmin) {
-                                        Get.to(ProductDetails(product: product));
+                                        Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
                                       }
                                     },
                                     child: Container(

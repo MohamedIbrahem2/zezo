@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Settings;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/view/bottom_nav/cart.dart';
 import 'package:stockat/view/bottom_nav/profile.dart';
 import 'package:stockat/view_model/auth_view_model.dart';
+import 'package:uuid/uuid.dart';
 
 import '../bottom_navbar_provider.dart';
 import 'bottom_nav/home.dart';
@@ -17,21 +20,39 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late String _uniqueId;
   final AuthViewModel yourController =
   Get.put(AuthViewModel()..getUserProfile());
+  Future<void> _getUniqueId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? uniqueId = prefs.getString('unique_id');
+
+    if (uniqueId == null) {
+      // Generate a new unique ID if it doesn't exist
+      uniqueId = const Uuid().v4();
+      await prefs.setString('unique_id', uniqueId);
+    }
+
+    setState(() {
+      _uniqueId = uniqueId!;
+    });
+  }
+
+
 
   @override
   void initState() {
+    _getUniqueId();
     AdminProvider().checkIfAdmin();
     super.initState();
   }
 
   int index = 0;
 
-  List<Widget> screens = [
-    HomePage(),
-    const Screen2(),
-    const Settings(),
+  late List<Widget> screens = [
+    HomePage(uniqueId: _uniqueId,),
+     Screen2(uniqueId: _uniqueId,),
+     Settings(uniqueId: _uniqueId,),
   ];
 
   @override

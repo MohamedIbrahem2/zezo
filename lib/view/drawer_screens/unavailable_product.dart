@@ -53,7 +53,7 @@ class _UnavailableProductState extends State<UnavailableProduct> {
                   final provider = Provider.of<AdminProvider>(context, listen: false);
                   if (provider.isAdmin) {
                     Get.to(() => ProductDetails(
-                      product: product,
+                      product: product, uniqueId: '',
                     ));
                   }
                 },

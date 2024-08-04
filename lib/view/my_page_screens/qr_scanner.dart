@@ -70,7 +70,7 @@ class _QrViewState extends State<QrView> {
         final String qrResult = result!.code.toString();
         // pass the result to the next screen
         ProductsService().getProductById(qrResult).then((product) {
-          Get.to(ProductDetails(product: product));
+          Get.to(ProductDetails(product: product, uniqueId: '',));
         });
       });
     });

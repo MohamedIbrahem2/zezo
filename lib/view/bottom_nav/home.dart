@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
@@ -23,6 +25,7 @@ import 'package:stockat/view/drawer_screens/unavailable_product.dart';
 import 'package:stockat/view/my_page_screens/orders_management.dart';
 import 'package:stockat/view/my_page_screens/our_location_page.dart';
 import 'package:stockat/view/sign_in.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../service/cart_service.dart';
 import '../../service/offer_service.dart';
@@ -37,13 +40,15 @@ import '../my_page_screens/qr_scanner.dart';
 import '../search.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String uniqueId;
+  const HomePage({Key? key, required this.uniqueId}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
   int count = 1;
@@ -51,9 +56,18 @@ class _HomePageState extends State<HomePage> {
   bool first = true;
   int _selectedIndex = 0;
    String categoryId = "العطور";
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<void> _saveProfile() async {
+    await _firestore.collection('users').doc(widget.uniqueId).set({
+      'name': "الأسم",
+      'phone': "رقم الهاتف",
+      'email' : "البريد الألكتروني",
+    });
+  }
   @override
   void initState() {
     super.initState();
+    _saveProfile();
   }
 
   @override
@@ -71,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             GestureDetector(
               onTap: () {
-                Get.to(const Screen2());
+                Get.to( Screen2(uniqueId: widget.uniqueId,));
               },
               child: Stack(
                 children: [
@@ -83,9 +97,10 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                     ),
                   ),
-                  FirebaseAuth.instance.currentUser != null ? StreamBuilder<List<CartItem>>(
+                   StreamBuilder<List<CartItem>>(
                       stream: CartService()
-                          .getCartItems(FirebaseAuth.instance.currentUser!.uid),
+                          .getCartItems(FirebaseAuth.instance.currentUser != null ?
+                      FirebaseAuth.instance.currentUser!.uid : widget.uniqueId),
                       builder: (context, snapshot) {
                         final quantity =
                             (snapshot.data == null || snapshot.data!.isEmpty)
@@ -113,26 +128,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         );
-                      }): Positioned(
-                    left: 18,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.red
-                      ),
-                      width: 25,
-                      height: 25,
-                      child: Center(
-                        child: Text(
-                          '0',
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ),
+                      })
                 ],
               ),
             ),
@@ -387,7 +383,7 @@ class _HomePageState extends State<HomePage> {
                   child: TextFormField(
                     readOnly: true,
                     onTap: () {
-                      Get.to(const Search());
+                      Get.to( Search(uniqueId: widget.uniqueId,));
                     },
                     decoration: InputDecoration(
                       hintText: 'كل ما تريد !',
@@ -568,7 +564,7 @@ class _HomePageState extends State<HomePage> {
                                   onTap: () {
                                     final provider = Provider.of<AdminProvider>(context, listen: false);
                                     if(provider.isAdmin) {
-                                      Get.to(ProductDetails(product: product));
+                                      Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
                                     }
                                   },
                                   child: Container(
@@ -690,15 +686,16 @@ class _HomePageState extends State<HomePage> {
                                                   height: Get.height * 0.03,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    if(FirebaseAuth.instance.currentUser == null){
-                                                      Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
-                                                      Get.to(const SignIn());
-                                                    }else{
+                                                    // if(FirebaseAuth.instance.currentUser == null){
+                                                    //   Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                    //   Get.to(const SignIn());
+                                                    // }else{
                                                       final result = await CartService()
                                                           .isProductInCart(
                                                           product.id,
                                                           FirebaseAuth
-                                                              .instance.currentUser!.uid);
+                                                              .instance.currentUser != null ?
+                                                          FirebaseAuth.instance.currentUser!.uid : widget.uniqueId);
                                                       // if (result != null && result > 0) {
                                                       //   // remove snakebar
 
@@ -712,10 +709,9 @@ class _HomePageState extends State<HomePage> {
                                                             product.discountPrice,
                                                         quantity: count,
                                                         userId: FirebaseAuth
-                                                            .instance.currentUser!.uid, image: product.images.first,
+                                                            .instance.currentUser != null ?
+                                                        FirebaseAuth.instance.currentUser!.uid : widget.uniqueId, image: product.images.first,
                                                       );
-                                                    }
-
                                                   },
                                                   child: const Center(
                                                     child: Icon(
@@ -829,7 +825,7 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               final provider = Provider.of<AdminProvider>(context, listen: false);
                               if(provider.isAdmin) {
-                                Get.to(ProductDetails(product: product));
+                                Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
                               }
                             },
                             child: Container(
@@ -951,15 +947,15 @@ class _HomePageState extends State<HomePage> {
                                             height: Get.height * 0.03,
                                             child: ElevatedButton(
                                               onPressed: () async {
-                                                if(FirebaseAuth.instance.currentUser == null){
-                                                  Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
-                                                  Get.to(const SignIn());
-                                                }else{
+                                                // if(FirebaseAuth.instance.currentUser == null){
+                                                //   Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                //   Get.to(const SignIn());
+                                                // }else{
                                                   final result = await CartService()
                                                       .isProductInCart(
                                                       product.id,
-                                                      FirebaseAuth
-                                                          .instance.currentUser!.uid);
+                                                      FirebaseAuth.instance.currentUser != null ?FirebaseAuth
+                                                          .instance.currentUser!.uid: widget.uniqueId);
                                                   // if (result != null && result > 0) {
                                                   //   // remove snakebar
 
@@ -972,11 +968,9 @@ class _HomePageState extends State<HomePage> {
                                                     price: product.regularPrice -
                                                         product.discountPrice,
                                                     quantity: count,
-                                                    userId: FirebaseAuth
-                                                        .instance.currentUser!.uid, image: product.images.first,
+                                                    userId: FirebaseAuth.instance.currentUser != null ?FirebaseAuth
+                                                        .instance.currentUser!.uid : widget.uniqueId, image: product.images.first,
                                                   );
-                                                }
-
                                               },
                                               child: const Center(
                                                 child: Icon(
@@ -1093,7 +1087,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   final provider = Provider.of<AdminProvider>(context, listen: false);
                                   if(provider.isAdmin) {
-                                    Get.to(ProductDetails(product: product));
+                                    Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
                                   }
                                 },
                                 child: Stack(
@@ -1219,15 +1213,15 @@ class _HomePageState extends State<HomePage> {
                                                     height: Get.height * 0.03,
                                                     child: ElevatedButton(
                                                       onPressed: () async {
-                                                        if(FirebaseAuth.instance.currentUser == null){
-                                                          Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
-                                                          Get.to(const SignIn());
-                                                        }else{
+                                                        // if(FirebaseAuth.instance.currentUser == null){
+                                                        //   Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                                        //   Get.to(const SignIn());
+                                                        // }else{
                                                           final result = await CartService()
                                                               .isProductInCart(
                                                               product.id,
-                                                              FirebaseAuth
-                                                                  .instance.currentUser!.uid);
+                                                              FirebaseAuth.instance.currentUser != null ?FirebaseAuth
+                                                                  .instance.currentUser!.uid : widget.uniqueId);
                                                           // if (result != null && result > 0) {
                                                           //   // remove snakebar
 
@@ -1240,11 +1234,9 @@ class _HomePageState extends State<HomePage> {
                                                             price: product.regularPrice -
                                                                 product.discountPrice,
                                                             quantity: count,
-                                                            userId: FirebaseAuth
-                                                                .instance.currentUser!.uid, image: product.images.first,
+                                                            userId: FirebaseAuth.instance.currentUser != null ?FirebaseAuth
+                                                                .instance.currentUser!.uid : widget.uniqueId, image: product.images.first,
                                                           );
-                                                        }
-
                                                       },
                                                       child: const Center(
                                                         child: Icon(

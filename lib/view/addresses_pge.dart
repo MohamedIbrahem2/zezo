@@ -1,20 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/view/select_location_screen.dart';
+import 'package:stockat/view/sign_in.dart';
 
 import '../service/address_service.dart';
 
 class AddressesPage extends StatefulWidget {
-  const AddressesPage({super.key});
+  final String uniqueId;
+  const AddressesPage({super.key, required this.uniqueId});
 
   @override
   State<AddressesPage> createState() => _AddressesPageState();
 }
 
 class _AddressesPageState extends State<AddressesPage> {
-  final AddressService _addressService = AddressService(
-    FirebaseAuth.instance.currentUser!.uid,
+  late final AddressService _addressService = AddressService(
+    FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : widget.uniqueId,
   );
   @override
   Widget build(BuildContext context) {
@@ -62,10 +66,16 @@ class _AddressesPageState extends State<AddressesPage> {
                 fixedSize: Size.fromWidth(250),
                 backgroundColor: mainColor),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SelectAdressScreen()));
+                if(FirebaseAuth.instance.currentUser == null){
+                  Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                  Get.to( const SignIn());
+                }else{
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SelectAdressScreen()));
+                }
+
                 // _addressService.addAddress(Address(
                 //     state: 'state',
                 //     postalCode: 'postalCode',
@@ -75,7 +85,7 @@ class _AddressesPageState extends State<AddressesPage> {
                 //     street: 'street',
                 //     description: 'country'));
               },
-              child: const Text('Add Address',style: TextStyle(
+              child: const Text('اضافه عنوان',style: TextStyle(
                 color: Colors.white
               ),))
         ],

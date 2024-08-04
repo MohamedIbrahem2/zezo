@@ -11,7 +11,8 @@ import '../../service/cart_service.dart';
 import '../addresses_pge.dart';
 
 class CheckHome extends StatefulWidget {
-  const CheckHome({Key? key}) : super(key: key);
+  final String unique;
+  const CheckHome({Key? key, required this.unique}) : super(key: key);
 
   @override
   State<CheckHome> createState() => _CheckHomeState();
@@ -378,7 +379,7 @@ class _CheckHomeState extends State<CheckHome> {
 
                                             GestureDetector(
                                               onTap: () {
-                                                Get.to(const AddressesPage());
+                                                Get.to(AddressesPage(uniqueId: widget.unique,));
                                               },
                                               child: const Icon(
                                                 Icons.add,

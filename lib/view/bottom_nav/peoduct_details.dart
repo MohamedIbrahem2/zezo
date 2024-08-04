@@ -12,8 +12,8 @@ import 'cart.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product product;
-
-  const ProductDetails({super.key, required this.product});
+  final String uniqueId;
+  const ProductDetails({super.key, required this.product, required this.uniqueId});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -281,7 +281,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         SizedBox(width: Get.width * 0.06),
                         GestureDetector(
                           onTap: (){
-                            Get.to(Screen2());
+                            Get.to(Screen2(uniqueId: widget.uniqueId,));
                           },
                           child: const Text(
                             textDirection: TextDirection.rtl,

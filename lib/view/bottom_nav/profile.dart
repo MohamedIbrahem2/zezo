@@ -2,19 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/main.dart';
 import 'package:stockat/reset_password.dart';
 import 'package:stockat/service/products_service.dart';
 import 'package:stockat/view/my_page_screens/edit_profile.dart';
 import 'package:stockat/view/sign_in.dart';
+import 'package:uuid/uuid.dart';
 
 import '../addresses_pge.dart';
 import '../my_page_screens/notifications_page.dart';
 import '../my_page_screens/oreder_history.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({super.key});
+  final String uniqueId;
+  const Settings({super.key, required this.uniqueId});
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -47,12 +50,13 @@ class _SettingsState extends State<Settings> {
   void initState() {
     // getUserProfile();
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FirebaseAuth.instance.currentUser != null ? StreamBuilder(
+      body:  StreamBuilder(
         builder: (context, snapShot2) {
           if (!snapShot2.hasData) {
             if (snapShot2.connectionState == ConnectionState.waiting) {
@@ -136,7 +140,7 @@ class _SettingsState extends State<Settings> {
                               },
                             ),
                             Text(
-                              FirebaseAuth.instance.currentUser!.email!,
+                              FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.email!:"لا يوجد بريد الكتروني",
                               style: TextStyle(fontSize: 17, color: mainColor),
                             ),
                           ],
@@ -150,7 +154,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const Form(child: Editprofile()));
+                    Get.to( Form(child: Editprofile(uniqueId:widget.uniqueId,)));
                   },
                   child:
                       customListTile(icon: Icons.edit, title: 'تعديل الملف الشخصي'.tr),
@@ -166,7 +170,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const AddressesPage());
+                    Get.to( AddressesPage(uniqueId: widget.uniqueId,));
                   },
                   child: customListTile(
                       icon: Icons.location_on_outlined,
@@ -175,7 +179,13 @@ class _SettingsState extends State<Settings> {
 
                 GestureDetector(
                   onTap: () {
-                    Get.to(const OrderHistory());
+                    if(FirebaseAuth.instance.currentUser == null){
+                      Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                      Get.to( const SignIn());
+                    }else{
+                      Get.to(const OrderHistory());
+                    }
+
                   },
                   child: customListTile(
                       icon: Icons.history, title: 'طلباتي'.tr),
@@ -189,8 +199,14 @@ class _SettingsState extends State<Settings> {
                 // ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(NotificationsPage(
-                        userId: FirebaseAuth.instance.currentUser!.uid));
+                    if(FirebaseAuth.instance.currentUser == null){
+                      Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                      Get.to( const SignIn());
+                    }else{
+                      Get.to(NotificationsPage(
+                          userId: FirebaseAuth.instance.currentUser!.uid));
+                    }
+
                   },
                   child: customListTile(
                       icon: Icons.notification_important_outlined,
@@ -198,33 +214,39 @@ class _SettingsState extends State<Settings> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.defaultDialog(
-                        title: 'Are you sure?'.tr,
-                        content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'No'.tr,
-                                style: const TextStyle(color: Colors.black),
+                    if(FirebaseAuth.instance.currentUser == null){
+                      Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                      Get.to( const SignIn());
+                    }else{
+                      Get.defaultDialog(
+                          title: 'Are you sure?'.tr,
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'No'.tr,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white, elevation: 10),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white, elevation: 10),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Get.to(const SignIn());
-                              },
-                              child: Text('yes'.tr,
-                                  style: const TextStyle(color: Colors.white)),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red, elevation: 10),
-                            ),
-                          ],
-                        ));
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.to(const SignIn());
+                                },
+                                child: Text('yes'.tr,
+                                    style: const TextStyle(color: Colors.white)),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red, elevation: 10),
+                              ),
+                            ],
+                          ));
+                    }
+
                   },
                   child: customListTile(icon: Icons.logout, title: 'تسجيل الخروج'.tr),
                 ),
@@ -234,9 +256,9 @@ class _SettingsState extends State<Settings> {
         },
         stream:FirebaseFirestore.instance
             .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : widget.uniqueId)
             .snapshots(),
-      ) : Center(child: Text("للوصول الي الصفحه الشخصيه برجاء تسجيل الدخول"),),
+      )
     );
   }
 

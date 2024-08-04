@@ -9,9 +9,11 @@ import 'package:stockat/main.dart';
 import 'package:stockat/widgets/custom_text_form.dart';
 
 import '../../service/upload_image_service.dart';
+import '../sign_in.dart';
 
 class Editprofile extends StatefulWidget {
-  const Editprofile({Key? key}) : super(key: key);
+  final String uniqueId;
+  const Editprofile({Key? key, required this.uniqueId}) : super(key: key);
 
   @override
   State<Editprofile> createState() => _EditprofileState();
@@ -179,15 +181,12 @@ class _EditprofileState extends State<Editprofile> {
                                         uploadUserPhoto(_imageUrl);
                                       }
                                     },
-                                    child: getImagePovider(userProfile!.photo) !=
-                                            null
-                                        ? null
-                                        : const Icon(
+                                    child: const Icon(
                                             Icons.add_a_photo,
                                             size: 40,
                                           ),
                                   ),
-                            backgroundImage: getImagePovider(userProfile!.photo),
+                            backgroundImage: FirebaseAuth.instance.currentUser != null ? getImagePovider(userProfile!.photo): null,
                           ),
                           const SizedBox(
                             height: 10,
@@ -338,21 +337,27 @@ class _EditprofileState extends State<Editprofile> {
                                 ),
                                 ElevatedButton(
                                     onPressed: () async {
-                                      if (_fromKey.currentState!.validate()) {
-                                        authService.updateUserProfile(
-                                          userId: FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          name: nameController.text,
-                                          phone: phoneController.text,
-                                          // cr: crController.text,
-                                          // vat: vatController.text,
-                                        );
-                                        // if (emailController.text.isNotEmpty) {
-                                        //   authService
-                                        //       .updateEmail(emailController.text);
-                                        // }
+                                      if(FirebaseAuth.instance.currentUser == null){
+                                        Get.snackbar("لا يمكن اتمام العمليه", "لأتمام العمليه يجب تسجيل الدخول");
+                                        Get.to( const SignIn());
+                                      }else{
+                                        if (_fromKey.currentState!.validate()) {
+                                          authService.updateUserProfile(
+                                            userId: FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            name: nameController.text,
+                                            phone: phoneController.text,
+                                            // cr: crController.text,
+                                            // vat: vatController.text,
+                                          );
+                                          // if (emailController.text.isNotEmpty) {
+                                          //   authService
+                                          //       .updateEmail(emailController.text);
+                                          // }
+                                        }
+                                        setState(() {});
                                       }
-                                      setState(() {});
+
                                     },
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: mainColor,

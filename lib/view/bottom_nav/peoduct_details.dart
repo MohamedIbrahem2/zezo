@@ -2,9 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:stockat/constants.dart';
 import 'package:stockat/view/bottom_nav/edit_product.dart';
 
+import '../../main.dart';
 import '../../service/cart_service.dart';
 import '../../service/product_service.dart';
 import '../my_page_screens/qr_product_view.dart';
@@ -36,6 +38,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AdminProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -91,7 +94,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       // edit product button
                       Row(
                         children: [
-                          IconButton(
+                          provider.isAdmin ? IconButton(
                             onPressed: () async {
                               await Get.to(EditProduct(product: product));
                               print('product id: ${product.id}');
@@ -104,18 +107,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                               });
                             },
                             icon: const Icon(Icons.edit),
-                          ),
+                          ): Container(),
                           SizedBox(width: Get.width * 0.03),
 
                           // qr code button
 
-                          IconButton(
+                          provider.isAdmin ? IconButton(
                               onPressed: () {
                                 Get.to(ProductQrImageView(
                                     id: product.id,
                                     productName: product.brand));
                               },
-                              icon: const Icon(Icons.qr_code_scanner_outlined))
+                              icon: const Icon(Icons.qr_code_scanner_outlined)):
+                              Container()
 
                           // IconButton(
                           //   onPressed: () {
@@ -210,7 +214,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             SizedBox(height: Get.height * 0.03),
             Row(
               children: [
-                Expanded(
+                provider.isAdmin ? Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
@@ -229,8 +233,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                             style: TextStyle(color: Colors.white),
                             "أضافه الي الأعلي مبيعا")),
                   ),
-                ),
-                Expanded(
+                ): Container(),
+                provider.isAdmin ? Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
@@ -249,13 +253,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                             style: TextStyle(color: Colors.white),
                             "حذف من الأعلي مبيعا")),
                   ),
-                ),
+                ): Container(),
               ],
             ),
             SizedBox(height: Get.height * 0.04),
             StreamBuilder<List<CartItem>>(
                 stream: CartService().getCartItemsByProductId(
-                    FirebaseAuth.instance.currentUser!.uid, product.id),
+                    FirebaseAuth.instance.currentUser != null ?
+                    FirebaseAuth.instance.currentUser!.uid: widget.uniqueId, product.id),
                 builder: (context, snapshot) {
                   final quantity =
                       (snapshot.data == null || snapshot.data!.isEmpty)
@@ -305,7 +310,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   CartService().addToCart(
                                     productId: product.id,
                                     userId:
-                                        FirebaseAuth.instance.currentUser!.uid,
+                                    FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid: widget.uniqueId,
                                     quantity: 0,
                                     productName: product.brand,
                                     image: product.images.first,

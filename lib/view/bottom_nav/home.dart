@@ -563,9 +563,7 @@ class _HomePageState extends State<HomePage> {
                                   },
                                   onTap: () {
                                     final provider = Provider.of<AdminProvider>(context, listen: false);
-                                    if(provider.isAdmin) {
                                       Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
-                                    }
                                   },
                                   child: Container(
 
@@ -824,9 +822,8 @@ class _HomePageState extends State<HomePage> {
                             },
                             onTap: () {
                               final provider = Provider.of<AdminProvider>(context, listen: false);
-                              if(provider.isAdmin) {
                                 Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
-                              }
+
                             },
                             child: Container(
 
@@ -1086,9 +1083,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 onTap: () {
                                   final provider = Provider.of<AdminProvider>(context, listen: false);
-                                  if(provider.isAdmin) {
                                     Get.to(ProductDetails(product: product, uniqueId: widget.uniqueId,));
-                                  }
+
                                 },
                                 child: Stack(
                                   alignment: Alignment.topRight,

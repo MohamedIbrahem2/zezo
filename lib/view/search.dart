@@ -46,7 +46,7 @@ class _SearchState extends State<Search> {
                   ),
                   StreamBuilder<List<CartItem>>(
                       stream: CartService()
-                          .getCartItems(FirebaseAuth.instance.currentUser!.uid),
+                          .getCartItems(FirebaseAuth.instance.currentUser != null ? FirebaseAuth.instance.currentUser!.uid : widget.uniqueId),
                       builder: (context, snapshot) {
                         final quantity =
                         (snapshot.data == null || snapshot.data!.isEmpty)
